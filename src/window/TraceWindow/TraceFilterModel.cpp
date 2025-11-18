@@ -14,9 +14,17 @@ void TraceFilterModel::setFilterText(QString filtertext)
     _filterText = filtertext;
 }
 
+QVariant TraceFilterModel::data(const QModelIndex &index, int role) const
+{
+
+    QModelIndex sourceIndex = mapToSource(index);
+
+
+    return sourceModel()->data(sourceIndex, role);
+}
 bool TraceFilterModel::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
 {
-    // Pass all on no filter
+   
     if(_filterText.length() == 0)
         return true;
 

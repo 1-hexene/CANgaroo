@@ -32,47 +32,47 @@
 <context>
     <name>BaseTraceViewModel</name>
     <message>
-        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="52"/>
+        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="56"/>
         <source>Index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="54"/>
+        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="58"/>
         <source>Timestamp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="56"/>
+        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="60"/>
         <source>Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="58"/>
-        <source>Rx/Tx</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="60"/>
-        <source>Type</source>
+        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="62"/>
+        <source>RX/TX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="64"/>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="68"/>
         <source>Sender</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="66"/>
+        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="70"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="70"/>
+        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="74"/>
         <source>Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="72"/>
+        <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="76"/>
         <source>Comment</source>
         <translation type="unfinished"></translation>
     </message>
@@ -123,12 +123,12 @@
 <context>
     <name>CanListener</name>
     <message>
-        <location filename="../driver/CanListener.cpp" line="66"/>
+        <location filename="../driver/CanListener.cpp" line="68"/>
         <source>interface: %1, Version: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../driver/CanListener.cpp" line="78"/>
+        <location filename="../driver/CanListener.cpp" line="81"/>
         <source>Error on interface: %1, Closed!!!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -362,7 +362,7 @@
 <context>
     <name>LogWindow</name>
     <message>
-        <location filename="../window/LogWindow/LogWindow.ui" line="14"/>
+        <location filename="../window/LogWindow/LogWindow.ui" line="20"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -371,6 +371,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="17"/>
+        <location filename="../mainwindow.cpp" line="686"/>
         <source>CANgaroo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -390,230 +391,279 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="109"/>
+        <location filename="../mainwindow.ui" line="110"/>
         <source>&amp;Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="118"/>
+        <location filename="../mainwindow.ui" line="119"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="124"/>
+        <location filename="../mainwindow.ui" line="125"/>
         <source>&amp;Trace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="138"/>
+        <location filename="../mainwindow.ui" line="139"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="141"/>
+        <location filename="../mainwindow.ui" line="142"/>
         <source>Alt+F4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="146"/>
+        <location filename="../mainwindow.ui" line="147"/>
         <source>&amp;Trace View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="149"/>
+        <location filename="../mainwindow.ui" line="150"/>
         <source>Ctrl+Shift+T</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="154"/>
+        <location filename="../mainwindow.ui" line="155"/>
         <source>&amp;Log View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="157"/>
+        <location filename="../mainwindow.ui" line="158"/>
         <source>Ctrl+Shift+L</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="162"/>
+        <location filename="../mainwindow.ui" line="163"/>
         <source>&amp;Setup...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="165"/>
+        <location filename="../mainwindow.ui" line="166"/>
         <source>Ctrl+Alt+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="170"/>
+        <location filename="../mainwindow.ui" line="171"/>
         <source>Star&amp;t Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="173"/>
+        <location filename="../mainwindow.ui" line="174"/>
         <source>F5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="178"/>
+        <location filename="../mainwindow.ui" line="179"/>
         <source>Sto&amp;p Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="181"/>
+        <location filename="../mainwindow.ui" line="182"/>
         <source>Shift+F5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="186"/>
+        <location filename="../mainwindow.ui" line="187"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="191"/>
+        <location filename="../mainwindow.ui" line="192"/>
         <source>&amp;Save Trace to file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="199"/>
+        <location filename="../mainwindow.ui" line="200"/>
         <source>&amp;Graph View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="202"/>
+        <location filename="../mainwindow.ui" line="203"/>
         <source>Ctrl+Shift+G</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="210"/>
+        <location filename="../mainwindow.ui" line="211"/>
         <source>&amp;New Workspace...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="213"/>
+        <location filename="../mainwindow.ui" line="214"/>
         <source>Ctrl+N</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="218"/>
+        <location filename="../mainwindow.ui" line="219"/>
         <source>&amp;Save Workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="221"/>
+        <location filename="../mainwindow.ui" line="222"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="226"/>
+        <location filename="../mainwindow.ui" line="227"/>
         <source>Save Workspace &amp;As...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="229"/>
+        <location filename="../mainwindow.ui" line="230"/>
         <source>Ctrl+Shift+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="234"/>
+        <location filename="../mainwindow.ui" line="235"/>
         <source>&amp;Open Workspace...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="237"/>
+        <location filename="../mainwindow.ui" line="238"/>
         <source>Ctrl+O</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="242"/>
+        <location filename="../mainwindow.ui" line="243"/>
         <source>&amp;Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="245"/>
+        <location filename="../mainwindow.ui" line="246"/>
         <source>Esc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="250"/>
+        <location filename="../mainwindow.ui" line="251"/>
         <source>Can &amp;Status View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="255"/>
+        <location filename="../mainwindow.ui" line="256"/>
         <source>Graph View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="260"/>
-        <location filename="../mainwindow.cpp" line="399"/>
+        <location filename="../mainwindow.ui" line="261"/>
+        <location filename="../mainwindow.cpp" line="476"/>
         <source>Transmit View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="285"/>
+        <location filename="../mainwindow.ui" line="266"/>
+        <location filename="../mainwindow.cpp" line="512"/>
+        <source>Generator View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="340"/>
         <source>Open workspace configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="285"/>
-        <location filename="../mainwindow.cpp" line="303"/>
+        <location filename="../mainwindow.cpp" line="340"/>
+        <location filename="../mainwindow.cpp" line="362"/>
         <source>Workspace config files (*.cangaroo)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="303"/>
+        <location filename="../mainwindow.cpp" line="362"/>
         <source>Save workspace configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="330"/>
+        <location filename="../mainwindow.cpp" line="395"/>
         <source>The current workspace has been modified.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="331"/>
+        <location filename="../mainwindow.cpp" line="396"/>
         <source>Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="334"/>
-        <source>Save</source>
+        <location filename="../mainwindow.cpp" line="689"/>
+        <location filename="../mainwindow.cpp" line="697"/>
+        <source>&amp;Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="335"/>
-        <source>Discard</source>
+        <location filename="../mainwindow.cpp" line="703"/>
+        <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="336"/>
-        <source>Cancel</source>
+        <location filename="../mainwindow.cpp" line="710"/>
+        <source>Español</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="356"/>
+        <location filename="../mainwindow.cpp" line="81"/>
+        <location filename="../mainwindow.cpp" line="728"/>
+        <source>Export full trace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="720"/>
+        <location filename="../mainwindow.cpp" line="783"/>
+        <source>No Trace window active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="730"/>
+        <location filename="../mainwindow.cpp" line="793"/>
+        <source>CANgaroo Trace (*.ctrace)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="720"/>
+        <location filename="../mainwindow.cpp" line="738"/>
+        <location filename="../mainwindow.cpp" line="783"/>
+        <location filename="../mainwindow.cpp" line="800"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="738"/>
+        <source>Cannot write file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="84"/>
+        <location filename="../mainwindow.cpp" line="791"/>
+        <source>Import full trace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="800"/>
+        <source>Cannot read file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="427"/>
         <source>Trace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="375"/>
-        <location filename="../mainwindow.cpp" line="389"/>
+        <location filename="../mainwindow.cpp" line="450"/>
+        <location filename="../mainwindow.cpp" line="465"/>
         <source>Graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="411"/>
+        <location filename="../mainwindow.cpp" line="488"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="423"/>
+        <location filename="../mainwindow.cpp" line="500"/>
         <source>CAN Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="461"/>
+        <location filename="../mainwindow.cpp" line="554"/>
         <source>About CANgaroo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -659,269 +709,269 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="92"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="100"/>
         <source>HHHHHHHH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="123"/>
-        <source>Address(hex)</source>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="134"/>
+        <source>Address(Hex)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="136"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="147"/>
         <source>DLC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="165"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="176"/>
         <source>RTR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="178"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="189"/>
         <source>Extended ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="201"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="212"/>
         <source>Interface:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="217"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="228"/>
         <source>BRS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="230"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="241"/>
         <source>FD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="253"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="288"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="307"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="326"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="345"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="364"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="383"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="402"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="421"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="456"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="475"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="510"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="529"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="548"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="567"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="586"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="605"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="640"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="659"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="678"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="697"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="716"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="767"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="802"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="821"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="856"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="875"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="894"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="913"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="948"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="967"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1002"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1021"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1040"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1059"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1094"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1113"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1148"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1167"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1186"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1205"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1224"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1243"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1262"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1281"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1300"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1319"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1338"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1357"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1376"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1395"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1414"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1433"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1452"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1471"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1490"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1509"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1528"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1595"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1614"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1633"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1652"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1671"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1690"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="264"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="299"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="318"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="337"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="356"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="375"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="394"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="413"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="432"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="467"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="486"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="521"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="540"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="559"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="578"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="597"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="616"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="651"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="670"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="689"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="708"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="727"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="778"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="813"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="832"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="867"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="886"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="905"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="924"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="959"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="978"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1013"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1032"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1051"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1070"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1105"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1124"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1159"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1178"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1197"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1216"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1235"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1254"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1273"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1292"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1311"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1330"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1349"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1368"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1387"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1406"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1425"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1444"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1463"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1482"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1501"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1520"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1539"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1606"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1625"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1644"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1663"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1682"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1701"/>
         <source>hh</source>
         <extracomment>Hex Only</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="256"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="291"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="310"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="329"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="348"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="367"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="386"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="405"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="424"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="459"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="478"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="513"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="532"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="551"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="570"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="589"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="608"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="643"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="662"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="681"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="700"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="719"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="770"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="805"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="824"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="859"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="878"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="897"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="916"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="951"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="970"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1005"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1024"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1043"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1062"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1097"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1116"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1151"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1170"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1189"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1208"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1227"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1246"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1265"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1284"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1303"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1322"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1341"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1360"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1379"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1398"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1417"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1436"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1455"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1474"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1493"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1512"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1531"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1598"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1617"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1636"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1655"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1674"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1693"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="267"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="302"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="321"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="340"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="359"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="378"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="397"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="416"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="435"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="470"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="489"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="524"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="543"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="562"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="581"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="600"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="619"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="654"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="673"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="692"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="711"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="730"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="781"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="816"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="835"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="870"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="889"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="908"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="927"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="962"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="981"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1016"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1035"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1054"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1073"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1108"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1127"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1162"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1181"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1200"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1219"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1238"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1257"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1276"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1295"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1314"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1333"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1352"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1371"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1390"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1409"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1428"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1447"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1466"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1485"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1504"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1523"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1542"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1609"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1628"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1647"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1666"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1685"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1704"/>
         <source>00</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="272"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1725"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="283"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1736"/>
         <source>7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="440"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="451"/>
         <source>56</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="494"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="932"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1837"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="505"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="943"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1848"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="624"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1757"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="635"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1768"/>
         <source>2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="735"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="746"/>
         <source>8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="751"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1773"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="762"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1784"/>
         <source>6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="786"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1789"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="797"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1800"/>
         <source>4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="840"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="851"/>
         <source>16</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="986"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="997"/>
         <source>32</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1078"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1089"/>
         <source>24</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1132"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1741"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1143"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1752"/>
         <source>3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1547"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1558"/>
         <source>40</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1563"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1805"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1574"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1816"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1579"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1821"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1590"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1832"/>
         <source>5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1709"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1720"/>
         <source>48</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1866"/>
-        <source>Show TX frame</source>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1877"/>
+        <source>Show TX Frames</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1043,37 +1093,105 @@
     </message>
     <message>
         <location filename="../window/TraceWindow/TraceWindow.ui" line="45"/>
-        <source>aggregate by ID</source>
+        <source>Aggregate by ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/TraceWindow.ui" line="55"/>
-        <source>auto scroll</source>
+        <source>Autoscroll</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.ui" line="78"/>
+        <location filename="../window/TraceWindow/TraceWindow.ui" line="91"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.ui" line="85"/>
+        <location filename="../window/TraceWindow/TraceWindow.ui" line="98"/>
         <source>Filter: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="79"/>
-        <source>absolute</source>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="92"/>
+        <source>Absolute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="80"/>
-        <source>relative</source>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="93"/>
+        <source>Relative</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="81"/>
-        <source>delta</source>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="94"/>
+        <source>Delta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="436"/>
+        <source>Editar alias, color y comentario</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="437"/>
+        <source>Editar alias y color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="444"/>
+        <source>Alias:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="451"/>
+        <source>Choose color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="466"/>
+        <source>Color:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="472"/>
+        <source>Select color to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="484"/>
+        <source>Comment:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TxGeneratorWindow</name>
+    <message>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="20"/>
+        <source>Generator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="72"/>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="88"/>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="18"/>
+        <source>Nr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="18"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="18"/>
+        <source>Cycle Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

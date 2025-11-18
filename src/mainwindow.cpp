@@ -42,17 +42,18 @@
 #include <driver/SLCANDriver/SLCANDriver.h>
 #include <driver/GrIPDriver/GrIPDriver.h>
 #include <driver/CANBlastDriver/CANBlasterDriver.h>
+#include <window/TraceWindow/LinearTraceViewModel.h>
 
 #if defined(__linux__)
 #include <driver/SocketCanDriver/SocketCanDriver.h>
 #else
 #include <driver/CandleApiDriver/CandleApiDriver.h>
 #endif
+#include <QActionGroup>
+#include <QEvent>
 
-
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
+                                          ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     _baseWindowTitle = windowTitle();
@@ -76,7 +77,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->actionSave_Trace_to_file, SIGNAL(triggered(bool)), this, SLOT(saveTraceToFile()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutDialog()));
+    QMenu *traceMenu = ui->menu_Trace;
 
+    QAction *actionExportFull = new QAction(tr("Export full trace"), this);
+    connect(actionExportFull, &QAction::triggered, this, &MainWindow::exportFullTrace);
+    traceMenu->addAction(actionExportFull);
+    QAction *actionImportFull = new QAction(tr("Import full trace"), this);
+    connect(actionImportFull, &QAction::triggered, this, &MainWindow::importFullTrace);
+    traceMenu->addAction(actionImportFull);
 
 #if defined(__linux__)
     Backend::instance().addCanDriver(*(new SocketCanDriver(Backend::instance())));
@@ -94,6 +102,12 @@ MainWindow::MainWindow(QWidget *parent) :
     _setupDlg = new SetupDialog(Backend::instance(), 0);
 
     _showSetupDialog_first = false;
+    qApp->installTranslator(&m_translator);
+    createLanguageMenu();
+    if (!m_languageActionGroup->actions().isEmpty())
+    {
+        m_languageActionGroup->actions().first()->trigger();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -111,7 +125,7 @@ void MainWindow::updateMeasurementActions()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (askSaveBecauseWorkspaceModified()!=QMessageBox::Cancel)
+    if (askSaveBecauseWorkspaceModified() != QMessageBox::Cancel)
     {
         backend().stopMeasurement();
         event->accept();
@@ -152,7 +166,7 @@ QMainWindow *MainWindow::createTab(QString title)
 
 QMainWindow *MainWindow::currentTab()
 {
-    return (QMainWindow*)ui->mainTabs->currentWidget();
+    return (QMainWindow *)ui->mainTabs->currentWidget();
 }
 
 void MainWindow::stopAndClearMeasurement()
@@ -173,12 +187,12 @@ void MainWindow::clearWorkspace()
 bool MainWindow::loadWorkspaceTab(QDomElement el)
 {
     QMainWindow *mw = 0;
-    QString type = el.attribute("type");    
-    if (type=="TraceWindow")
+    QString type = el.attribute("type");
+    if (type == "TraceWindow")
     {
         mw = createTraceWindow(el.attribute("title"));
     }
-    else if (type=="GraphWindow")
+    else if (type == "GraphWindow")
     {
         mw = createGraphWindow(el.attribute("title"));
     }
@@ -189,7 +203,7 @@ bool MainWindow::loadWorkspaceTab(QDomElement el)
 
     if (mw)
     {
-        ConfigurableWidget *mdi = dynamic_cast<ConfigurableWidget*>(mw->centralWidget());
+        ConfigurableWidget *mdi = dynamic_cast<ConfigurableWidget *>(mw->centralWidget());
         if (mdi)
         {
             mdi->loadXML(backend(), el);
@@ -236,7 +250,7 @@ void MainWindow::loadWorkspaceFromFile(QString filename)
 
     QDomElement tabsRoot = doc.firstChild().firstChildElement("tabs");
     QDomNodeList tabs = tabsRoot.elementsByTagName("tab");
-    for (int i=0; i<tabs.length(); i++)
+    for (int i = 0; i < tabs.length(); i++)
     {
         if (!loadWorkspaceTab(tabs.item(i).toElement()))
         {
@@ -266,14 +280,14 @@ bool MainWindow::saveWorkspaceToFile(QString filename)
     QDomElement tabsRoot = doc.createElement("tabs");
     root.appendChild(tabsRoot);
 
-    for (int i=0; i < ui->mainTabs->count(); i++)
+    for (int i = 0; i < ui->mainTabs->count(); i++)
     {
-        QMainWindow *w = (QMainWindow*)ui->mainTabs->widget(i);
+        QMainWindow *w = (QMainWindow *)ui->mainTabs->widget(i);
 
         QDomElement tabEl = doc.createElement("tab");
         tabEl.setAttribute("title", ui->mainTabs->tabText(i));
 
-        ConfigurableWidget *mdi = dynamic_cast<ConfigurableWidget*>(w->centralWidget());
+        ConfigurableWidget *mdi = dynamic_cast<ConfigurableWidget *>(w->centralWidget());
         if (!mdi->saveXML(backend(), doc, tabEl))
         {
             log_error(QString("Cannot save window settings to file: %1").arg(filename));
@@ -292,9 +306,9 @@ bool MainWindow::saveWorkspaceToFile(QString filename)
     root.appendChild(setupRoot);
 
     QFile outFile(filename);
-    if(outFile.open(QIODevice::WriteOnly|QIODevice::Text))
+    if (outFile.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        QTextStream stream( &outFile );
+        QTextStream stream(&outFile);
         stream << doc.toString();
         outFile.close();
         _workspaceFileName = filename;
@@ -421,11 +435,11 @@ QMainWindow *MainWindow::createTraceWindow(QString title)
     QDockWidget *dockRawTxWidget = addRawTxWidget(mm);
     QDockWidget *dockGeneratorWidget = addTxGeneratorWidget(mm);
 
-    mm->splitDockWidget(dockRawTxWidget,dockLogWidget,Qt::Horizontal);
-    mm->splitDockWidget(dockGeneratorWidget,dockLogWidget,Qt::Horizontal);
-    mm->tabifyDockWidget(dockGeneratorWidget,dockRawTxWidget);
-    mm->splitDockWidget(dockStatusWidget,dockLogWidget,Qt::Horizontal);
-    mm->tabifyDockWidget(dockStatusWidget,dockLogWidget);
+    mm->splitDockWidget(dockRawTxWidget, dockLogWidget, Qt::Horizontal);
+    mm->splitDockWidget(dockGeneratorWidget, dockLogWidget, Qt::Horizontal);
+    mm->tabifyDockWidget(dockGeneratorWidget, dockRawTxWidget);
+    mm->splitDockWidget(dockStatusWidget, dockLogWidget, Qt::Horizontal);
+    mm->tabifyDockWidget(dockStatusWidget, dockLogWidget);
     ui->mainTabs->setCurrentWidget(mm);
     return mm;
 }
@@ -512,7 +526,7 @@ bool MainWindow::showSetupDialog()
     MeasurementSetup new_setup(&backend());
     new_setup.cloneFrom(backend().getSetup());
     backend().setDefaultSetup();
-    if(backend().getSetup().countNetworks() == new_setup.countNetworks())
+    if (backend().getSetup().countNetworks() == new_setup.countNetworks())
     {
         backend().setSetup(new_setup);
     }
@@ -522,7 +536,7 @@ bool MainWindow::showSetupDialog()
     }
     if (_setupDlg->showSetupDialog(new_setup))
     {
-        if(!_setupDlg->isReflashNetworks())
+        if (!_setupDlg->isReflashNetworks())
             backend().setSetup(new_setup);
 
         setWorkspaceModified(true);
@@ -538,22 +552,22 @@ bool MainWindow::showSetupDialog()
 void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this,
-        tr("About CANgaroo"),
-       "CANgaroo\n"
-       "Open Source CAN bus analyzer\n"
-       "\n"
-       "version 0.3.0\n"
-       "\n"
-       "(c)2015-2017 Hubert Denkmair\n"
-       "(c)2018-2022 Ethan Zonca\n"
-       "(c)2024 WeAct Studio\n"
-       "(c)2024 Schildkroet"
-    );
+                       tr("About CANgaroo"),
+                       "CANgaroo\n"
+                       "Open Source CAN bus analyzer\n"
+                       "\n"
+                       "version 0.3.1\n"
+                       "\n"
+                       "(c)2015-2017 Hubert Denkmair\n"
+                       "(c)2018-2022 Ethan Zonca\n"
+                       "(c)2024 WeAct Studio\n"
+                       "(c)2024 Schildkroet\n"
+                       "(c)2025 Wikilift");
 }
 
 void MainWindow::startMeasurement()
 {
-    if(!_showSetupDialog_first)
+    if (!_showSetupDialog_first)
     {
         if (showSetupDialog())
         {
@@ -580,11 +594,12 @@ void MainWindow::saveTraceToFile()
 
     QFileDialog fileDialog(0, "Save Trace to file", QDir::currentPath(), filters);
     fileDialog.setAcceptMode(QFileDialog::AcceptSave);
-    fileDialog.setOption(QFileDialog::DontConfirmOverwrite,false);
-    //fileDialog.setConfirmOverwrite(true);
+    fileDialog.setOption(QFileDialog::DontConfirmOverwrite, false);
+    // fileDialog.setConfirmOverwrite(true);
     fileDialog.selectNameFilter(defaultFilter);
     fileDialog.setDefaultSuffix("asc");
-    if (fileDialog.exec()) {
+    if (fileDialog.exec())
+    {
         QString filename = fileDialog.selectedFiles()[0];
         QFile file(filename);
         if (file.open(QIODevice::ReadWrite | QIODevice::Truncate))
@@ -637,4 +652,210 @@ void MainWindow::on_actionGenerator_View_triggered()
 {
     addTxGeneratorWidget();
 }
+void MainWindow::switchLanguage(QAction *action)
+{
+    QString locale = action->data().toString();
 
+    qApp->removeTranslator(&m_translator);
+
+    if (locale == "en_US")
+    {
+        m_translator.load("");
+    }
+    else
+    {
+        QString qmPath = ":/translations/i18n_" + locale + ".qm";
+        if (!m_translator.load(qmPath))
+        {
+          //todo: launch error
+        }
+    }
+
+    qApp->installTranslator(&m_translator);
+}
+
+
+void MainWindow::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange)
+    {
+       
+
+        ui->retranslateUi(this);
+
+        _baseWindowTitle = tr("CANgaroo");
+        setWorkspaceModified(_workspaceModified);
+
+        m_languageMenu->setTitle(tr("&Language"));
+    }
+
+    QMainWindow::changeEvent(event);
+}
+
+void MainWindow::createLanguageMenu()
+{
+    m_languageMenu = ui->menuHelp->addMenu(tr("&Language"));
+
+    m_languageActionGroup = new QActionGroup(this);
+
+    connect(m_languageActionGroup, &QActionGroup::triggered, this, &MainWindow::switchLanguage);
+
+    QAction *actionEn = new QAction(tr("English"), this);
+    actionEn->setCheckable(true);
+    actionEn->setChecked(true);
+    actionEn->setData("en_US");
+    m_languageMenu->addAction(actionEn);
+    m_languageActionGroup->addAction(actionEn);
+
+
+
+    QAction *actionEs = new QAction(tr("Español"), this);
+    actionEs->setCheckable(true);
+    actionEs->setData("es_ES");
+    m_languageMenu->addAction(actionEs);
+    m_languageActionGroup->addAction(actionEs);
+
+    QAction *actionCN = new QAction(tr("Chinese"), this);
+    actionCN->setCheckable(true);
+    actionCN->setData("zh_cn");
+    m_languageMenu->addAction(actionCN);
+    m_languageActionGroup->addAction(actionCN);
+}
+
+void MainWindow::exportFullTrace()
+{
+    TraceWindow *tw = currentTab()->findChild<TraceWindow *>();
+    if (!tw)
+    {
+        QMessageBox::warning(this, tr("Error"), tr("No Trace window active"));
+        return;
+    }
+
+    auto *model = tw->linearModel();
+    CanTrace *trace = backend().getTrace();
+
+    QString filename = QFileDialog::getSaveFileName(
+        this,
+        tr("Export full trace"),
+        "",
+        tr("CANgaroo Trace (*.ctrace)"));
+    if (filename.isEmpty())
+        return;
+    if (!filename.endsWith(".ctrace"))
+        filename += ".ctrace";
+
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Cannot write file"));
+        return;
+    }
+
+    QJsonObject root;
+
+    QJsonArray msgsJson;
+    unsigned long count = trace->size();
+
+    for (unsigned long i = 0; i < count; i++)
+    {
+        const CanMessage *msg = trace->getMessage(i);
+        if (!msg)
+            continue;
+
+        QJsonObject m;
+        m["timestamp"] = msg->getFloatTimestamp();
+        m["raw_id"] = (int)msg->getRawId();
+        m["id"] = msg->getIdString();
+        m["dlc"] = msg->getLength();
+        m["data"] = msg->getDataHexString();
+        m["direction"] = msg->isRX() ? "RX" : "TX";
+        m["comment"] = model->exportedComment(i);
+
+        msgsJson.append(m);
+    }
+
+    root["messages"] = msgsJson;
+
+    QJsonObject colorsJson;
+    for (auto it = model->exportedColors().begin(); it != model->exportedColors().end(); ++it)
+        colorsJson[it.key()] = it.value().name();
+    root["colors"] = colorsJson;
+
+    QJsonObject aliasJson;
+    for (auto it = model->exportedAliases().begin(); it != model->exportedAliases().end(); ++it)
+        aliasJson[it.key()] = it.value();
+    root["aliases"] = aliasJson;
+
+    file.write(QJsonDocument(root).toJson());
+    file.close();
+}
+
+void MainWindow::importFullTrace()
+{
+    TraceWindow *tw = currentTab()->findChild<TraceWindow *>();
+    if (!tw)
+    {
+        QMessageBox::warning(this, tr("Error"), tr("No Trace window active"));
+        return;
+    }
+
+    auto *model = tw->linearModel();
+
+    QString filename = QFileDialog::getOpenFileName(
+        this,
+        tr("Import full trace"),
+        "",
+        tr("CANgaroo Trace (*.ctrace)"));
+
+    if (filename.isEmpty())
+        return;
+
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Cannot read file"));
+        return;
+    }
+
+    QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+    file.close();
+
+    QJsonObject root = doc.object();
+
+    backend().clearTrace();
+
+    QJsonArray msgs = root["messages"].toArray();
+    for (int i = 0; i < msgs.size(); i++)
+    {
+        QJsonObject m = msgs[i].toObject();
+
+        CanMessage msg;
+
+        double ts = m["timestamp"].toDouble();
+        struct timeval tv;
+        tv.tv_sec = (time_t)ts;
+        tv.tv_usec = (ts - tv.tv_sec) * 1e6;
+        msg.setTimestamp(tv);
+
+        msg.setRawId(m["raw_id"].toInt());
+        msg.setLength(m["dlc"].toInt());
+
+        QByteArray ba = QByteArray::fromHex(m["data"].toString().toUtf8());
+        for (int b = 0; b < ba.size(); b++)
+            msg.setByte(b, (uint8_t)ba[b]);
+
+        msg.setRX(m["direction"].toString() == "RX");
+
+        backend().getTrace()->enqueueMessage(msg, false);
+
+        model->setCommentForMessage(i, m["comment"].toString());
+    }
+
+    QJsonObject colors = root["colors"].toObject();
+    for (auto it = colors.begin(); it != colors.end(); ++it)
+        model->setMessageColorForIdString(it.key(), QColor(it.value().toString()));
+
+    QJsonObject aliases = root["aliases"].toObject();
+    for (auto it = aliases.begin(); it != aliases.end(); ++it)
+        model->updateAliasForIdString(it.key(), it.value().toString());
+}

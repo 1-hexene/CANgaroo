@@ -45,6 +45,7 @@
 #include <netlink/route/link.h>
 #include <netlink/route/link/can.h>
 
+
 SocketCanInterface::SocketCanInterface(SocketCanDriver *driver, int index, QString name)
   : CanInterface((CanDriver *)driver),
 	_idx(index),
@@ -356,7 +357,9 @@ void SocketCanInterface::open() {
 
 	struct ifreq ifr;
     struct sockaddr_can addr;
-    strlcpy(ifr.ifr_name, _name.toStdString().c_str(), IFNAMSIZ);
+    //strlcpy(ifr.ifr_name, _name.toStdString().c_str(), IFNAMSIZ);
+    strncpy(ifr.ifr_name, _name.toStdString().c_str(), IFNAMSIZ - 1);
+    ifr.ifr_name[IFNAMSIZ - 1] = '\0';
 	ioctl(_fd, SIOCGIFINDEX, &ifr);
 
 	addr.can_family  = AF_CAN;

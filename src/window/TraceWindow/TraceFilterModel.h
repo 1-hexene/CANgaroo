@@ -11,6 +11,7 @@ public:
 
 public slots:
     void setFilterText(QString filtertext);
+    virtual QVariant data(const QModelIndex &index, int role) const override;
 
 private:
     QString _filterText;

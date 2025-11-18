@@ -29,6 +29,27 @@
 #include "TraceFilterModel.h"
 #include <core/Backend.h>
 
+#include <QInputDialog> 
+#include <QColorDialog>
+#include <QDialog>
+#include <QFormLayout>
+#include <QLineEdit>
+#include <QDialogButtonBox>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QFrame>
+
+static QColor toPastel(const QColor &c)
+{
+
+    int r = (c.red()   + 255) / 2;
+    int g = (c.green() + 255) / 2;
+    int b = (c.blue()  + 255) / 2;
+    QColor pastel;
+    pastel.setRgb(r, g, b);
+    return pastel;
+}
+
 
 TraceWindow::TraceWindow(QWidget *parent, Backend &backend) :
     ConfigurableWidget(parent),
@@ -64,16 +85,7 @@ TraceWindow::TraceWindow(QWidget *parent, Backend &backend) :
     ui->tree->setAlternatingRowColors(true);
 
     ui->tree->setUniformRowHeights(true);
-    ui->tree->setColumnWidth(BaseTraceViewModel::column_index, 70);
-    ui->tree->setColumnWidth(BaseTraceViewModel::column_timestamp, 100);
-    ui->tree->setColumnWidth(BaseTraceViewModel::column_channel, 120);
-    ui->tree->setColumnWidth(BaseTraceViewModel::column_direction, 50);
-    ui->tree->setColumnWidth(BaseTraceViewModel::column_type, 80);
-    ui->tree->setColumnWidth(BaseTraceViewModel::column_canid, 110);
-    ui->tree->setColumnWidth(BaseTraceViewModel::column_sender, 150);
-    ui->tree->setColumnWidth(BaseTraceViewModel::column_name, 150);
-    ui->tree->setColumnWidth(BaseTraceViewModel::column_dlc, 50);
-    ui->tree->setColumnWidth(BaseTraceViewModel::column_data, 250);
+ 
     ui->tree->setColumnWidth(BaseTraceViewModel::column_comment, 120);
     ui->tree->sortByColumn(BaseTraceViewModel::column_index, Qt::AscendingOrder);
 
@@ -83,13 +95,14 @@ TraceWindow::TraceWindow(QWidget *parent, Backend &backend) :
     setTimestampMode(timestamp_mode_delta);
 
     connect(_linearTraceViewModel, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsInserted(QModelIndex,int,int)));
-
     connect(ui->filterLineEdit, SIGNAL(textChanged(QString)), this, SLOT(on_cbFilterChanged()));
-
     connect(ui->TraceClearpushButton, SIGNAL(released()), this, SLOT(on_cbTraceClearpushButton()));
-
     connect(ui->cbAggregated,SIGNAL(stateChanged(int)),this,SLOT(on_cbAggregated_stateChanged(int)));
     connect(ui->cbAutoScroll,SIGNAL(stateChanged(int)),this,SLOT(on_cbAutoScroll_stateChanged(int)));
+    
+   
+    connect(ui->tree, &QTreeView::doubleClicked, this, &TraceWindow::onTraceRowDoubleClicked);
+  
 
     ui->cbAggregated->setCheckState(Qt::Unchecked);
     ui->cbAutoScroll->setCheckState(Qt::Checked);
@@ -170,19 +183,64 @@ void TraceWindow::setTimestampMode(int mode)
     }
 }
 
+
 bool TraceWindow::saveXML(Backend &backend, QDomDocument &xml, QDomElement &root)
 {
     if (!ConfigurableWidget::saveXML(backend, xml, root))
-    {
         return false;
-    }
 
     root.setAttribute("type", "TraceWindow");
     root.setAttribute("mode", (_mode==mode_linear) ? "linear" : "aggregated");
     root.setAttribute("TimestampMode", _timestampMode);
 
+
     QDomElement elLinear = xml.createElement("LinearTraceView");
-    elLinear.setAttribute("AutoScroll", (ui->cbAutoScroll->checkState() == Qt::Checked) ? 1 : 0);
+    elLinear.setAttribute("AutoScroll", ui->cbAutoScroll->isChecked() ? 1 : 0);
+
+    BaseTraceViewModel *model = _linearTraceViewModel;
+
+
+    {
+        QDomElement colorsEl = xml.createElement("Colors");
+        auto colors = model->getAllIdColors();
+
+        for (auto it = colors.begin(); it != colors.end(); ++it) {
+            QDomElement cEl = xml.createElement("Color");
+            cEl.setAttribute("id", it.key());
+            cEl.setAttribute("value", it.value().name(QColor::HexArgb));
+            colorsEl.appendChild(cEl);
+        }
+        elLinear.appendChild(colorsEl);
+    }
+
+
+    {
+        QDomElement alEl = xml.createElement("Aliases");
+        auto aliases = model->getAllIdAliases();
+
+        for (auto it = aliases.begin(); it != aliases.end(); ++it) {
+            QDomElement aEl = xml.createElement("Alias");
+            aEl.setAttribute("id", it.key());
+            aEl.setAttribute("value", it.value());
+            alEl.appendChild(aEl);
+        }
+        elLinear.appendChild(alEl);
+    }
+
+
+    {
+        QDomElement cmEl = xml.createElement("Comments");
+        auto comments = model->getAllMessageComments();
+
+        for (auto it = comments.begin(); it != comments.end(); ++it) {
+            QDomElement cEl = xml.createElement("Comment");
+            cEl.setAttribute("msgId", it.key());
+            cEl.setAttribute("value", it.value());
+            cmEl.appendChild(cEl);
+        }
+        elLinear.appendChild(cmEl);
+    }
+
     root.appendChild(elLinear);
 
     QDomElement elAggregated = xml.createElement("AggregatedTraceView");
@@ -191,13 +249,10 @@ bool TraceWindow::saveXML(Backend &backend, QDomDocument &xml, QDomElement &root
 
     return true;
 }
-
 bool TraceWindow::loadXML(Backend &backend, QDomElement &el)
 {
     if (!ConfigurableWidget::loadXML(backend, el))
-    {
         return false;
-    }
 
     setMode((el.attribute("mode", "linear") == "linear") ? mode_linear : mode_aggregated);
     setTimestampMode(el.attribute("TimestampMode", "0").toInt());
@@ -205,13 +260,59 @@ bool TraceWindow::loadXML(Backend &backend, QDomElement &el)
     QDomElement elLinear = el.firstChildElement("LinearTraceView");
     setAutoScroll(elLinear.attribute("AutoScroll", "0").toInt() != 0);
 
+    BaseTraceViewModel *model = _linearTraceViewModel;
+
+    {
+        QHash<QString, QColor> colors;
+        QDomElement colorsEl = elLinear.firstChildElement("Colors");
+        QDomElement cEl = colorsEl.firstChildElement("Color");
+
+        while (!cEl.isNull()) {
+            QString id = cEl.attribute("id");
+            QColor col(cEl.attribute("value"));
+            if (col.isValid())
+                colors[id] = col;
+            cEl = cEl.nextSiblingElement("Color");
+        }
+
+        model->restoreIdColors(colors);
+    }
+
+    {
+        QHash<QString, QString> aliases;
+        QDomElement alEl = elLinear.firstChildElement("Aliases");
+        QDomElement aEl = alEl.firstChildElement("Alias");
+
+        while (!aEl.isNull()) {
+            QString id = aEl.attribute("id");
+            QString val = aEl.attribute("value");
+            aliases[id] = val;
+            aEl = aEl.nextSiblingElement("Alias");
+        }
+
+        model->restoreIdAliases(aliases);
+    }
+    {
+        QHash<int, QString> comments;
+        QDomElement cmEl = elLinear.firstChildElement("Comments");
+        QDomElement cEl = cmEl.firstChildElement("Comment");
+
+        while (!cEl.isNull()) {
+            int msgId = cEl.attribute("msgId").toInt();
+            QString val = cEl.attribute("value");
+            comments[msgId] = val;
+            cEl = cEl.nextSiblingElement("Comment");
+        }
+
+        model->restoreMessageComments(comments);
+    }
     QDomElement elAggregated = el.firstChildElement("AggregatedTraceView");
     int sortColumn = elAggregated.attribute("SortColumn", "-1").toInt();
-    ui->tree->sortByColumn(sortColumn,Qt::SortOrder::AscendingOrder);
-    //ui->tree->sortByColumn(sortColumn);
+    ui->tree->sortByColumn(sortColumn, Qt::AscendingOrder);
 
     return true;
 }
+
 
 void TraceWindow::rowsInserted(const QModelIndex &parent, int first, int last)
 {
@@ -257,4 +358,164 @@ void TraceWindow::on_cbTraceClearpushButton()
 {
     _backend->clearTrace();
     _backend->clearLog();
+}
+
+void TraceWindow::onTraceRowDoubleClicked(const QModelIndex &index)
+{
+    QAbstractItemModel *viewModel = ui->tree->model();
+    if (!viewModel) {
+        return;
+    }
+
+    if (index.parent().isValid()) {
+        return;
+    }
+
+    QModelIndex idIndexInView =
+        viewModel->index(index.row(), BaseTraceViewModel::column_canid, index.parent());
+
+    QString idString =
+        viewModel->data(idIndexInView, Qt::DisplayRole).toString();
+
+    if (idString.isEmpty()) {
+        return;
+    }
+
+    QString currentName;
+    const CanMessage *exampleMsg = nullptr;
+
+    CanTrace *t = _backend->getTrace();
+    if (t) {
+        int sz = t->size();
+        for (int i = 0; i < sz; ++i) {
+            const CanMessage *m = t->getMessage(i);
+            if (!m) continue;
+            if (m->getIdString() == idString) {
+                exampleMsg = m;
+                break;
+            }
+        }
+
+        if (exampleMsg) {
+            if (CanDbMessage *dbmsg = _backend->findDbMessage(*exampleMsg)) {
+                currentName = dbmsg->getName();
+            }
+        }
+    }
+
+    bool isLinear = (_mode == mode_linear);
+    BaseTraceViewModel *model =
+        isLinear ? (BaseTraceViewModel*)_linearTraceViewModel
+                 : (BaseTraceViewModel*)_aggregatedTraceViewModel;
+
+    if (!model) return;
+
+    QColor currentColor = model->messageColorForIdString(idString);
+    if (!currentColor.isValid())
+        currentColor = Qt::black;
+
+    QString currentComment;
+    int msgId = -1;
+
+    if (isLinear) {
+        QModelIndex sourceIndex =
+            _linearProxyModel->mapToSource(_linFilteredModel->mapToSource(index));
+
+        quintptr internal = sourceIndex.internalId();
+        msgId = (internal & ~0x80000000u) - 1;
+
+        if (msgId >= 0) {
+            currentComment = model->commentForMessage(msgId);
+        }
+    }
+
+ 
+
+    QDialog dialog(this);
+    dialog.setWindowTitle(isLinear
+        ? tr("Editar alias, color y comentario")
+        : tr("Editar alias y color"));
+
+    QFormLayout *form = new QFormLayout(&dialog);
+
+   
+    QLineEdit *nameEdit = new QLineEdit(&dialog);
+    nameEdit->setText(currentName);
+    form->addRow(tr("Alias:"), nameEdit);
+
+   
+    QWidget *colorWidget = new QWidget(&dialog);
+    QHBoxLayout *colorLayout = new QHBoxLayout(colorWidget);
+    colorLayout->setContentsMargins(0, 0, 0, 0);
+
+    QPushButton *colorButton = new QPushButton(tr("Elegir color"), colorWidget);
+    QFrame *colorPreview = new QFrame(colorWidget);
+    colorPreview->setFrameShape(QFrame::Box);
+    colorPreview->setMinimumSize(40, 20);
+    colorPreview->setAutoFillBackground(true);
+
+    auto updatePreview = [&](const QColor &c) {
+        QPalette pal = colorPreview->palette();
+        pal.setColor(QPalette::Window, c);
+        colorPreview->setPalette(pal);
+    };
+    updatePreview(currentColor);
+
+    colorLayout->addWidget(colorButton);
+    colorLayout->addWidget(colorPreview);
+    form->addRow(tr("Color:"), colorWidget);
+
+    QObject::connect(colorButton, &QPushButton::clicked, [&]() {
+        QColor chosen = QColorDialog::getColor(
+            currentColor,
+            &dialog,
+            tr("Seleccionar color para %1").arg(idString)
+        );
+        if (chosen.isValid()) {
+            currentColor = toPastel(chosen);
+            updatePreview(currentColor);
+        }
+    });
+
+    QLineEdit *commentEdit = nullptr;
+    if (isLinear) {
+        commentEdit = new QLineEdit(&dialog);
+        commentEdit->setText(currentComment);
+        form->addRow(tr("Comentario:"), commentEdit);
+    }
+
+    QDialogButtonBox *buttons =
+        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                             Qt::Horizontal, &dialog);
+    form->addRow(buttons);
+
+    QObject::connect(buttons, &QDialogButtonBox::accepted,
+                     &dialog, &QDialog::accept);
+    QObject::connect(buttons, &QDialogButtonBox::rejected,
+                     &dialog, &QDialog::reject);
+
+
+    if (dialog.exec() == QDialog::Accepted) {
+
+        QString newName = nameEdit->text().trimmed();
+
+        if (!newName.isEmpty()) {
+            model->updateAliasForIdString(idString, newName);
+        }
+
+        if (currentColor.isValid()) {
+            model->setMessageColorForIdString(idString, currentColor);
+        }
+
+        if (isLinear && commentEdit && msgId >= 0) {
+            QString newComment = commentEdit->text().trimmed();
+            model->setCommentForMessage(msgId, newComment);
+
+            QModelIndex first =
+                index.sibling(index.row(), BaseTraceViewModel::column_comment);
+            QModelIndex last =
+                index.sibling(index.row(), BaseTraceViewModel::column_comment);
+            emit model->dataChanged(first, last);
+        }
+    }
 }

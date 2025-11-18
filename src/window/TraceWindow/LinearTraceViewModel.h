@@ -40,12 +40,22 @@ public:
     virtual int rowCount(const QModelIndex &parent) const;
     virtual int columnCount(const QModelIndex &parent) const;
     virtual bool hasChildren(const QModelIndex &parent) const;
+    virtual bool setData(const QModelIndex &index,
+                         const QVariant &value,
+                         int role = Qt::EditRole) override;
+    const QHash<QString, QColor> &exportedColors() const { return _idColors; }
+    const QHash<QString, QString> &exportedAliases() const { return _idAliases; }
+   QString exportedComment(int idx) const { return _perMessageComment.value(idx); }
+
 
 private slots:
     void beforeAppend(int num_messages);
     void afterAppend();
     void beforeClear();
     void afterClear();
+
+protected:
+    virtual QVariant data(const QModelIndex &index, int role) const override;
 
 private:
     virtual QVariant data_DisplayRole(const QModelIndex &index, int role) const;

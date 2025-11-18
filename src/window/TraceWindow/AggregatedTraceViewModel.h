@@ -63,6 +63,7 @@ private:
 protected:
     virtual QVariant data_DisplayRole(const QModelIndex &index, int role) const;
     virtual QVariant data_TextColorRole(const QModelIndex &index, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role) const override;
 
 private slots:
     void createItem(const CanMessage &msg);

@@ -1,3 +1,4 @@
+
 # CANgaroo
 An open source can bus analyzer with support for transmit/receive of standard and FD frames and DBC decoding of incoming frames
 
@@ -19,6 +20,7 @@ Further development by:
 * Ethan Zonca <e@ethanzonca.com>
 * WeAct Studio
 * Schildkroet (https://github.com/Schildkroet/CANgaroo)
+* Wikilift (https://github.com/wikilift/CANgaroo)
 
 
 ## Building on Linux
@@ -44,6 +46,41 @@ Further development by:
   for a normal release build, these are: Qt5Core.dll Qt5Gui.dll Qt5Widgets.dll Qt5Xml.dll
 
 ## Changelog
+
+### v0.3.1 (2025-02)
+This release introduces major improvements to the trace window, user interface, 
+and import/export capabilities. 
+
+#### New: Full trace import/export (.ctrace)
+* Added new JSON-based file format `.ctrace`.
+* Export now includes:
+  - timestamps  
+  - raw ID, ID string, DLC and payload  
+  - RX/TX direction  
+  - per-message comments  
+  - per-ID colors  
+  - per-ID aliases
+* Import fully reconstructs the trace model, restoring all colors, aliases and comments.
+
+#### New: Per-message comments
+* Added editable comments in Linear Trace View (separate for each message).
+* Comments are persisted in `.ctrace`.
+
+#### New: ID aliases
+* Aliases may now be assigned to CAN IDs.
+* Quoted in the UI and exported/imported in `.ctrace`.
+
+#### New: ID color assignment
+* Color assignation per ID.
+* Custom color override via color picker.
+* Colors persisted in `.ctrace`.
+
+#### New: Add language options menú and Spanish translate
+* Added `i18n_es_ES`
+* Full UI retranslation on `LanguageChange`.
+* Menu entry for language selection.
+
+
 ### v0.3.0
 * Migrate to Qt6
 * Added GrIP driver
@@ -94,7 +131,6 @@ Further development by:
 ### v0.1 released 2016-01-10
 initial release \o/
 
-
 ## TODO
 
 ### backend
@@ -109,12 +145,13 @@ initial release \o/
 * windows vector driver
 
 ### import / export
-* export to other file formats (e.g. Vector ASC, BLF, MDF)
-* import CAN-Traces
+* export to other file formats (e.g. Vector ASC, BLF, MDF)    (no changes)
+* import CAN-Traces    ✔ done in v0.3.1: full .ctrace import/export with colors, comments and aliases
 
 ### general ui
 * give some style to dock windows
 * load/save docks from/to config
+* ✔ done in v0.3.1: runtime language switching (new menu, .qm loader)
 
 ### log window
 * filter log messages by level
@@ -123,10 +160,12 @@ initial release \o/
 * display #warnings, #passive, #busoff, #restarts of socketcan devices
 
 ### trace window
-* assign colors to can interfaces / messages
+* assign colors to can interfaces / messages    ✔ done in v0.3.1: posible asignation colors by id 
 * limit displayed number of messages
 * show error frames and other non-message frames
 * sort signals by startbit, name or position in candb
+* ✔ done in v0.3.1: per-message comments + persistence
+* ✔ done in v0.3.1: per-ID aliases + persistence
 
 ### CanDB based generator
 * generate can messages from candbs
@@ -143,8 +182,7 @@ initial release \o/
 * allow for graphing of interface stats, message stats and signals
 
 ### packaging / deployment
-* provide clean debian package
+* provide clean debian package   ✔ done in v0.3.1: go to releases
 * Flatpak
 * provide static linked binary
 * add windows installer
-

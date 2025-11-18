@@ -25,8 +25,9 @@
 #include "TraceViewTypes.h"
 #include "TraceFilterModel.h"
 
-namespace Ui {
-class TraceWindow;
+namespace Ui
+{
+    class TraceWindow;
 }
 class Backend;
 class QDomDocument;
@@ -35,13 +36,13 @@ class QSortFilterProxyModel;
 class LinearTraceViewModel;
 class AggregatedTraceViewModel;
 
-
 class TraceWindow : public ConfigurableWidget
 {
     Q_OBJECT
 
 public:
-    typedef enum mode {
+    typedef enum mode
+    {
         mode_linear,
         mode_aggregated
     } mode_t;
@@ -55,9 +56,10 @@ public:
 
     virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
     virtual bool loadXML(Backend &backend, QDomElement &el);
+    LinearTraceViewModel *linearModel() const { return _linearTraceViewModel; }
 
 public slots:
-    void rowsInserted(const QModelIndex & parent, int first, int last);
+    void rowsInserted(const QModelIndex &parent, int first, int last);
 
 private slots:
     void on_cbAggregated_stateChanged(int i);
@@ -67,6 +69,7 @@ private slots:
     void on_cbFilterChanged(void);
 
     void on_cbTraceClearpushButton(void);
+    void onTraceRowDoubleClicked(const QModelIndex &index);
 
 private:
     Ui::TraceWindow *ui;
@@ -75,8 +78,8 @@ private:
     bool _doAutoScroll;
     timestamp_mode_t _timestampMode;
 
-    TraceFilterModel * _aggFilteredModel;
-    TraceFilterModel * _linFilteredModel;
+    TraceFilterModel *_aggFilteredModel;
+    TraceFilterModel *_linFilteredModel;
     LinearTraceViewModel *_linearTraceViewModel;
     AggregatedTraceViewModel *_aggregatedTraceViewModel;
     QSortFilterProxyModel *_aggregatedProxyModel;

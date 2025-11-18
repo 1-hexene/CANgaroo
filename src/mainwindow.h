@@ -24,6 +24,7 @@
 #include <QMainWindow>
 #include <QList>
 #include <core/Backend.h>
+#include <QTranslator>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -33,6 +34,7 @@ class QMdiSubWindow;
 class QWidget;
 class QSignalMapper;
 class QDomElement;
+class QActionGroup;
 QT_END_NAMESPACE
 
 namespace Ui {
@@ -52,6 +54,7 @@ public:
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    virtual void changeEvent(QEvent *event) override;
 
 public slots:
     QMainWindow *createTraceWindow(QString title=QString());
@@ -79,6 +82,10 @@ private slots:
     void on_action_TraceClear_triggered();
     void on_actionCan_Status_View_triggered();
     void on_actionGenerator_View_triggered();
+
+    void switchLanguage(QAction *action);
+    void exportFullTrace();
+    void importFullTrace();
 
 private:
     Ui::MainWindow *ui;
@@ -111,4 +118,10 @@ private:
     void setWorkspaceModified(bool modified);
     int askSaveBecauseWorkspaceModified();
 
+  
+    void createLanguageMenu();
+    QTranslator m_translator;
+    QMenu *m_languageMenu;
+    QActionGroup *m_languageActionGroup;
+   
 };
