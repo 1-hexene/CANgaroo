@@ -263,7 +263,7 @@
     <message>
         <location filename="../driver/GenericCanSetupPage.ui" line="245"/>
         <source>Auto-Restart on bus off condition</source>
-        <translation>Reinicio automático en condición "Bus Off"</translation>
+        <translation>Reinicio automático en condición &quot;Bus Off&quot;</translation>
     </message>
     <message>
         <location filename="../driver/GenericCanSetupPage.ui" line="252"/>
@@ -371,7 +371,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="17"/>
-        <location filename="../mainwindow.cpp" line="686"/>
+        <location filename="../mainwindow.cpp" line="685"/>
         <source>CANgaroo</source>
         <translation>CANgaroo</translation>
     </message>
@@ -547,123 +547,128 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="261"/>
-        <location filename="../mainwindow.cpp" line="476"/>
+        <location filename="../mainwindow.cpp" line="478"/>
         <source>Transmit View</source>
         <translation>Vista de Transmisión</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="266"/>
-        <location filename="../mainwindow.cpp" line="512"/>
+        <location filename="../mainwindow.cpp" line="514"/>
         <source>Generator View</source>
         <translation>Vista de Generador</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="340"/>
+        <location filename="../mainwindow.cpp" line="342"/>
         <source>Open workspace configuration</source>
         <translation>Abrir configuración del espacio de trabajo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="340"/>
-        <location filename="../mainwindow.cpp" line="362"/>
+        <location filename="../mainwindow.cpp" line="342"/>
+        <location filename="../mainwindow.cpp" line="364"/>
         <source>Workspace config files (*.cangaroo)</source>
         <translation>Archivos de configuración de espacio de trabajo (*.cangaroo)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="362"/>
+        <location filename="../mainwindow.cpp" line="364"/>
         <source>Save workspace configuration</source>
         <translation>Guardar configuración del espacio de trabajo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="395"/>
+        <location filename="../mainwindow.cpp" line="397"/>
         <source>The current workspace has been modified.</source>
         <translation>El espacio de trabajo actual ha sido modificado.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="396"/>
+        <location filename="../mainwindow.cpp" line="398"/>
         <source>Do you want to save your changes?</source>
         <translation>¿Desea guardar los cambios?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="427"/>
+        <location filename="../mainwindow.cpp" line="429"/>
         <source>Trace</source>
         <translation>Traza</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="450"/>
-        <location filename="../mainwindow.cpp" line="465"/>
+        <location filename="../mainwindow.cpp" line="452"/>
+        <location filename="../mainwindow.cpp" line="467"/>
         <source>Graph</source>
         <translation>Gráfico</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="488"/>
+        <location filename="../mainwindow.cpp" line="490"/>
         <source>Log</source>
         <translation>Registro</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="500"/>
+        <location filename="../mainwindow.cpp" line="502"/>
         <source>CAN Status</source>
         <translation>Estado CAN</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="554"/>
+        <location filename="../mainwindow.cpp" line="556"/>
         <source>About CANgaroo</source>
         <translation>Acerca de CANgaroo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="689"/>
-        <location filename="../mainwindow.cpp" line="697"/>
+        <location filename="../mainwindow.cpp" line="688"/>
+        <location filename="../mainwindow.cpp" line="696"/>
         <source>&amp;Language</source>
         <translation>&amp;Idioma</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="703"/>
+        <location filename="../mainwindow.cpp" line="702"/>
         <source>English</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="710"/>
+        <location filename="../mainwindow.cpp" line="709"/>
         <source>Español</source>
         <translation>Español</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="81"/>
-        <location filename="../mainwindow.cpp" line="728"/>
+        <location filename="../mainwindow.cpp" line="83"/>
+        <location filename="../mainwindow.cpp" line="736"/>
         <source>Export full trace</source>
         <translation>Exportar traza completa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="720"/>
-        <location filename="../mainwindow.cpp" line="783"/>
+        <location filename="../mainwindow.cpp" line="715"/>
+        <source>Chinese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="727"/>
+        <location filename="../mainwindow.cpp" line="797"/>
         <source>No Trace window active</source>
         <translation>No hay ventana de Traza activa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="730"/>
-        <location filename="../mainwindow.cpp" line="793"/>
+        <location filename="../mainwindow.cpp" line="738"/>
+        <location filename="../mainwindow.cpp" line="808"/>
         <source>CANgaroo Trace (*.ctrace)</source>
         <translation>Traza de CANgaroo (*.ctrace)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="720"/>
-        <location filename="../mainwindow.cpp" line="738"/>
-        <location filename="../mainwindow.cpp" line="783"/>
-        <location filename="../mainwindow.cpp" line="800"/>
+        <location filename="../mainwindow.cpp" line="727"/>
+        <location filename="../mainwindow.cpp" line="747"/>
+        <location filename="../mainwindow.cpp" line="797"/>
+        <location filename="../mainwindow.cpp" line="816"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="738"/>
+        <location filename="../mainwindow.cpp" line="747"/>
         <source>Cannot write file</source>
         <translation>No se puede escribir el archivo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="84"/>
-        <location filename="../mainwindow.cpp" line="791"/>
+        <location filename="../mainwindow.cpp" line="86"/>
+        <location filename="../mainwindow.cpp" line="806"/>
         <source>Import full trace</source>
         <translation>Importar traza completa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="800"/>
+        <location filename="../mainwindow.cpp" line="816"/>
         <source>Cannot read file</source>
         <translation>No se puede leer el archivo</translation>
     </message>
@@ -1112,54 +1117,74 @@
         <translation>Filtro: </translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="92"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="90"/>
         <source>Absolute</source>
         <translation>Absoluto</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="93"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="91"/>
         <source>Relative</source>
         <translation>Relativo</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="94"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="92"/>
         <source>Delta</source>
         <translation>Delta</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="436"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="450"/>
+        <source>Edit alias, color and comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="451"/>
+        <source>Choose alias and color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="463"/>
+        <source>Choose color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="486"/>
+        <source>Select color for %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="498"/>
+        <source>Comment:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Editar alias, color y comentario</source>
-        <translation>Editar alias, color y comentario</translation>
+        <translation type="vanished">Editar alias, color y comentario</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="437"/>
         <source>Editar alias y color</source>
-        <translation>Editar alias y color</translation>
+        <translation type="vanished">Editar alias y color</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="444"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="457"/>
         <source>Alias:</source>
         <translation>Alias:</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="451"/>
         <source>Elegir color</source>
-        <translation>Elegir color</translation>
+        <translation type="vanished">Elegir color</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="466"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="479"/>
         <source>Color:</source>
         <translation>Color:</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="472"/>
         <source>Seleccionar color para %1</source>
-        <translation>Seleccionar color para %1</translation>
+        <translation type="vanished">Seleccionar color para %1</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="484"/>
         <source>Comentario:</source>
-        <translation>Comentario:</translation>
+        <translation type="vanished">Comentario:</translation>
     </message>
 </context>
 <context>

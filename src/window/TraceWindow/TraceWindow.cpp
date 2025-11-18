@@ -428,7 +428,7 @@ void TraceWindow::onTraceRowDoubleClicked(const QModelIndex &index)
 
     QColor currentColor = model->messageColorForIdString(idString);
     if (!currentColor.isValid())
-        currentColor = Qt::black;
+        currentColor = QColor(208, 208, 208);
 
     QString currentComment;
     int msgId = -1;
@@ -447,8 +447,8 @@ void TraceWindow::onTraceRowDoubleClicked(const QModelIndex &index)
 
     QDialog dialog(this);
     dialog.setWindowTitle(isLinear
-                              ? tr("Editar alias, color y comentario")
-                              : tr("Editar alias y color"));
+                              ? tr("Edit alias, color and comment")
+                              : tr("Choose alias and color"));
 
     QFormLayout *form = new QFormLayout(&dialog);
 
@@ -460,7 +460,7 @@ void TraceWindow::onTraceRowDoubleClicked(const QModelIndex &index)
     QHBoxLayout *colorLayout = new QHBoxLayout(colorWidget);
     colorLayout->setContentsMargins(0, 0, 0, 0);
 
-    QPushButton *colorButton = new QPushButton(tr("Elegir color"), colorWidget);
+    QPushButton *colorButton = new QPushButton(tr("Choose color"), colorWidget);
     QFrame *colorPreview = new QFrame(colorWidget);
     colorPreview->setFrameShape(QFrame::Box);
     colorPreview->setMinimumSize(40, 20);
@@ -483,7 +483,7 @@ void TraceWindow::onTraceRowDoubleClicked(const QModelIndex &index)
         QColor chosen = QColorDialog::getColor(
             currentColor,
             &dialog,
-            tr("Seleccionar color para %1").arg(idString));
+            tr("Select color for %1").arg(idString));
 
         if (chosen.isValid()) {
             currentColor = toPastel(chosen);
@@ -495,7 +495,7 @@ void TraceWindow::onTraceRowDoubleClicked(const QModelIndex &index)
     {
         commentEdit = new QLineEdit(&dialog);
         commentEdit->setText(currentComment);
-        form->addRow(tr("Comentario:"), commentEdit);
+        form->addRow(tr("Comment:"), commentEdit);
     }
 
     QDialogButtonBox *buttons =
@@ -528,3 +528,6 @@ void TraceWindow::onTraceRowDoubleClicked(const QModelIndex &index)
         }
     }
 }
+
+
+

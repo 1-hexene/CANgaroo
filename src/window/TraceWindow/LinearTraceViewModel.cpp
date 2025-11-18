@@ -58,7 +58,7 @@ int LinearTraceViewModel::rowCount(const QModelIndex &parent) const
         quintptr id = parent.internalId();
         if (id & 0x80000000) { // node of a message
             return 0;
-        } else { // a message
+        } else { 
             const CanMessage *msg = trace()->getMessage(id-1);
             if (msg) {
                 CanDbMessage *dbmsg = backend()->findDbMessage(*msg);
