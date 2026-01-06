@@ -562,7 +562,7 @@ void MainWindow::showAboutDialog()
                        "(c)2015-2017 Hubert Denkmair\n"
                        "(c)2018-2022 Ethan Zonca\n"
                        "(c)2024 WeAct Studio\n"
-                       "(c)2024 Schildkroet\n"
+                       "(c)2024-2026 Schildkroet\n"
                        "(c)2025 Wikilift");
 }
 
@@ -653,6 +653,7 @@ void MainWindow::on_actionGenerator_View_triggered()
 {
     addTxGeneratorWidget();
 }
+
 void MainWindow::switchLanguage(QAction *action)
 {
     QString locale = action->data().toString();
@@ -661,7 +662,7 @@ void MainWindow::switchLanguage(QAction *action)
 
     if (locale == "en_US")
     {
-        m_translator.load("");
+        std::ignore = m_translator.load("");
     }
     else
     {
@@ -669,6 +670,7 @@ void MainWindow::switchLanguage(QAction *action)
         if (!m_translator.load(qmPath))
         {
             // todo: launch error
+            qDebug() << "Could not load translation: " << qmPath;
         }
     }
 
@@ -711,6 +713,12 @@ void MainWindow::createLanguageMenu()
     actionEs->setData("es_ES");
     m_languageMenu->addAction(actionEs);
     m_languageActionGroup->addAction(actionEs);
+
+    QAction *actionDe = new QAction(tr("Deutsch"), this);
+    actionDe->setCheckable(true);
+    actionDe->setData("de_DE");
+    m_languageMenu->addAction(actionDe);
+    m_languageActionGroup->addAction(actionDe);
 
     QAction *actionCN = new QAction(tr("Chinese"), this);
     actionCN->setCheckable(true);
