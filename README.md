@@ -24,9 +24,8 @@ Further development by:
 
 
 ## Building on Linux
-* to install all required packages in a vanilla ubuntu 24.04:
-  * sudo apt-get install build-essential git qt5-qmake qtbase5-dev libnl-3-dev libnl-route-3-dev cmake qt5-default libqt5serialport5 libqt5serialport5-dev libqt5charts5 libqt5charts5-dev
-  * sudo apt install build-essential git qt6-base-dev libnl-3-dev libnl-route-3-dev cmake libgl1-mesa-dev
+* Install all required packages in a vanilla Ubuntu 24.04 (Qt6):
+  * sudo apt install -y build-essential git cmake qt6-base-dev qt6-base-private-dev qt6-tools-dev libqt6serialport6-dev libqt6charts6-dev libnl-3-dev libnl-route-3-dev libgl1-mesa-dev
 * build with:
   * qmake6
   * make
