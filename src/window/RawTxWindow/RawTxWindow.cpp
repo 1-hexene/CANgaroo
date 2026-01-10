@@ -28,11 +28,13 @@
 #include <driver/CanInterface.h>
 #include <core/CanTrace.h>
 #include <QVBoxLayout>
+#include <QDateTime>
 
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QSpinBox>
 #include <QPushButton>
+
 
 RawTxWindow::RawTxWindow(QWidget *parent, Backend &backend) : ConfigurableWidget(parent),
                                                               ui(new Ui::RawTxWindow),
@@ -411,9 +413,13 @@ void RawTxWindow::repeatmsg_timer_timeout()
         log_error(_intf->getName() + " not Open!");
         return;
     }
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    _can_msg.setTimestamp(tv);
+
+    qint64 msec = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
+    _can_msg.setTimestamp({
+        static_cast<long>(msec / 1000),        // Sekunden
+        static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
+    });
+
     // qDebug() << "  Interface:" << _intf->getName() << "isOpen=" << _intf->isOpen();
     _intf->sendMessage(_can_msg);
     if (ui->checkBox_Display_TX->isChecked())
@@ -616,9 +622,11 @@ void RawTxWindow::reflash_can_msg()
     _can_msg.setRX(false);
     _can_msg.setShow(ui->checkBox_Display_TX->isChecked());
 
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    _can_msg.setTimestamp(tv);
+    qint64 msec = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
+    _can_msg.setTimestamp({
+        static_cast<long>(msec / 1000),        // Sekunden
+        static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
+    });
 }
 
 void RawTxWindow::sendRawMessage()

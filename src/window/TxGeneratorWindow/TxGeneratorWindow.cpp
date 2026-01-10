@@ -112,10 +112,12 @@ void TxGeneratorWindow::SendTimer_timeout()
                 if (t.msg.getInterfaceId() == 0 && intf)
                     t.msg.setInterfaceId(intf->getId());
 
-        
-                struct timeval tv;
-                gettimeofday(&tv, NULL);
-                t.msg.setTimestamp(tv);
+
+                qint64 msec = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
+                t.msg.setTimestamp({
+                    static_cast<long>(msec / 1000),        // Sekunden
+                    static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
+                });
 
             
                 t.msg.setRX(false);
