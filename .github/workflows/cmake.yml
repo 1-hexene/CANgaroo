@@ -1,4 +1,4 @@
-name: Build CANgaroo on Ubuntu
+name: Build CANgaroo
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "main", "master" ]
 
 jobs:
-  build:
+  build-ubuntu:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,3 +32,54 @@ jobs:
       with:
         name: CANgaroo-build
         path: bin/
+
+  build-windows-mingw:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Qt 6 (MinGW)
+      - name: Install Qt 6 (MinGW)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: 6.6.1
+          host: windows
+          target: desktop
+          arch: win64_mingw
+          modules: qtserialport qtcharts
+          cache: true
+
+      # qmake / mingw / windeployqt in PATH
+      - name: Add Qt tools to PATH
+        run: |
+          echo "${{ env.QT_INSTALL_DIR }}\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      # qmake
+      - name: qmake configure
+        run: |
+          qmake6 CANgaroo.pro CONFIG+=release
+
+      # Build
+      - name: Build with MinGW
+        run: |
+          mingw32-make -j2
+
+      # Deploy with windeployqt
+      - name: Run windeployqt
+        run: |
+          mkdir deploy
+          copy *.exe deploy\
+          windeployqt `
+            --release `
+            --compiler-runtime `
+            --no-translations `
+            deploy\CANgaroo.exe
+
+      # Upload artifact
+      - name: Upload deployed application
+        uses: actions/upload-artifact@v6
+        with:
+          name: CANgaroo-Windows-Qt6-MinGW
+          path: deploy/
