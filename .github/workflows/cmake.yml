@@ -55,20 +55,33 @@ jobs:
       - name: Add Qt and MinGW to PATH
         shell: pwsh
         run: |
-          # Qt bin
-          echo "${{ env.QT_INSTALL_DIR }}\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+          Write-Host "QT_ROOT_DIR=$env:QT_ROOT_DIR"
 
-          # MinGW bin (automatisch finden)
-          $mingw = Get-ChildItem "${{ env.QT_INSTALL_DIR }}\Tools" -Directory |
+          if (-not $env:QT_ROOT_DIR) {
+            Write-Error "QT_ROOT_DIR is not set"
+            exit 1
+          }
+
+          # Qt tools
+          "$env:QT_ROOT_DIR\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+          # MinGW toolchain
+          $mingw = Get-ChildItem "$env:QT_ROOT_DIR\Tools" -Directory |
                    Where-Object { $_.Name -like "mingw*" } |
                    Select-Object -First 1
 
           if (-not $mingw) {
-            Write-Error "MinGW directory not found"
+            Write-Error "MinGW toolchain not found under Qt Tools"
             exit 1
           }
 
-          echo "$($mingw.FullName)\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+          "$($mingw.FullName)\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Verify toolchain
+        run: |
+          where g++
+          g++ --version
+          qmake6 --version
 
       # qmake
       - name: qmake configure
