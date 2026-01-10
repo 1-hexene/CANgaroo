@@ -57,6 +57,6 @@ include($$PWD/driver/CANBlastDriver/CANBlastDriver.pri)
 include($$PWD/driver/SLCANDriver/SLCANDriver.pri)
 include($$PWD/driver/GrIPDriver/GrIPDriver.pri)
 
-win32:include($$PWD/driver/CandleApiDriver/CandleApiDriver.pri)
+#win32:include($$PWD/driver/CandleApiDriver/CandleApiDriver.pri)
 
 DISTFILES +=
