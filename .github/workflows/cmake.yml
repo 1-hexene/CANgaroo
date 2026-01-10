@@ -73,7 +73,7 @@ jobs:
 
           "$env:QT_ROOT_DIR\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
 
-      # Verifikation (optional, aber empfohlen)
+      # Verification
       - name: Verify toolchain
         run: |
           cl
@@ -84,26 +84,35 @@ jobs:
         run: |
           qmake6 CANgaroo.pro CONFIG+=release
 
-      # Build mit nmake
+      # Build
       - name: Build
         run: |
           nmake
 
-      # Deploy with windeployqt
-      - name: Run windeployqt
+      # windeployqt + ZIP
+      - name: Deploy and create ZIP
         shell: pwsh
         run: |
-          New-Item -ItemType Directory deploy | Out-Null
-          Copy-Item *.exe deploy\
+          $deployDir = "deploy"
+          $zipName = "CANgaroo-Windows-Qt6-MSVC.zip"
+
+          New-Item -ItemType Directory $deployDir | Out-Null
+          Copy-Item *.exe $deployDir\
 
           windeployqt `
             --release `
             --compiler-runtime `
-            deploy\CANgaroo.exe
+            --no-translations `
+            $deployDir\CANgaroo.exe
 
-      # Upload
-      - name: Upload deployed application
+          Compress-Archive `
+            -Path "$deployDir\*" `
+            -DestinationPath $zipName `
+            -Force
+
+      # ZIP hochladen
+      - name: Upload ZIP artifact
         uses: actions/upload-artifact@v4
         with:
           name: CANgaroo-Windows-Qt6-MSVC
-          path: deploy/
+          path: CANgaroo-Windows-Qt6-MSVC.zip
