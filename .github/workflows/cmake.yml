@@ -52,9 +52,23 @@ jobs:
           cache: true
 
       # qmake / mingw / windeployqt in PATH
-      - name: Add Qt tools to PATH
+      - name: Add Qt and MinGW to PATH
+        shell: pwsh
         run: |
-          echo "${{ env.QT_INSTALL_DIR }}\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          # Qt bin
+          echo "${{ env.QT_INSTALL_DIR }}\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+          # MinGW bin (automatisch finden)
+          $mingw = Get-ChildItem "${{ env.QT_INSTALL_DIR }}\Tools" -Directory |
+                   Where-Object { $_.Name -like "mingw*" } |
+                   Select-Object -First 1
+
+          if (-not $mingw) {
+            Write-Error "MinGW directory not found"
+            exit 1
+          }
+
+          echo "$($mingw.FullName)\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
 
       # qmake
       - name: qmake configure
