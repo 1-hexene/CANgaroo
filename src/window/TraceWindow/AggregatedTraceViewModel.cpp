@@ -225,9 +225,8 @@ QVariant AggregatedTraceViewModel::data(const QModelIndex &index, int role) cons
         if (!pastel.isValid())
             return QColor(255, 255, 255);
 
-        struct timeval now;
-        gettimeofday(&now, 0);
-        double diff = getTimeDiff(item->_lastmsg.getTimestamp(), now);
+        qint64 now_ms = QDateTime::currentMSecsSinceEpoch();
+        double diff = (now_ms - item->_lastmsg.getTimestamp_ms()) / 1000.0; // sec
 
         double factor = 1.0 - diff * 0.4;
         if (factor < 0.0)
@@ -264,6 +263,7 @@ QVariant AggregatedTraceViewModel::data(const QModelIndex &index, int role) cons
 
     return QVariant();
 }
+
 QVariant AggregatedTraceViewModel::data_DisplayRole(const QModelIndex &index, int role) const
 {
     AggregatedTraceViewItem *item = (AggregatedTraceViewItem *)index.internalPointer();
@@ -316,9 +316,11 @@ QVariant AggregatedTraceViewModel::data_TextColorRole(const QModelIndex &index, 
             return QColor(0, 0, 0);
         }
 
-        struct timeval now;
-        gettimeofday(&now, 0);
-        int gray = getTimeDiff(item->_lastmsg.getTimestamp(), now) * 100;
+        qint64 now_ms = QDateTime::currentMSecsSinceEpoch();
+        // Diff in secs
+        double diff_sec = (now_ms - item->_lastmsg.getTimestamp_ms()) / 1000.0;
+
+        int gray = diff_sec * 100;
         if (gray > 180)
             gray = 180;
         if (gray < 0)

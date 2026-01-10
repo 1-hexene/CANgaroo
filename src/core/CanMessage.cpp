@@ -37,7 +37,7 @@ CanMessage::CanMessage()
 {
     _timestamp.tv_sec = 0;
     _timestamp.tv_usec = 0;
-
+    _timestamp_ms = 0;
 }
 
 CanMessage::CanMessage(uint32_t can_id)
@@ -45,6 +45,7 @@ CanMessage::CanMessage(uint32_t can_id)
 {
     _timestamp.tv_sec = 0;
     _timestamp.tv_usec = 0;
+    _timestamp_ms = 0;
     setId(can_id);
 }
 
@@ -70,6 +71,7 @@ void CanMessage::cloneFrom(const CanMessage &msg)
 
     _interface = msg._interface;
     _timestamp = msg._timestamp;
+    _timestamp_ms = msg._timestamp_ms;
 }
 
 
@@ -319,6 +321,16 @@ void CanMessage::setData(const uint8_t d0, const uint8_t d1, const uint8_t d2,
 timeval CanMessage::getTimestamp() const
 {
     return _timestamp;
+}
+
+qint64 CanMessage::getTimestamp_ms() const
+{
+    return _timestamp_ms;
+}
+
+void CanMessage::setTimestamp(qint64 ms)
+{
+    _timestamp_ms = ms;
 }
 
 void CanMessage::setTimestamp(const timeval timestamp)

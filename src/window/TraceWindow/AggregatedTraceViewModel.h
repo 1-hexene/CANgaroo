@@ -24,7 +24,6 @@
 #include <QAbstractItemModel>
 #include <QMap>
 #include <QList>
-#include <sys/time.h>
 
 #include "BaseTraceViewModel.h"
 #include <core/CanMessage.h>

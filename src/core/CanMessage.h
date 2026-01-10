@@ -87,8 +87,11 @@ public:
 	void setData(const uint8_t d0, const uint8_t d1, const uint8_t d2, const uint8_t d3, const uint8_t d4, const uint8_t d5, const uint8_t d6, const uint8_t d7);
 
     struct timeval getTimestamp() const;
+    qint64 getTimestamp_ms() const;
+    void setTimestamp(qint64 ms);
     void setTimestamp(const struct timeval timestamp);
     void setTimestamp(const uint64_t seconds, const uint32_t micro_seconds);
+
 
     double getFloatTimestamp() const;
     QDateTime getDateTime() const;
@@ -111,6 +114,8 @@ private:
         uint32_t _u32[2*8];
         uint64_t _u64[8];
 	};
+
     struct timeval _timestamp;
+    qint64 _timestamp_ms;
 
 };
