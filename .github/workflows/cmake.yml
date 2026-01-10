@@ -33,54 +33,50 @@ jobs:
         name: CANgaroo-build
         path: bin/
 
-  build-windows-mingw:
+  build-windows:
     runs-on: windows-latest
+
+    env:
+      BUILD_TYPE: release
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Qt 6 (MinGW)
-      - name: Install Qt 6 (MinGW)
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Get all tags for correct version determination
+        working-directory:  ${{ github.workspace }}
+        run: |
+          git fetch --all --tags -f
+      
+      # Qt 6
+      - name: Install Qt 6
         uses: jurplel/install-qt-action@v4
         with:
           version: 6.6.1
           host: windows
           target: desktop
-          arch: win64_mingw
+          arch: win64_msvc2019_64
           modules: qtserialport qtcharts
           cache: true
 
-      # qmake / mingw / windeployqt in PATH
-      - name: Add Qt and MinGW to PATH
+     # Qt-Tools in PATH
+      - name: Add Qt to PATH
         shell: pwsh
         run: |
-          Write-Host "QT_ROOT_DIR=$env:QT_ROOT_DIR"
-
           if (-not $env:QT_ROOT_DIR) {
-            Write-Error "QT_ROOT_DIR is not set"
+            Write-Error "QT_ROOT_DIR not set"
             exit 1
           }
 
-          # Qt tools
           "$env:QT_ROOT_DIR\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
 
-          # MinGW toolchain
-          $mingw = Get-ChildItem "$env:QT_ROOT_DIR\Tools" -Directory |
-                   Where-Object { $_.Name -like "mingw*" } |
-                   Select-Object -First 1
-
-          if (-not $mingw) {
-            Write-Error "MinGW toolchain not found under Qt Tools"
-            exit 1
-          }
-
-          "$($mingw.FullName)\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
-
+      # Verifikation (optional, aber empfohlen)
       - name: Verify toolchain
         run: |
-          where g++
-          g++ --version
+          cl
           qmake6 --version
 
       # qmake
@@ -88,25 +84,26 @@ jobs:
         run: |
           qmake6 CANgaroo.pro CONFIG+=release
 
-      # Build
-      - name: Build with MinGW
+      # Build mit nmake
+      - name: Build
         run: |
-          mingw32-make -j2
+          nmake
 
       # Deploy with windeployqt
       - name: Run windeployqt
+        shell: pwsh
         run: |
-          mkdir deploy
-          copy *.exe deploy\
+          New-Item -ItemType Directory deploy | Out-Null
+          Copy-Item *.exe deploy\
+
           windeployqt `
             --release `
             --compiler-runtime `
-            --no-translations `
             deploy\CANgaroo.exe
 
-      # Upload artifact
+      # Upload
       - name: Upload deployed application
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
-          name: CANgaroo-Windows-Qt6-MinGW
+          name: CANgaroo-Windows-Qt6-MSVC
           path: deploy/
