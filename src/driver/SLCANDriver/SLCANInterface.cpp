@@ -957,9 +957,11 @@ bool SLCANInterface::readMessage(QList<CanMessage> &msglist, unsigned int timeou
 bool SLCANInterface::parseMessage(CanMessage &msg)
 {
     // Set timestamp to current time
-    struct timeval tv;
-    gettimeofday(&tv,NULL);
-    msg.setTimestamp(tv);
+    qint64 msec = QDateTime::currentMSecsSinceEpoch();
+    msg.setTimestamp({
+        static_cast<long>(msec / 1000),        // Sekunden
+        static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
+    });
 
     // Defaults
     msg.setErrorFrame(0);

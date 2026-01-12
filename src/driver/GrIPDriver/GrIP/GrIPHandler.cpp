@@ -358,13 +358,15 @@ void GrIPHandler::ProcessData(GrIP_Packet_t &packet)
             uint8_t data[8] = {};
             memcpy(data, &packet.Data[12], dlc);
 
-            struct timeval tv;
-            gettimeofday(&tv,NULL);
+            qint64 msec = QDateTime::currentMSecsSinceEpoch();
 
             CanMessage msg(id);
             msg.setLength(dlc);
             msg.setRX(true);
-            msg.setTimestamp(tv);
+            msg.setTimestamp({
+                static_cast<long>(msec / 1000),        // Sekunden
+                static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
+            });
 
             if(flags & CAN_FLAGS_EXT_ID)
             {

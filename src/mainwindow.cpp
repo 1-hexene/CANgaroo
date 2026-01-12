@@ -90,7 +90,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #if defined(__linux__)
     Backend::instance().addCanDriver(*(new SocketCanDriver(Backend::instance())));
 #else
-    //Backend::instance().addCanDriver(*(new CandleApiDriver(Backend::instance())));
+    Backend::instance().addCanDriver(*(new CandleApiDriver(Backend::instance())));
 #endif
     Backend::instance().addCanDriver(*(new SLCANDriver(Backend::instance())));
     Backend::instance().addCanDriver(*(new GrIPDriver(Backend::instance())));
