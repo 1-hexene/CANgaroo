@@ -34,85 +34,121 @@ jobs:
         path: bin/
 
   build-windows:
+    name: Build CANgaroo (Windows / MinGW / Qt6)
     runs-on: windows-latest
 
-    env:
-      BUILD_TYPE: release
+    defaults:
+      run:
+        shell: msys2 {0}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Setup MSVC
-        uses: ilammy/msvc-dev-cmd@v1
-
-      - name: Get all tags for correct version determination
-        working-directory:  ${{ github.workspace }}
-        run: |
-          git fetch --all --tags -f
-      
-      # Qt 6
-      - name: Install Qt 6
-        uses: jurplel/install-qt-action@v4
+      - name: Setup MSYS2 (without install)
+        uses: msys2/setup-msys2@v2
         with:
-          version: 6.6.1
-          host: windows
-          target: desktop
-          arch: win64_msvc2019_64
-          modules: qtserialport qtcharts
-          cache: true
+          msystem: MINGW64
+          update: true
 
-     # Qt-Tools in PATH
-      - name: Add Qt to PATH
-        shell: pwsh
+      - name: Cache MinGW and MSYS2 packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            C:/msys64/mingw64
+            C:/msys64/var/cache/pacman/pkg
+          key: >
+            msys2-mingw64-qt6-${{ runner.os }}-${{ hashFiles('.github/workflows/cmake.yml') }}
+          restore-keys: |
+            msys2-mingw64-qt6-${{ runner.os }}-
+
+      - name: Install MinGW + Qt6 (cached)
         run: |
-          if (-not $env:QT_ROOT_DIR) {
-            Write-Error "QT_ROOT_DIR not set"
-            exit 1
-          }
+          pacman -S --needed --noconfirm \
+            mingw-w64-x86_64-toolchain \
+            mingw-w64-x86_64-qt6 \
+            mingw-w64-x86_64-qt6-tools \
+            mingw-w64-x86_64-make \
+            mingw-w64-x86_64-ntldd \
+            git
 
-          "$env:QT_ROOT_DIR\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
-
-      # Verification
-      - name: Verify toolchain
+      - name: Verify Qt6 installation
         run: |
-          cl
           qmake6 --version
+          which qmake6
 
-      # qmake
-      - name: qmake configure
+      - name: Configure build (Qt6 qmake)
         run: |
-          qmake6 CANgaroo.pro CONFIG+=release
+          qmake6 CONFIG+=release
 
-      # Build
       - name: Build
         run: |
-          nmake
+          mingw32-make -j$(nproc)
 
-      # windeployqt + ZIP
-      - name: Deploy and create ZIP
-        shell: pwsh
+      - name: List build output
         run: |
-          $deployDir = "deploy"
-          $zipName = "CANgaroo-Windows-Qt6-MSVC.zip"
+          echo "==== Project root ===="
+          ls -lah
 
-          New-Item -ItemType Directory $deployDir | Out-Null
-          Copy-Item *.exe $deployDir\
+          echo "==== Executables ===="
+          find . -maxdepth 2 -name "*.exe" -type f -print
 
-          windeployqt `
-            --release `
-            --compiler-runtime `
-            --no-translations `
-            $deployDir\CANgaroo.exe
+      - name: Prepare distribution directory
+        run: |
+          mkdir -p dist
+          cp ./bin/*.exe dist/
 
-          Compress-Archive `
-            -Path "$deployDir\*" `
-            -DestinationPath $zipName `
-            -Force
+      - name: Deploy Qt6 runtime (windeployqt)
+        run: |
+          EXE=$(ls dist/*.exe | head -n 1)
+          windeployqt6 \
+            --release \
+            --no-system-d3d-compiler \
+            "$EXE"
 
-      # ZIP hochladen
-      - name: Upload ZIP artifact
+      - name: Add MinGW runtime DLLs
+        run: |
+          cp /mingw64/bin/libgcc_s_seh-1.dll dist/
+          cp /mingw64/bin/libstdc++-6.dll dist/
+          cp /mingw64/bin/libwinpthread-1.dll dist/
+          cp /mingw64/bin/libmd4c.dll dist/
+          cp /mingw64/bin/libharfbuzz-0.dll dist/
+          cp /mingw64/bin/libfreetype-6.dll dist/
+          cp /mingw64/bin/libpng16-16.dll dist/
+          cp /mingw64/bin/zlib1.dll dist/
+          cp /mingw64/bin/libdouble-conversion.dll dist/
+          cp /mingw64/bin/libb2-1.dll dist/
+          cp /mingw64/bin/libicuin78.dll dist/
+          cp /mingw64/bin/libbrotlidec.dll dist/
+          cp /mingw64/bin/libzstd.dll dist/
+          cp /mingw64/bin/libicuuc78.dll dist/
+          cp /mingw64/bin/libpcre2-16-0.dll dist/
+
+      - name: Deploy MinGW runtime dependencies
+        run: |
+          EXE=$(ls dist/*.exe | head -n 1)
+
+          echo "Resolving MinGW runtime dependencies for $EXE"
+
+          ntldd -R "$EXE" \
+            | grep mingw64 \
+            | awk '{print $3}' \
+            | sort -u \
+            | while IFS= read -r file; do
+              # Convert Windows path to Linux path
+              linux_path=$(echo "$file" | sed -E 's|([A-Za-z]):\\|/\L\1/|; s|\\|/|g')
+    
+              echo "Copying $linux_path"
+              cp "$linux_path" dist/ || echo "Skipped $linux_path"
+              done
+
+      - name: Verify missing DLLs
+        run: |
+          EXE=$(ls dist/*.exe | head -n 1)
+          ntldd "$EXE" || true
+
+      - name: Upload Windows Qt6 binaries
         uses: actions/upload-artifact@v4
         with:
-          name: CANgaroo-Windows-Qt6-MSVC
-          path: CANgaroo-Windows-Qt6-MSVC.zip
+          name: CANgaroo-Windows-MinGW-Qt6
+          path: dist/*
