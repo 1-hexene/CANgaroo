@@ -55,10 +55,11 @@ bool SLCANDriver::update()
         // fprintf(stderr, "Name : %s \r\n",  info.portName().toStdString().c_str());
         // fprintf(stderr, "   Description : %s \r\n", info.description().toStdString().c_str());
         // fprintf(stderr, "   Manufacturer: %s \r\n", info.manufacturer().toStdString().c_str());
+        std::cout << "[" << std::hex << info.vendorIdentifier() << ":" << std::hex << info.productIdentifier() << "]";
 
         if(info.vendorIdentifier() == 0xad50 && info.productIdentifier() == 0x60C4)
         {
-            std::cout << "   ++ CANable 1.0 or similar ST USB CDC device detected" << std::endl;
+            std::cout << " CANable 1.0 or similar ST USB CDC device detected" << std::endl;
 
             // Create new slcan interface without FD support
             _manufacturer = SLCANInterface::CANable;
@@ -67,7 +68,7 @@ bool SLCANDriver::update()
         }
         else if(info.vendorIdentifier() == 0x0403 && info.productIdentifier() == 0x6015)
         {
-            std::cout << "   ++ CANable 1.0 or similar ST USB CDC device detected" << std::endl;
+            std::cout << " CANable 1.0 or similar ST USB CDC device detected" << std::endl;
 
             // Create new slcan interface without FD support
             _manufacturer = SLCANInterface::CANable;
@@ -76,7 +77,7 @@ bool SLCANDriver::update()
         }
         else if(info.vendorIdentifier() == 0x16D0 && info.productIdentifier() == 0x117E)
         {
-            std::cout << "   ++ CANable 2.0 detected" << std::endl;
+            std::cout << " CANable 2.0 detected" << std::endl;
 
             _manufacturer = SLCANInterface::CANable;
             // Create new slcan interface with FD support
@@ -85,8 +86,8 @@ bool SLCANDriver::update()
         }
         else if(info.vendorIdentifier() == 1155 && info.productIdentifier() == 22336 && info.serialNumber().startsWith("AAA"))
         {
-            std::cout << "   ++ WeAct Studio USB2CAN detected" << std::endl;
-            std::cout << "   ++ " << info.serialNumber().toStdString().c_str() << std::endl;
+            std::cout << " WeAct Studio USB2CAN detected" << std::endl;
+            std::cout << " " << info.serialNumber().toStdString().c_str() << std::endl;
 
             _manufacturer = SLCANInterface::WeActStudio;
             // Create new slcan interface with FD support
@@ -95,9 +96,7 @@ bool SLCANDriver::update()
         }
         else
         {
-            std::cout << "   !! This is not a SLCAN device!" << std::endl;
-            std::cout << "   vendorIdentifier = "<< info.vendorIdentifier() << std::endl;
-            std::cout << "   productIdentifier = "<< info.productIdentifier() << std::endl;
+            std::cout << " This is not a SLCAN device!" << std::endl;
         }
     }
 

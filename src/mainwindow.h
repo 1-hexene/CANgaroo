@@ -123,5 +123,7 @@ private:
     QTranslator m_translator;
     QMenu *m_languageMenu;
     QActionGroup *m_languageActionGroup;
+    QAction *actionExportFull;
+    QAction *actionImportFull;
    
 };

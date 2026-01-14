@@ -43,8 +43,8 @@ public:
     explicit TxGeneratorWindow(QWidget *parent, Backend &backend);
     ~TxGeneratorWindow();
 
-    virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
-    virtual bool loadXML(Backend &backend, QDomElement &el);
+    virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root) override;
+    virtual bool loadXML(Backend &backend, QDomElement &el) override;
 
     enum
     {

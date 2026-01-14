@@ -416,11 +416,12 @@ void RawTxWindow::repeatmsg_timer_timeout()
 
     qint64 msec = QDateTime::currentMSecsSinceEpoch();
     _can_msg.setTimestamp({
-        static_cast<long>(msec / 1000),        // Sekunden
-        static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
+        static_cast<long>(msec / 1000),         // Second
+        static_cast<long>((msec % 1000) * 1000) // Millisecond
     });
 
     // qDebug() << "  Interface:" << _intf->getName() << "isOpen=" << _intf->isOpen();
+    _can_msg.setInterfaceId(_intf->getId());
     _intf->sendMessage(_can_msg);
     if (ui->checkBox_Display_TX->isChecked())
     {
@@ -893,17 +894,17 @@ void RawTxWindow::setDialogMode(bool en)
         ui->checkBox_Display_TX->hide();
 
       
-        QRect byteGeom = ui->fieldByte0_0->geometry();
-        int spinY = byteGeom.y();         
-        int spinX = ui->spinBox_RepeatRate->geometry().x()-50;
+        //QRect byteGeom = ui->fieldByte0_0->geometry();
+        //int spinY = byteGeom.y();
+        //int spinX = ui->spinBox_RepeatRate->geometry().x()-50;
 
 
-        ui->spinBox_RepeatRate->setGeometry(spinX, spinY, 80, 24);
+        //ui->spinBox_RepeatRate->setGeometry(spinX, spinY, 80, 24);
         ui->spinBox_RepeatRate->show();
 
        
-        int msX = spinX + 85;
-        ui->label_11->setGeometry(msX, spinY, 31, 26);
+        //int msX = spinX + 85;
+        //ui->label_11->setGeometry(msX, spinY, 31, 26);
         ui->label_11->show();
 
     }
@@ -941,7 +942,7 @@ void RawTxWindow::setTaskEditMode(bool en)
             ui->label_12->hide();
 
         if (ui->label_11)
-            ui->label_11->setText("ms");
+            ui->label_11->setText(tr("ms"));
         if (ui->spinBox_RepeatRate)
             ui->spinBox_RepeatRate->show();
     }
@@ -985,5 +986,5 @@ int RawTxWindow::getPeriodMs() const
 
 void RawTxWindow::retranslateUi()
 {
-    ui->retranslateUi(this); // 更新 .ui 文件中定义的静态文字
+    ui->retranslateUi(this);
 }

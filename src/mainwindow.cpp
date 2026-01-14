@@ -80,10 +80,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutDialog()));
     QMenu *traceMenu = ui->menu_Trace;
 
-    QAction *actionExportFull = new QAction(tr("Export full trace"), this);
+    actionExportFull = new QAction(tr("Export full trace"), this);
     connect(actionExportFull, &QAction::triggered, this, &MainWindow::exportFullTrace);
     traceMenu->addAction(actionExportFull);
-    QAction *actionImportFull = new QAction(tr("Import full trace"), this);
+    actionImportFull = new QAction(tr("Import full trace"), this);
     connect(actionImportFull, &QAction::triggered, this, &MainWindow::importFullTrace);
     traceMenu->addAction(actionImportFull);
 
@@ -103,11 +103,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     _setupDlg = new SetupDialog(Backend::instance(), 0);
 
     _showSetupDialog_first = false;
-    qApp->installTranslator(&m_translator);
+
+    bool loaded = false;
+    QString sysLocale = QLocale::system().name();
+    QLocale locale;
+    if (sysLocale.startsWith("zh", Qt::CaseInsensitive)) {
+        loaded = m_translator.load(":/translations/i18n_zh_cn.qm");
+    } else if (sysLocale.startsWith("de", Qt::CaseInsensitive)) {
+        loaded = m_translator.load(":/translations/i18n_de_DE.qm");
+    } else if (sysLocale.startsWith("es", Qt::CaseInsensitive)) {
+        loaded = m_translator.load(":/translations/i18n_es_ES.qm");
+    }
     createLanguageMenu();
-    if (!m_languageActionGroup->actions().isEmpty())
-    {
-        m_languageActionGroup->actions().first()->trigger();
+    if (loaded) {
+        qApp->installTranslator(&m_translator);
+        // Update trace import/export Action menu
+        // because they are created separately
+        actionImportFull->setText(tr("Import full trace"));
+        actionExportFull->setText(tr("Export full trace"));
     }
 }
 
@@ -554,6 +567,7 @@ void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this,
                        tr("About CANgaroo"),
+                       tr(
                        "CANgaroo\n"
                        "Open Source CAN bus analyzer\n"
                        "\n"
@@ -563,7 +577,10 @@ void MainWindow::showAboutDialog()
                        "(c)2018-2022 Ethan Zonca\n"
                        "(c)2024 WeAct Studio\n"
                        "(c)2024-2026 Schildkroet\n"
-                       "(c)2025 Wikilift");
+                       "(c)2025 Wikilift\n"
+                       "(c)2026 Beijing Stellar Fleet Co., Ltd."
+                        )
+                       );
 }
 
 void MainWindow::startMeasurement()
@@ -675,6 +692,10 @@ void MainWindow::switchLanguage(QAction *action)
     }
 
     qApp->installTranslator(&m_translator);
+    // Update trace import/export Action menu
+    // because they are created separately
+    actionImportFull->setText(tr("Import full trace"));
+    actionExportFull->setText(tr("Export full trace"));
 }
 
 void MainWindow::changeEvent(QEvent *event)
@@ -701,30 +722,33 @@ void MainWindow::createLanguageMenu()
 
     connect(m_languageActionGroup, &QActionGroup::triggered, this, &MainWindow::switchLanguage);
 
-    QAction *actionEn = new QAction(tr("English"), this);
-    actionEn->setCheckable(true);
-    actionEn->setChecked(true);
-    actionEn->setData("en_US");
-    m_languageMenu->addAction(actionEn);
-    m_languageActionGroup->addAction(actionEn);
+    QString sysLocale = QLocale::system().name().toLower();
 
-    QAction *actionEs = new QAction(tr("Español"), this);
-    actionEs->setCheckable(true);
-    actionEs->setData("es_ES");
-    m_languageMenu->addAction(actionEs);
-    m_languageActionGroup->addAction(actionEs);
+    // std::function<QAction*(const QString&, const QString&)> addLang
+    auto addLang = [&](const QString &label, const QString &langCode) {
+        QAction *action = new QAction(label, this);
+        action->setCheckable(true);
+        action->setData(langCode);
 
-    QAction *actionDe = new QAction(tr("Deutsch"), this);
-    actionDe->setCheckable(true);
-    actionDe->setData("de_DE");
-    m_languageMenu->addAction(actionDe);
-    m_languageActionGroup->addAction(actionDe);
+        // Select if matches system language
+        if (sysLocale.contains(langCode.toLower())) {
+            action->setChecked(true);
+        }
 
-    QAction *actionCN = new QAction(tr("Chinese"), this);
-    actionCN->setCheckable(true);
-    actionCN->setData("zh_cn");
-    m_languageMenu->addAction(actionCN);
-    m_languageActionGroup->addAction(actionCN);
+        m_languageMenu->addAction(action);
+        m_languageActionGroup->addAction(action);
+        return action;
+    };
+
+    QAction *enAction = addLang(tr("English"), "en_US");
+    addLang(tr("Español"), "es_ES");
+    addLang(tr("Deutsch"), "de_DE");
+    addLang(tr("简体中文"), "zh_cn");
+
+    // No matches -> fallback to English
+    if (!m_languageActionGroup->checkedAction()) {
+        enAction->setChecked(true);
+    }
 }
 
 void MainWindow::exportFullTrace()
