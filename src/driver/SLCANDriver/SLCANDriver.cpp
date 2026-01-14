@@ -95,7 +95,9 @@ bool SLCANDriver::update()
         }
         else
         {
-            //std::cout << "   !! This is not a SLCAN device!" << std::endl;
+            std::cout << "   !! This is not a SLCAN device!" << std::endl;
+            std::cout << "   vendorIdentifier = "<< info.vendorIdentifier() << std::endl;
+            std::cout << "   productIdentifier = "<< info.productIdentifier() << std::endl;
         }
     }
 

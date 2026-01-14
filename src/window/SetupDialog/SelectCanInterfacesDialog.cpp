@@ -67,3 +67,16 @@ bool SelectCanInterfacesDialog::selectInterfaces(Backend &backend, CanInterfaceI
         return false;
     }
 }
+
+
+void SelectCanInterfacesDialog::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+        setWindowTitle(tr("Select CAN Interfaces"));
+
+        // 如果有 TreeWidget/TableWidget 的表头，需要像 CanStatusWindow 那样刷新
+        // ui->treeWidget->setHeaderLabels(QStringList() << tr("Interface") << tr("Description"));
+    }
+    QDialog::changeEvent(event);
+}

@@ -37,12 +37,7 @@ CanStatusWindow::CanStatusWindow(QWidget *parent, Backend &backend) :
     _timer(new QTimer(this))
 {
     ui->setupUi(this);
-    ui->treeWidget->setHeaderLabels(QStringList()
-                                    << tr("Driver") << tr("Interface") << tr("State")
-                                    << tr("Rx Frames") << tr("Rx Errors") << tr("Rx Overrun")
-                                    << tr("Tx Frames") << tr("Tx Errors") << tr("Tx Dropped")
-        // << "# Warning" << "# Passive" << "# Bus Off" << " #Restarts"
-    );
+    retranslateUi();
     // Driver width
     ui->treeWidget->setColumnWidth(0, 100);
     // Interface width
@@ -109,4 +104,23 @@ void CanStatusWindow::update()
 Backend &CanStatusWindow::backend()
 {
     return _backend;
+}
+
+
+void CanStatusWindow::retranslateUi() {
+    // A. 更新 .ui 文件中定义的控件
+    ui->retranslateUi(this);
+
+    // B. 手动更新代码中定义的表头（这是解决问题的关键）
+    ui->treeWidget->setHeaderLabels(QStringList()
+                                    << tr("Driver")
+                                    << tr("Interface")
+                                    << tr("State")
+                                    << tr("Rx Frames")
+                                    << tr("Rx Errors")
+                                    << tr("Rx Overrun")
+                                    << tr("Tx Frames")
+                                    << tr("Tx Errors")
+                                    << tr("Tx Dropped")
+                                    ); //
 }

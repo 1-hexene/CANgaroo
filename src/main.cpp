@@ -28,10 +28,25 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QTranslator translator;
+    QString sysLocale = QLocale::system().name();
     QLocale locale;
+    /*
     if( locale.language() == QLocale::Chinese )
     {
         translator.load(":/i18n_zh_cn.qm");
+        a.installTranslator(&translator);
+    }
+    */
+    bool loaded = false;
+    if (sysLocale.startsWith("zh", Qt::CaseInsensitive)) {
+        loaded = translator.load(":/translations/i18n_zh_cn.qm");
+    } else if (sysLocale.startsWith("de", Qt::CaseInsensitive)) {
+        loaded = translator.load(":/translations/i18n_de_DE.qm");
+    } else if (sysLocale.startsWith("es", Qt::CaseInsensitive)) {
+        loaded = translator.load(":/translations/i18n_es_ES.qm");
+    }
+
+    if (loaded) {
         a.installTranslator(&translator);
     }
 

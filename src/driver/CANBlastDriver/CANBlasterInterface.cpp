@@ -61,11 +61,11 @@ CANBlasterInterface::~CANBlasterInterface() {
 QString CANBlasterInterface::getDetailsStr() const {
     if(_config.supports_canfd)
     {
-        return "CANBlaster client with CANFD support";
+        return tr("CANBlaster client with CANFD support");
     }
     else
     {
-        return "CANBlaster client with standard CAN support";
+        return tr("CANBlaster client with standard CAN support");
     }
 }
 

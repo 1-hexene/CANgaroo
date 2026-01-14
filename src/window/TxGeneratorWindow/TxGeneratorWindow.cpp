@@ -200,8 +200,8 @@ void TxGeneratorWindow::on_btnAdd_released()
     QObject::connect(buttons, &QDialogButtonBox::accepted, &dlg, &QDialog::accept);
     QObject::connect(buttons, &QDialogButtonBox::rejected, &dlg, &QDialog::reject);
 
-    dlg.setLayout(layout);
-    dlg.adjustSize();
+    //dlg.setLayout(layout);
+    //dlg.adjustSize();
 
     if (dlg.exec() != QDialog::Accepted)
     {
@@ -294,4 +294,8 @@ void TxGeneratorWindow::on_btnDisable_released()
     ui->btnDisable->setEnabled(false);
 
     // qDebug() << "[TxGenerator] Disabled task" << index;
+}
+
+void TxGeneratorWindow::retranslateUi() {
+    ui->retranslateUi(this);
 }

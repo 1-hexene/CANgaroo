@@ -24,6 +24,9 @@ public slots:
     void onSetupDialogCreated(SetupDialog &dlg);
     void onShowInterfacePage(SetupDialog &dlg, MeasurementInterface *mi);
 
+protected:
+    void changeEvent(QEvent *event) override;
+
 private slots:
     void updateUI();
 

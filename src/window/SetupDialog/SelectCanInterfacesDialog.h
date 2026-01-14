@@ -42,6 +42,9 @@ public:
 
     bool selectInterfaces(Backend &backend, CanInterfaceIdList &selectedInterfaces, const CanInterfaceIdList &excludeInterfaces);
 
+protected:
+    void changeEvent(QEvent *event) override;
+
 private:
     Ui::SelectCanInterfacesDialog *ui;
 };

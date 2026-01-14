@@ -75,6 +75,8 @@ protected:
     };
     QList<TxTask> _tasks;
 
+    void retranslateUi() override;
+
 private:
     Ui::TxGeneratorWindow *ui;
     Backend &_backend;

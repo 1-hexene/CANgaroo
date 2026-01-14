@@ -345,3 +345,15 @@ bool SetupDialog::isReflashNetworks()
     return _isReflashNetworks;
 }
 
+
+void SetupDialog::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+        setWindowTitle(tr("Setup"));
+
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+        ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    }
+    QDialog::changeEvent(event);
+}

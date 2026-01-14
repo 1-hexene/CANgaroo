@@ -134,3 +134,7 @@ bool GraphWindow::loadXML(Backend &backend, QDomElement &el)
     if (!ConfigurableWidget::loadXML(backend, el)) { return false; }
     return true;
 }
+
+void GraphWindow::retranslateUi() {
+    ui->retranslateUi(this);
+}

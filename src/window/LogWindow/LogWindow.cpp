@@ -72,3 +72,7 @@ void LogWindow::_scroll_timer_timeout()
 {
     ui->treeView->scrollToBottom();
 }
+
+void LogWindow::retranslateUi() {
+    ui->retranslateUi(this);
+}

@@ -46,8 +46,8 @@ public:
     explicit RawTxWindow(QWidget *parent, Backend &backend);
     ~RawTxWindow();
 
-    virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
-    virtual bool loadXML(Backend &backend, QDomElement &el);
+    virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root) override;
+    virtual bool loadXML(Backend &backend, QDomElement &el) override;
     void setDialogMode(bool en);
     void getCurrentMessage(CanMessage &out);
     void setTaskEditMode(bool en);
@@ -55,6 +55,10 @@ public:
 
 public slots:
     void refreshInterfaces();
+
+protected:
+    void retranslateUi() override;
+
 private slots:
     void changeDLC();
     void updateCapabilities();

@@ -414,7 +414,7 @@ void RawTxWindow::repeatmsg_timer_timeout()
         return;
     }
 
-    qint64 msec = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
+    qint64 msec = QDateTime::currentMSecsSinceEpoch();
     _can_msg.setTimestamp({
         static_cast<long>(msec / 1000),        // Sekunden
         static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
@@ -622,7 +622,7 @@ void RawTxWindow::reflash_can_msg()
     _can_msg.setRX(false);
     _can_msg.setShow(ui->checkBox_Display_TX->isChecked());
 
-    qint64 msec = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
+    qint64 msec = QDateTime::currentMSecsSinceEpoch();
     _can_msg.setTimestamp({
         static_cast<long>(msec / 1000),        // Sekunden
         static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
@@ -980,4 +980,10 @@ void RawTxWindow::getCurrentMessage(CanMessage &out)
 int RawTxWindow::getPeriodMs() const
 {
     return ui->spinBox_RepeatRate->value();
+}
+
+
+void RawTxWindow::retranslateUi()
+{
+    ui->retranslateUi(this); // 更新 .ui 文件中定义的静态文字
 }

@@ -6,27 +6,42 @@
     <message>
         <location filename="../core/Backend.cpp" line="73"/>
         <source>Starting measurement</source>
-        <translation type="unfinished">开始测量</translation>
+        <translation>开始测量</translation>
     </message>
     <message>
         <location filename="../core/Backend.cpp" line="87"/>
         <source>Listening on interface: %1</source>
-        <translation type="unfinished">监听接口: %1</translation>
+        <translation>监听接口: %1</translation>
     </message>
     <message>
         <location filename="../core/Backend.cpp" line="108"/>
         <source>Closing interface: %1</source>
-        <translation type="unfinished">关闭接口: %1</translation>
+        <translation>关闭接口: %1</translation>
     </message>
     <message>
         <location filename="../core/Backend.cpp" line="115"/>
         <source>Measurement stopped</source>
-        <translation type="unfinished">测量停止</translation>
+        <translation>测量停止</translation>
     </message>
     <message>
         <location filename="../core/Backend.cpp" line="138"/>
         <source>Network </source>
-        <translation type="unfinished">网络 </translation>
+        <translation>网络 </translation>
+    </message>
+    <message>
+        <location filename="../core/Backend.cpp" line="199"/>
+        <source>Unable to get driver for interface id: %1. This should never happen.</source>
+        <translation>无法获取id为 %1 的接口的驱动。这不该发生。</translation>
+    </message>
+    <message>
+        <location filename="../core/Backend.cpp" line="213"/>
+        <source>No Interface</source>
+        <translation>没有接口</translation>
+    </message>
+    <message>
+        <location filename="../core/Backend.cpp" line="220"/>
+        <source>Trying to get name from unknown interface id: %1.</source>
+        <translation>正在尝试读取id为 %1 的未知接口的名称。</translation>
     </message>
 </context>
 <context>
@@ -34,47 +49,60 @@
     <message>
         <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="57"/>
         <source>Index</source>
-        <translation type="unfinished">序号</translation>
+        <translation>序号</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="59"/>
         <source>Timestamp</source>
-        <translation type="unfinished">时间戳</translation>
+        <translation>时间戳</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="61"/>
         <source>Channel</source>
-        <translation type="unfinished">通道</translation>
+        <translation>通道</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="63"/>
         <source>RX/TX</source>
-        <translation type="unfinished"></translation>
+        <translation>收/发</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="65"/>
         <source>Type</source>
-        <translation type="unfinished">类型</translation>
+        <translation>类型</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="69"/>
         <source>Sender</source>
-        <translation type="unfinished">报文名称</translation>
+        <translation>发送者</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="71"/>
         <source>Name</source>
-        <translation type="unfinished">报文内容</translation>
+        <translation>名称</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="75"/>
         <source>Data</source>
-        <translation type="unfinished">原始数据</translation>
+        <translation>原始数据</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/BaseTraceViewModel.cpp" line="77"/>
         <source>Comment</source>
-        <translation type="unfinished">注释</translation>
+        <translation>注释</translation>
+    </message>
+</context>
+<context>
+    <name>CANBlasterInterface</name>
+    <message>
+        <location filename="../driver/CANBlastDriver/CANBlasterInterface.cpp" line="64"/>
+        <source>CANBlaster client with CANFD support</source>
+        <translation>支持CANFD的CANBlaster客户端</translation>
+    </message>
+    <message>
+        <location filename="../driver/CANBlastDriver/CANBlasterInterface.cpp" line="68"/>
+        <source>CANBlaster client with standard CAN support</source>
+        <translation>支持标准CAN的CANBlaster客户端</translation>
     </message>
 </context>
 <context>
@@ -82,42 +110,42 @@
     <message>
         <location filename="../driver/CanInterface.cpp" line="83"/>
         <source>ready</source>
-        <translation type="unfinished">良好</translation>
+        <translation>就绪</translation>
     </message>
     <message>
         <location filename="../driver/CanInterface.cpp" line="84"/>
         <source>warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../driver/CanInterface.cpp" line="85"/>
         <source>error passive</source>
-        <translation type="unfinished">被动错误</translation>
+        <translation>被动错误</translation>
     </message>
     <message>
         <location filename="../driver/CanInterface.cpp" line="86"/>
         <source>bus off</source>
-        <translation type="unfinished">总线关闭</translation>
+        <translation>总线关闭</translation>
     </message>
     <message>
         <location filename="../driver/CanInterface.cpp" line="87"/>
         <source>stopped</source>
-        <translation type="unfinished">已停止</translation>
+        <translation>已停止</translation>
     </message>
     <message>
         <location filename="../driver/CanInterface.cpp" line="88"/>
         <source>unknown</source>
-        <translation type="unfinished">未知</translation>
+        <translation>未知</translation>
     </message>
     <message>
         <location filename="../driver/CanInterface.cpp" line="89"/>
         <source>tx success</source>
-        <translation type="unfinished">发送成功</translation>
+        <translation>发送成功</translation>
     </message>
     <message>
         <location filename="../driver/CanInterface.cpp" line="90"/>
         <source>tx fail</source>
-        <translation type="unfinished">发送失败</translation>
+        <translation>发送失败</translation>
     </message>
 </context>
 <context>
@@ -125,12 +153,12 @@
     <message>
         <location filename="../driver/CanListener.cpp" line="68"/>
         <source>interface: %1, Version: %2</source>
-        <translation type="unfinished">接口: %1, 版本: %2</translation>
+        <translation>接口: %1, 版本: %2</translation>
     </message>
     <message>
         <location filename="../driver/CanListener.cpp" line="81"/>
         <source>Error on interface: %1, Closed!!!</source>
-        <translation type="unfinished">接口错误: %1, 关闭!!!</translation>
+        <translation>接口错误: %1, 已关闭!!!</translation>
     </message>
 </context>
 <context>
@@ -138,52 +166,52 @@
     <message>
         <location filename="../window/CanStatusWindow/CanStatusWindow.ui" line="14"/>
         <source>Can Status</source>
-        <translation type="unfinished">CAN 状态</translation>
+        <translation>CAN 状态</translation>
     </message>
     <message>
-        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="41"/>
+        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="116"/>
         <source>Driver</source>
-        <translation type="unfinished">驱动</translation>
+        <translation>驱动</translation>
     </message>
     <message>
-        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="41"/>
+        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="117"/>
         <source>Interface</source>
-        <translation type="unfinished">接口</translation>
+        <translation>接口</translation>
     </message>
     <message>
-        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="41"/>
+        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="118"/>
         <source>State</source>
-        <translation type="unfinished">状态</translation>
+        <translation>状态</translation>
     </message>
     <message>
-        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="42"/>
+        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="119"/>
         <source>Rx Frames</source>
-        <translation type="unfinished">接收成功</translation>
+        <translation>接收帧数</translation>
     </message>
     <message>
-        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="42"/>
+        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="120"/>
         <source>Rx Errors</source>
-        <translation type="unfinished">接收错误</translation>
+        <translation>接收错误</translation>
     </message>
     <message>
-        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="42"/>
+        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="121"/>
         <source>Rx Overrun</source>
-        <translation type="unfinished">接收溢出</translation>
+        <translation>接收溢出</translation>
     </message>
     <message>
-        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="43"/>
+        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="122"/>
         <source>Tx Frames</source>
-        <translation type="unfinished">发送成功</translation>
+        <translation>发送帧数</translation>
     </message>
     <message>
-        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="43"/>
+        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="123"/>
         <source>Tx Errors</source>
-        <translation type="unfinished">发送错误</translation>
+        <translation>发送错误</translation>
     </message>
     <message>
-        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="43"/>
+        <location filename="../window/CanStatusWindow/CanStatusWindow.cpp" line="124"/>
         <source>Tx Dropped</source>
-        <translation type="unfinished">发送溢出</translation>
+        <translation>发送丢弃</translation>
     </message>
 </context>
 <context>
@@ -191,121 +219,129 @@
     <message>
         <location filename="../driver/GenericCanSetupPage.ui" line="19"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>窗体</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="31"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="37"/>
         <source>Driver:</source>
-        <translation type="unfinished">驱动：</translation>
+        <translation>驱动：</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="44"/>
-        <location filename="../driver/GenericCanSetupPage.ui" line="70"/>
-        <location filename="../driver/GenericCanSetupPage.ui" line="96"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="50"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="82"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="114"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>文本标签</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="57"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="69"/>
         <source>Interface:</source>
         <translation>接口：</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="83"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="101"/>
         <source>Interface Details:</source>
-        <translation type="unfinished">接口描述：</translation>
+        <translation>接口详情：</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="109"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="127"/>
         <source>Bitrate:</source>
-        <translation type="unfinished">波特率：</translation>
+        <translation>波特率：</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="132"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="150"/>
         <source>Sample Point:</source>
-        <translation type="unfinished">采样点：</translation>
+        <translation>采样点：</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="155"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="173"/>
         <source>Data Bitrate:</source>
-        <translation type="unfinished">数据段波特率：</translation>
+        <translation>数据段波特率：</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="178"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="196"/>
         <source>Data Sample Point:</source>
-        <translation type="unfinished">数据段采样点：</translation>
+        <translation>数据段采样点：</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="252"/>
-        <source>Custom Bitrate + Sample Point</source>
-        <translation type="unfinished">自定义波特率+采样点</translation>
+        <location filename="../driver/GenericCanSetupPage.ui" line="241"/>
+        <source>Configured by Operating System</source>
+        <translation>由操作系统设置</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="259"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="269"/>
+        <source>Auto-Restart on Bus-Off condition</source>
+        <translation>在总线关闭时自动重启设备</translation>
+    </message>
+    <message>
+        <location filename="../driver/GenericCanSetupPage.ui" line="276"/>
+        <source>Custom CAN Bitrate + Sample Point</source>
+        <translation>自定义CAN比特率和采样点</translation>
+    </message>
+    <message>
+        <location filename="../driver/GenericCanSetupPage.ui" line="283"/>
         <source>Custom CAN FD Data Bitrate + Sample Point</source>
-        <translation type="unfinished">自定义CANFD数据段波特率+采样点</translation>
+        <translation>自定义 CAN FD 数据段波特率 + 采样点</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="278"/>
-        <location filename="../driver/GenericCanSetupPage.ui" line="341"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="302"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="365"/>
         <source>HHHHHH</source>
-        <oldsource>HHHH</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="312"/>
-        <location filename="../driver/GenericCanSetupPage.ui" line="325"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="336"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="349"/>
         <source>Div+Seg1+Seg2 (Hex)</source>
-        <oldsource>Seg1+Seg2 (Hex)</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>分频+段1+段2 (十六进制)</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="382"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="406"/>
         <source>CAN FD Data Phase Setting</source>
-        <translation type="unfinished">CAN FD 数据段设置</translation>
+        <translation>CAN FD 数据段设置</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="402"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="426"/>
         <source>CAN Setting / CAN FD Arbitration Phase Setting</source>
-        <translation type="unfinished">CAN设置 / CAN FD 仲裁段设置</translation>
+        <translation>CAN 设置 / CAN FD 仲裁段设置</translation>
     </message>
     <message>
-        <source>CanFD Bitrate:</source>
-        <translation type="obsolete">CAN FD 波特率：</translation>
-    </message>
-    <message>
-        <source>CanFD SamplePoint:</source>
-        <translation type="obsolete">CAN FD 采样点：</translation>
-    </message>
-    <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="201"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="225"/>
         <source>Options:</source>
-        <translation type="unfinished">选项：</translation>
+        <translation>选项：</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="217"/>
-        <source>configured by operating system</source>
-        <translation type="unfinished">由操作系统配置</translation>
-    </message>
-    <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="224"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="248"/>
         <source>Bus Monitoring mode</source>
-        <translation type="unfinished">使能总线监控模式</translation>
+        <translation>总线监控模式</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="231"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="255"/>
         <source>One-Shot mode</source>
-        <translation type="unfinished">使能单次模式</translation>
+        <translation>单次模式</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="238"/>
+        <location filename="../driver/GenericCanSetupPage.ui" line="262"/>
         <source>Triple Sampling</source>
-        <translation type="unfinished">使能三倍采样</translation>
+        <translation>三倍采样</translation>
+    </message>
+</context>
+<context>
+    <name>GrIPInterface</name>
+    <message>
+        <location filename="../driver/GrIPDriver/GrIPInterface.cpp" line="94"/>
+        <source>CANIL with CANFD support</source>
+        <translation>支持CANFD的CANIL</translation>
     </message>
     <message>
-        <location filename="../driver/GenericCanSetupPage.ui" line="245"/>
-        <source>Auto-Restart on bus off condition</source>
-        <translation type="unfinished">在总线关闭状态下自动重启</translation>
+        <location filename="../driver/GrIPDriver/GrIPInterface.cpp" line="98"/>
+        <source>CANIL with standard CAN support</source>
+        <translation>支持标准CAN的CANIL</translation>
+    </message>
+    <message>
+        <location filename="../driver/GrIPDriver/GrIPInterface.cpp" line="103"/>
+        <source>Not Supported</source>
+        <translation>不支持此设备</translation>
     </message>
 </context>
 <context>
@@ -313,12 +349,12 @@
     <message>
         <location filename="../window/GraphWindow/GraphWindow.ui" line="26"/>
         <source>Graph</source>
-        <translation type="unfinished">图表</translation>
+        <translation>图表</translation>
     </message>
     <message>
         <location filename="../window/GraphWindow/GraphWindow.ui" line="54"/>
         <source>Test</source>
-        <translation type="unfinished"></translation>
+        <translation>测试</translation>
     </message>
 </context>
 <context>
@@ -326,47 +362,47 @@
     <message>
         <location filename="../core/LogModel.cpp" line="82"/>
         <source>Time</source>
-        <translation type="unfinished">时间</translation>
+        <translation>时间</translation>
     </message>
     <message>
         <location filename="../core/LogModel.cpp" line="84"/>
         <source>Level</source>
-        <translation type="unfinished">级别</translation>
+        <translation>级别</translation>
     </message>
     <message>
         <location filename="../core/LogModel.cpp" line="86"/>
         <source>Message</source>
-        <translation type="unfinished">信息</translation>
+        <translation>消息</translation>
     </message>
     <message>
         <location filename="../core/LogModel.cpp" line="174"/>
         <source>debug</source>
-        <translation type="unfinished">调试</translation>
+        <translation>调试</translation>
     </message>
     <message>
         <location filename="../core/LogModel.cpp" line="175"/>
         <source>info</source>
-        <translation type="unfinished">信息</translation>
+        <translation>信息</translation>
     </message>
     <message>
         <location filename="../core/LogModel.cpp" line="176"/>
         <source>warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../core/LogModel.cpp" line="177"/>
         <source>error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <location filename="../core/LogModel.cpp" line="178"/>
         <source>critical</source>
-        <translation type="unfinished">重要</translation>
+        <translation>严重</translation>
     </message>
     <message>
         <location filename="../core/LogModel.cpp" line="179"/>
         <source>fatal</source>
-        <translation type="unfinished">致命</translation>
+        <translation>致命</translation>
     </message>
 </context>
 <context>
@@ -374,53 +410,51 @@
     <message>
         <location filename="../window/LogWindow/LogWindow.ui" line="20"/>
         <source>Log</source>
-        <translation type="unfinished">日志</translation>
+        <translation>日志</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="17"/>
-        <location filename="../mainwindow.cpp" line="685"/>
+        <location filename="../mainwindow.cpp" line="687"/>
         <source>CANgaroo</source>
-        <oldsource>cangaroo</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>CANgaroo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="80"/>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;文件</translation>
+        <translation>文件(&amp;F)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="92"/>
         <source>&amp;Window</source>
-        <translation type="unfinished">&amp;窗口</translation>
+        <translation>窗口(&amp;W)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="96"/>
         <source>&amp;New</source>
-        <translation type="unfinished">&amp;新建</translation>
+        <translation>新建(&amp;N)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="110"/>
         <source>&amp;Measurement</source>
-        <translation type="unfinished">&amp;测量</translation>
+        <translation>测量(&amp;M)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="119"/>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;帮助</translation>
+        <translation>帮助(&amp;H)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="125"/>
         <source>&amp;Trace</source>
-        <translation type="unfinished">&amp;跟踪</translation>
+        <translation>跟踪(&amp;T)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="139"/>
         <source>E&amp;xit</source>
-        <oldsource>&amp;Exit</oldsource>
-        <translation type="unfinished">&amp;退出</translation>
+        <translation>退出(&amp;X)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="142"/>
@@ -430,7 +464,7 @@
     <message>
         <location filename="../mainwindow.ui" line="147"/>
         <source>&amp;Trace View</source>
-        <translation type="unfinished">&amp;跟踪视图</translation>
+        <translation>跟踪视图(&amp;T)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="150"/>
@@ -440,7 +474,7 @@
     <message>
         <location filename="../mainwindow.ui" line="155"/>
         <source>&amp;Log View</source>
-        <translation type="unfinished">&amp;日志视图</translation>
+        <translation>日志视图(&amp;L)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="158"/>
@@ -450,7 +484,7 @@
     <message>
         <location filename="../mainwindow.ui" line="163"/>
         <source>&amp;Setup...</source>
-        <translation type="unfinished">&amp;配置...</translation>
+        <translation>设置(&amp;S)...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="166"/>
@@ -460,7 +494,7 @@
     <message>
         <location filename="../mainwindow.ui" line="171"/>
         <source>Star&amp;t Measurement</source>
-        <translation type="unfinished">&amp;启动</translation>
+        <translation>开始测量(&amp;T)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="174"/>
@@ -470,7 +504,7 @@
     <message>
         <location filename="../mainwindow.ui" line="179"/>
         <source>Sto&amp;p Measurement</source>
-        <translation type="unfinished">&amp;停止</translation>
+        <translation>停止测量(&amp;P)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="182"/>
@@ -480,17 +514,17 @@
     <message>
         <location filename="../mainwindow.ui" line="187"/>
         <source>&amp;About</source>
-        <translation type="unfinished">&amp;关于</translation>
+        <translation>关于(&amp;A)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="192"/>
         <source>&amp;Save Trace to file...</source>
-        <translation type="unfinished">&amp;保存跟踪到文件...</translation>
+        <translation>保存跟踪至文件(&amp;S)...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="200"/>
         <source>&amp;Graph View</source>
-        <translation type="unfinished">&amp;图表视图</translation>
+        <translation>图表视图(&amp;G)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="203"/>
@@ -500,7 +534,7 @@
     <message>
         <location filename="../mainwindow.ui" line="211"/>
         <source>&amp;New Workspace...</source>
-        <translation type="unfinished">&amp;新建工作空间...</translation>
+        <translation>新建工作空间(&amp;N)...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="214"/>
@@ -510,7 +544,7 @@
     <message>
         <location filename="../mainwindow.ui" line="219"/>
         <source>&amp;Save Workspace</source>
-        <translation type="unfinished">&amp;保存工作空间</translation>
+        <translation>保存工作空间(&amp;S)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="222"/>
@@ -520,7 +554,7 @@
     <message>
         <location filename="../mainwindow.ui" line="227"/>
         <source>Save Workspace &amp;As...</source>
-        <translation type="unfinished">&amp;另存工作空间为...</translation>
+        <translation>工作空间另存为(&amp;A)...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="230"/>
@@ -530,7 +564,7 @@
     <message>
         <location filename="../mainwindow.ui" line="235"/>
         <source>&amp;Open Workspace...</source>
-        <translation type="unfinished">&amp;打开工作空间...</translation>
+        <translation>打开工作空间(&amp;O)...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="238"/>
@@ -540,165 +574,154 @@
     <message>
         <location filename="../mainwindow.ui" line="243"/>
         <source>&amp;Clear</source>
-        <translation type="unfinished">&amp;清除跟踪</translation>
+        <translation>清除(&amp;C)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="246"/>
         <source>Esc</source>
-        <translation type="unfinished">退出</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="251"/>
         <source>Can &amp;Status View</source>
-        <translation type="unfinished">&amp;CAN状态视图</translation>
+        <translation>CAN 状态视图(&amp;S)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="256"/>
         <source>Graph View</source>
-        <translation type="unfinished">图表视图</translation>
+        <translation>图表视图</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="261"/>
         <location filename="../mainwindow.cpp" line="478"/>
         <source>Transmit View</source>
-        <translation type="unfinished">发送视图</translation>
+        <translation>发送视图</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="266"/>
         <location filename="../mainwindow.cpp" line="514"/>
         <source>Generator View</source>
-        <translation type="unfinished"></translation>
+        <translation>生成器视图</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="342"/>
         <source>Open workspace configuration</source>
-        <translation type="unfinished">打开工作空间配置文件</translation>
+        <translation>打开工作空间配置</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="342"/>
         <location filename="../mainwindow.cpp" line="364"/>
         <source>Workspace config files (*.cangaroo)</source>
-        <translation type="unfinished">工作空间配置文件(*.cangaroo)</translation>
+        <translation>工作空间配置文件 (*.cangaroo)</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="364"/>
         <source>Save workspace configuration</source>
-        <translation type="unfinished">保存工作空间配置文件</translation>
+        <translation>保存工作空间配置</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="397"/>
         <source>The current workspace has been modified.</source>
-        <translation type="unfinished">当前工作空间已被改动。</translation>
+        <translation>当前工作空间已被修改。</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="398"/>
         <source>Do you want to save your changes?</source>
-        <translation type="unfinished">是否要保存改动？</translation>
+        <translation>是否保存更改？</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="688"/>
-        <location filename="../mainwindow.cpp" line="696"/>
+        <location filename="../mainwindow.cpp" line="690"/>
+        <location filename="../mainwindow.cpp" line="698"/>
         <source>&amp;Language</source>
-        <translation type="unfinished"></translation>
+        <translation>语言(&amp;L)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="702"/>
+        <location filename="../mainwindow.cpp" line="704"/>
         <source>English</source>
-        <translation type="unfinished"></translation>
+        <translation>英语</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="709"/>
+        <location filename="../mainwindow.cpp" line="711"/>
         <source>Español</source>
-        <translation type="unfinished"></translation>
+        <translation>西班牙语</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="83"/>
-        <location filename="../mainwindow.cpp" line="736"/>
+        <location filename="../mainwindow.cpp" line="744"/>
         <source>Export full trace</source>
-        <translation type="unfinished"></translation>
+        <translation>导出完整跟踪</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="715"/>
+        <location filename="../mainwindow.cpp" line="717"/>
+        <source>Deutsch</source>
+        <translation>德语</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="723"/>
         <source>Chinese</source>
-        <translation type="unfinished"></translation>
+        <translation>中文</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="727"/>
-        <location filename="../mainwindow.cpp" line="797"/>
+        <location filename="../mainwindow.cpp" line="735"/>
+        <location filename="../mainwindow.cpp" line="805"/>
         <source>No Trace window active</source>
-        <translation type="unfinished"></translation>
+        <translation>没有活动的跟踪窗口</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="738"/>
-        <location filename="../mainwindow.cpp" line="808"/>
-        <source>CANgaroo Trace (*.ctrace)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="727"/>
-        <location filename="../mainwindow.cpp" line="747"/>
-        <location filename="../mainwindow.cpp" line="797"/>
+        <location filename="../mainwindow.cpp" line="746"/>
         <location filename="../mainwindow.cpp" line="816"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
+        <source>CANgaroo Trace (*.ctrace)</source>
+        <translation>CANgaroo 跟踪文件 (*.ctrace)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="747"/>
+        <location filename="../mainwindow.cpp" line="735"/>
+        <location filename="../mainwindow.cpp" line="755"/>
+        <location filename="../mainwindow.cpp" line="805"/>
+        <location filename="../mainwindow.cpp" line="824"/>
+        <source>Error</source>
+        <translation>错误</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="755"/>
         <source>Cannot write file</source>
-        <translation type="unfinished"></translation>
+        <translation>无法写入文件</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="86"/>
-        <location filename="../mainwindow.cpp" line="806"/>
+        <location filename="../mainwindow.cpp" line="814"/>
         <source>Import full trace</source>
-        <translation type="unfinished"></translation>
+        <translation>导入完整跟踪</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="816"/>
+        <location filename="../mainwindow.cpp" line="824"/>
         <source>Cannot read file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="obsolete">保存</translation>
-    </message>
-    <message>
-        <source>Discard</source>
-        <translation type="obsolete">放弃</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="obsolete">取消</translation>
+        <translation>无法读取文件</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="429"/>
         <source>Trace</source>
-        <translation type="unfinished">跟踪</translation>
+        <translation>跟踪</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="452"/>
         <location filename="../mainwindow.cpp" line="467"/>
         <source>Graph</source>
-        <translation type="unfinished">图表</translation>
+        <translation>图表</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="490"/>
         <source>Log</source>
-        <translation type="unfinished">日志</translation>
+        <translation>日志</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="502"/>
         <source>CAN Status</source>
-        <translation type="unfinished">CAN状态</translation>
+        <translation>CAN 状态</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="556"/>
         <source>About CANgaroo</source>
-        <translation>关于CANgaroo</translation>
-    </message>
-    <message>
-        <source>About cangaroo</source>
-        <translation type="obsolete">关于cangaroo</translation>
+        <translation>关于 CANgaroo</translation>
     </message>
 </context>
 <context>
@@ -706,314 +729,339 @@
     <message>
         <location filename="../window/SetupDialog/SetupDialogTreeItem.cpp" line="103"/>
         <source>Setup</source>
-        <translation type="unfinished">设置</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialogTreeItem.cpp" line="105"/>
         <source>Interfaces</source>
-        <translation type="unfinished">接口</translation>
+        <translation>接口</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialogTreeItem.cpp" line="107"/>
         <source>Can Databases</source>
-        <translation type="unfinished">CAN数据库</translation>
+        <translation>CAN 数据库</translation>
     </message>
 </context>
 <context>
     <name>RawTxWindow</name>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="38"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="43"/>
         <source>Raw Transmit</source>
-        <translation type="unfinished">Raw 发送</translation>
+        <translation>报文发送</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="50"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="58"/>
         <source>Send</source>
-        <translation type="unfinished">发送</translation>
+        <translation>发送</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="63"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="71"/>
         <source>Send Repeat</source>
-        <translation type="unfinished">循环发送</translation>
+        <translation>循环发送</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="79"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="87"/>
         <source>ms</source>
-        <translation type="unfinished">毫秒</translation>
+        <translation>毫秒</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="100"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="109"/>
         <source>HHHHHHHH</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <source>Address(hex)</source>
-        <translation type="obsolete">地址(hex)</translation>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="140"/>
+        <source>Address:</source>
+        <translation>地址：</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="134"/>
-        <source>Address(Hex)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="147"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="156"/>
         <source>DLC</source>
-        <translation type="unfinished"></translation>
+        <translation>数据长度(DLC)</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="176"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="194"/>
         <source>RTR</source>
-        <translation type="unfinished">远程帧</translation>
+        <translation>远程请求(RTR)</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="189"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="207"/>
         <source>Extended ID</source>
-        <translation type="unfinished">扩展帧</translation>
+        <translation>扩展 ID</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="212"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="233"/>
         <source>Interface:</source>
-        <translation type="unfinished">接口：</translation>
+        <translation>接口：</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="228"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="249"/>
         <source>BRS</source>
-        <translation type="unfinished"></translation>
+        <translation>速率切换(BRS)</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="241"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="262"/>
         <source>FD</source>
-        <translation type="unfinished"></translation>
+        <translation>CAN FD</translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="264"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="299"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="318"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="337"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="356"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="293"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="342"/>
         <location filename="../window/RawTxWindow/RawTxWindow.ui" line="375"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="394"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="413"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="432"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="467"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="486"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="521"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="408"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="441"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="474"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="507"/>
         <location filename="../window/RawTxWindow/RawTxWindow.ui" line="540"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="559"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="578"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="597"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="616"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="651"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="670"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="689"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="708"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="727"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="778"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="813"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="832"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="867"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="886"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="905"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="924"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="959"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="978"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1013"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1032"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1051"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1070"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1105"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1124"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1159"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1178"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1197"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1216"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1235"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1254"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1273"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1292"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1311"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1330"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1349"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1368"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1387"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1406"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1425"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1444"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1463"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1482"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1501"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1520"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1539"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1606"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1625"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1644"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1663"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1682"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1701"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="576"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="625"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="658"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="707"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="740"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="773"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="806"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="839"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="872"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="921"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="954"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="987"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1020"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1053"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1118"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1167"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1200"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1249"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1282"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1315"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1348"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1397"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1430"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1479"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1512"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1545"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1578"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1627"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1660"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1709"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1742"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1775"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1808"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1841"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1874"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1907"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1940"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1973"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2006"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2039"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2072"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2105"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2138"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2171"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2204"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2237"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2270"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2303"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2336"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2369"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2450"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2483"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2516"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2549"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2582"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2615"/>
         <source>hh</source>
         <extracomment>Hex Only</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="267"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="302"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="321"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="340"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="359"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="296"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="345"/>
         <location filename="../window/RawTxWindow/RawTxWindow.ui" line="378"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="397"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="416"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="435"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="470"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="489"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="524"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="411"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="444"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="477"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="510"/>
         <location filename="../window/RawTxWindow/RawTxWindow.ui" line="543"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="562"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="581"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="600"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="619"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="654"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="673"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="692"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="711"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="730"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="781"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="816"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="835"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="870"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="889"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="908"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="927"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="962"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="981"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1016"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1035"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1054"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1073"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1108"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1127"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1162"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1181"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1200"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1219"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1238"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1257"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1276"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1295"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1314"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1333"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1352"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1371"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1390"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1409"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1428"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1447"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1466"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1485"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1504"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1523"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1542"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1609"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1628"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1647"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1666"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1685"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1704"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="579"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="628"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="661"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="710"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="743"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="776"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="809"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="842"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="875"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="924"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="957"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="990"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1023"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1056"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1121"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1170"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1203"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1252"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1285"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1318"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1351"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1400"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1433"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1482"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1515"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1548"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1581"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1630"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1663"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1712"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1745"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1778"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1811"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1844"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1877"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1910"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1943"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1976"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2009"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2042"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2075"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2108"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2141"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2174"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2207"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2240"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2273"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2306"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2339"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2372"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2453"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2486"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2519"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2552"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2585"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2618"/>
         <source>00</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="283"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1736"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="318"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2656"/>
         <source>7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="451"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="601"/>
         <source>56</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="505"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="943"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1848"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="683"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1373"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2768"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="635"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1768"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="897"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2688"/>
         <source>2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="746"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1078"/>
         <source>8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="762"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1784"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1094"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2704"/>
         <source>6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="797"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1800"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1143"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2720"/>
         <source>4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="851"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1225"/>
         <source>16</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="997"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1455"/>
         <source>32</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1089"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1603"/>
         <source>24</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1143"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1752"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1685"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2672"/>
         <source>3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1558"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2394"/>
         <source>40</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1574"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1816"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2410"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2736"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1590"/>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1832"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2426"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2752"/>
         <source>5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1720"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2640"/>
         <source>48</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="1877"/>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2797"/>
         <source>Show TX Frames</source>
-        <translation type="unfinished"></translation>
+        <translation>显示发送帧</translation>
     </message>
     <message>
-        <source>Show TX frame</source>
-        <translation type="obsolete">显示发送帧</translation>
+        <location filename="../window/RawTxWindow/RawTxWindow.ui" line="2819"/>
+        <source>0x</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SLCANInterface</name>
+    <message>
+        <location filename="../driver/SLCANDriver/SLCANInterface.cpp" line="96"/>
+        <source>CANable with CANFD support</source>
+        <translation>支持CAN FD的CANable</translation>
+    </message>
+    <message>
+        <location filename="../driver/SLCANDriver/SLCANInterface.cpp" line="100"/>
+        <source>CANable with standard CAN support</source>
+        <translation>支持标准CAN的CANable</translation>
+    </message>
+    <message>
+        <location filename="../driver/SLCANDriver/SLCANInterface.cpp" line="107"/>
+        <source>WeAct Studio USB2CAN with CANFD support</source>
+        <translation>支持CANFD的WeAct Studio USB2CAN</translation>
+    </message>
+    <message>
+        <location filename="../driver/SLCANDriver/SLCANInterface.cpp" line="111"/>
+        <source>WeAct Studio USB2CAN with standard CAN support</source>
+        <translation>支持标准CAN的WeAct Studio USB2CAN</translation>
+    </message>
+    <message>
+        <location filename="../driver/SLCANDriver/SLCANInterface.cpp" line="116"/>
+        <source>Not Support</source>
+        <translation>不支持此设备</translation>
     </message>
 </context>
 <context>
@@ -1021,12 +1069,17 @@
     <message>
         <location filename="../window/SetupDialog/SelectCanInterfacesDialog.ui" line="14"/>
         <source>Select CAN Interface(s)</source>
-        <translation type="unfinished">选择CAN接口</translation>
+        <translation>选择 CAN 接口</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SelectCanInterfacesDialog.ui" line="82"/>
         <source>&amp;Create Interface...</source>
-        <translation type="unfinished">&amp;创建接口...</translation>
+        <translation>创建接口(&amp;C)...</translation>
+    </message>
+    <message>
+        <location filename="../window/SetupDialog/SelectCanInterfacesDialog.cpp" line="76"/>
+        <source>Select CAN Interfaces</source>
+        <translation>选择CAN接口</translation>
     </message>
 </context>
 <context>
@@ -1034,57 +1087,72 @@
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="14"/>
         <source>Measurement Setup</source>
-        <translation type="unfinished">测量设置</translation>
+        <translation>测量设置</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="91"/>
         <source>Add Network</source>
-        <translation type="unfinished">添加网络</translation>
+        <translation>添加网络</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="98"/>
         <source>Remove Network</source>
-        <translation type="unfinished">移除网络</translation>
+        <translation>移除网络</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="105"/>
         <source>Refresh</source>
-        <translation type="unfinished">刷新</translation>
+        <translation>刷新</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="130"/>
         <source>Network name:</source>
-        <translation type="unfinished">网络名称：</translation>
+        <translation>网络名称：</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="156"/>
         <source>CAN interfaces assigned to this network:</source>
-        <translation type="unfinished">分配给该网络的CAN接口:</translation>
+        <translation>分配给此网络的 CAN 接口：</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="181"/>
         <source>Add &amp;Interface...</source>
-        <translation type="unfinished">&amp;添加接口...</translation>
+        <translation>添加接口(&amp;I)...</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="188"/>
         <source>&amp;Remove Interface</source>
-        <translation type="unfinished">&amp;移除接口</translation>
+        <translation>移除接口(&amp;R)</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="239"/>
         <source>Add &amp;Database...</source>
-        <translation type="unfinished">&amp;添加数据库...</translation>
+        <translation>添加数据库(&amp;D)...</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="246"/>
         <source>&amp;Remove Database</source>
-        <translation type="unfinished">&amp;移除数据库</translation>
+        <translation>移除数据库(&amp;R)</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.ui" line="253"/>
         <source>Reload Databases</source>
-        <translation type="unfinished">重新加载数据库</translation>
+        <translation>重新加载数据库</translation>
+    </message>
+    <message>
+        <location filename="../window/SetupDialog/SetupDialog.cpp" line="353"/>
+        <source>Setup</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <location filename="../window/SetupDialog/SetupDialog.cpp" line="355"/>
+        <source>OK</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../window/SetupDialog/SetupDialog.cpp" line="356"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -1092,32 +1160,32 @@
     <message>
         <location filename="../window/SetupDialog/SetupDialogTreeModel.cpp" line="59"/>
         <source>Device</source>
-        <translation type="unfinished">设备</translation>
+        <translation>设备</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialogTreeModel.cpp" line="60"/>
         <source>Driver</source>
-        <translation type="unfinished">驱动</translation>
+        <translation>驱动</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialogTreeModel.cpp" line="61"/>
         <source>Bitrate</source>
-        <translation type="unfinished">波特率</translation>
+        <translation>波特率</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialogTreeModel.cpp" line="62"/>
         <source>Filename</source>
-        <translation type="unfinished">文件名</translation>
+        <translation>文件名</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialogTreeModel.cpp" line="63"/>
         <source>Path</source>
-        <translation type="unfinished">路径</translation>
+        <translation>路径</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialogTreeModel.cpp" line="120"/>
         <source>Network </source>
-        <translation type="unfinished">网络 </translation>
+        <translation>网络 </translation>
     </message>
 </context>
 <context>
@@ -1125,103 +1193,82 @@
     <message>
         <location filename="../window/TraceWindow/TraceWindow.ui" line="14"/>
         <source>Trace View</source>
-        <translation type="unfinished">跟踪视图</translation>
+        <translation>跟踪视图</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/TraceWindow.ui" line="35"/>
         <source>Timestamps:</source>
-        <translation type="unfinished">时间戳：</translation>
+        <translation>时间戳：</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/TraceWindow.ui" line="45"/>
         <source>Aggregate by ID</source>
-        <translation type="unfinished"></translation>
+        <translation>按 ID 聚合</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/TraceWindow.ui" line="55"/>
         <source>Autoscroll</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>aggregate by ID</source>
-        <translation type="obsolete">按ID合并</translation>
-    </message>
-    <message>
-        <source>auto scroll</source>
-        <translation type="obsolete">自动滚动</translation>
+        <translation>自动滚动</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/TraceWindow.ui" line="91"/>
         <source>Clear</source>
-        <translation type="unfinished">清空</translation>
+        <translation>清空</translation>
     </message>
     <message>
         <location filename="../window/TraceWindow/TraceWindow.ui" line="98"/>
         <source>Filter: </source>
-        <oldsource>CAN ID Filter: </oldsource>
-        <translation type="unfinished">过滤器: </translation>
+        <translation>过滤器：</translation>
     </message>
     <message>
-        <source>absolute</source>
-        <translation type="obsolete">绝对</translation>
-    </message>
-    <message>
-        <source>relative</source>
-        <translation type="obsolete">相对</translation>
-    </message>
-    <message>
-        <source>delta</source>
-        <translation type="obsolete">相对差</translation>
-    </message>
-    <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="83"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="93"/>
         <source>Absolute</source>
-        <translation type="unfinished"></translation>
+        <translation>绝对时间</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="84"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="94"/>
         <source>Relative</source>
-        <translation type="unfinished"></translation>
+        <translation>相对时间</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="85"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="95"/>
         <source>Delta</source>
-        <translation type="unfinished"></translation>
+        <translation>时间增量</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="505"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="515"/>
         <source>Edit alias, color and comment</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑别名、颜色和注释</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="506"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="516"/>
         <source>Choose alias and color</source>
-        <translation type="unfinished"></translation>
+        <translation>选择别名和颜色</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="518"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="528"/>
         <source>Choose color</source>
-        <translation type="unfinished"></translation>
+        <translation>选择颜色</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="541"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="551"/>
         <source>Select color for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>为 %1 选择颜色</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="556"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="566"/>
         <source>Comment:</source>
-        <translation type="unfinished"></translation>
+        <translation>注释：</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="512"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="522"/>
         <source>Alias:</source>
-        <translation type="unfinished"></translation>
+        <translation>别名：</translation>
     </message>
     <message>
-        <location filename="../window/TraceWindow/TraceWindow.cpp" line="534"/>
+        <location filename="../window/TraceWindow/TraceWindow.cpp" line="544"/>
         <source>Color:</source>
-        <translation type="unfinished"></translation>
+        <translation>颜色：</translation>
     </message>
 </context>
 <context>
@@ -1229,54 +1276,56 @@
     <message>
         <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="20"/>
         <source>Generator</source>
-        <translation type="unfinished"></translation>
+        <translation>生成器</translation>
     </message>
     <message>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="54"/>
-        <source>Cycle</source>
-        <translation type="unfinished"></translation>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="57"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="49"/>
+        <source>Channel</source>
+        <translation>通道</translation>
     </message>
     <message>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="70"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="71"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>添加</translation>
     </message>
     <message>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="88"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="87"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>移除</translation>
     </message>
     <message>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="106"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="103"/>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
+        <translation>启用</translation>
     </message>
     <message>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="124"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="119"/>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation>禁用</translation>
     </message>
     <message>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="44"/>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="52"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="42"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="49"/>
         <source>Nr</source>
-        <translation type="unfinished"></translation>
+        <translation>编号</translation>
     </message>
     <message>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="49"/>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="52"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="47"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="49"/>
         <source>Name</source>
-        <translation type="unfinished">报文内容</translation>
+        <translation>名称</translation>
     </message>
     <message>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="52"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.ui" line="52"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="49"/>
         <source>Cycle Time</source>
-        <translation type="unfinished"></translation>
+        <translation>周期时间</translation>
     </message>
     <message>
-        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="183"/>
+        <location filename="../window/TxGeneratorWindow/TxGeneratorWindow.cpp" line="184"/>
         <source>Add periodic CAN message</source>
-        <translation type="unfinished"></translation>
+        <translation>添加周期性 CAN 报文</translation>
     </message>
 </context>
 </TS>

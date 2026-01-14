@@ -93,27 +93,27 @@ QString SLCANInterface::getDetailsStr() const
     {
         if(_config.supports_canfd)
         {
-            return "CANable with CANFD support";
+            return tr("CANable with CANFD support");
         }
         else
         {
-            return "CANable with standard CAN support";
+            return tr("CANable with standard CAN support");
         }
     }
     else if(_manufacturer == WeActStudio)
     {
         if(_config.supports_canfd)
         {
-            return "WeAct Studio USB2CAN with CANFD support";
+            return tr("WeAct Studio USB2CAN with CANFD support");
         }
         else
         {
-            return "WeAct Studio USB2CAN with standard CAN support";
+            return tr("WeAct Studio USB2CAN with standard CAN support");
         }
     }
     else
     {
-        return "Not Support";
+        return tr("Not Support");
     }
 }
 

@@ -56,6 +56,9 @@ public slots:
     void treeViewSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
     void treeViewContextMenu(const QPoint& pos);
 
+protected:
+    void changeEvent(QEvent *event) override;
+
 private slots:
     void edNetworkNameChanged();
 

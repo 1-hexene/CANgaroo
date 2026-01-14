@@ -144,7 +144,7 @@ uint8_t GrIP_Transmit(GrIP_ProtocolType_e ProtType, GrIP_MessageType_e MsgType, 
         TX_Buffer[idx++] = GRIP_EOT;
 
         // Transmit packet
-        int d = serPort->write((char*)TX_Buffer, idx);
+        // int d = serPort->write((char*)TX_Buffer, idx);
         serPort->flush();
 
         return RET_OK;
@@ -176,7 +176,7 @@ uint8_t GrIP_Transmit(GrIP_ProtocolType_e ProtType, GrIP_MessageType_e MsgType, 
         TX_Buffer[idx++] = GRIP_EOT;
 
         // Transmit packet
-        int d = serPort->write((char*)TX_Buffer, idx);
+        // int d = serPort->write((char*)TX_Buffer, idx);
         serPort->flush();
 
         return RET_OK;
@@ -223,7 +223,7 @@ void GrIP_Update(void)
 
     case GrIP_State_RX_Header:
         // Check if header data is available
-        if(serPort->bytesAvailable() > (GRIP_HEADER_SIZE*2u-1u))
+        if(serPort->bytesAvailable() > static_cast<qint64>(GRIP_HEADER_SIZE*2u-1u))
         {
             uint8_t head_buff[GRIP_HEADER_SIZE*2u] = {};
             uint8_t *pHeader = (uint8_t*)&RX_Buff.RX_Header;
@@ -489,6 +489,9 @@ static uint8_t CheckHeader(const GrIP_PacketHeader_t *paket)
 
 static void ForwardPacket(const GrIP_PacketHeader_t *header, const uint8_t *data, uint16_t len)
 {
+
+    // TODO: Implement this function
+    return;
     switch(header->Protocol)
     {
     case PROT_GrIP:

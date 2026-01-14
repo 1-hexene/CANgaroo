@@ -56,6 +56,9 @@ public:
     explicit CanStatusWindow(QWidget *parent, Backend &backend);
     ~CanStatusWindow();
 
+protected:
+    void retranslateUi() override;
+
 private slots:
     void beginMeasurement();
     void endMeasurement();

@@ -290,7 +290,7 @@ void GrIPHandler::ProcessData(GrIP_Packet_t &packet)
             // System info
             uint8_t major = packet.Data[1];
             uint8_t minor = packet.Data[2];
-            uint8_t hw = packet.Data[3];
+            //uint8_t hw = packet.Data[3];
 
             uint8_t can = packet.Data[4];
             uint8_t canfd = packet.Data[5];

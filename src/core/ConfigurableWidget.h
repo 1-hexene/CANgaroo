@@ -19,10 +19,15 @@
 
 */
 
+/*
+  修改后的基类头文件，增加了事件处理和同步函数
+*/
+
 #pragma once
 
 #include <QObject>
 #include <QWidget>
+#include <QEvent>
 
 class Backend;
 class QDomDocument;
@@ -36,8 +41,16 @@ public:
     virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
     virtual bool loadXML(Backend &backend, QDomElement &el);
 
+protected:
+    // 捕获语言切换事件
+    void changeEvent(QEvent *event) override;
+
+    // 供子类实现的 UI 翻译钩子
+    virtual void retranslateUi() {}
+
+    // 自动同步标题到外层容器（Dock 或 Tab）
+    void syncTitles();
+
 signals:
     void settingsChanged(ConfigurableWidget *sender);
-
-public slots:
 };

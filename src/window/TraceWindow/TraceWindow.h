@@ -54,13 +54,16 @@ public:
     void setAutoScroll(bool doAutoScroll);
     void setTimestampMode(int mode);
 
-    virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
-    virtual bool loadXML(Backend &backend, QDomElement &el);
+    virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root) override;
+    virtual bool loadXML(Backend &backend, QDomElement &el) override;
     LinearTraceViewModel *linearModel() const { return _linearTraceViewModel; }
     AggregatedTraceViewModel* aggregatedModel() const{return _aggregatedTraceViewModel;}
 
 public slots:
     void rowsInserted(const QModelIndex &parent, int first, int last);
+
+protected:
+    void retranslateUi() override;
 
 private slots:
     void on_cbAggregated_stateChanged(int i);

@@ -322,3 +322,11 @@ Backend &GenericCanSetupPage::backend()
 {
     return Backend::instance();
 }
+
+void GenericCanSetupPage::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    QWidget::changeEvent(event);
+}
