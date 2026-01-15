@@ -21,6 +21,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+//#include <iostream>
 
 #include <QtWidgets>
 #include <QMdiArea>
@@ -97,7 +98,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     // Backend::instance().addCanDriver(*(new CANBlasterDriver(Backend::instance())));
 
     setWorkspaceModified(false);
-    newWorkspace();
 
     // NOTE: must be called after drivers/plugins are initialized
     _setupDlg = new SetupDialog(Backend::instance(), 0);
@@ -117,11 +117,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     createLanguageMenu();
     if (loaded) {
         qApp->installTranslator(&m_translator);
-        // Update trace import/export Action menu
-        // because they are created separately
         actionImportFull->setText(tr("Import full trace"));
         actionExportFull->setText(tr("Export full trace"));
     }
+    newWorkspace();
 }
 
 MainWindow::~MainWindow()
@@ -246,7 +245,7 @@ void MainWindow::loadWorkspaceFromFile(QString filename)
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        log_error(QString("Cannot open workspace settings file: %1").arg(filename));
+        log_error(QString(tr("Cannot open workspace settings file: %1")).arg(filename));
         return;
     }
 
@@ -254,7 +253,7 @@ void MainWindow::loadWorkspaceFromFile(QString filename)
     if (!doc.setContent(&file))
     {
         file.close();
-        log_error(QString("Cannot load settings from file: %1").arg(filename));
+        log_error(QString(tr("Cannot load settings from file: %1")).arg(filename));
         return;
     }
     file.close();
@@ -268,7 +267,7 @@ void MainWindow::loadWorkspaceFromFile(QString filename)
     {
         if (!loadWorkspaceTab(tabs.item(i).toElement()))
         {
-            log_warning(QString("Could not read window %1 from file: %2").arg(QString::number(i), filename));
+            log_warning(QString(tr("Could not read window %1 from file: %2")).arg(QString::number(i), filename));
             continue;
         }
     }
@@ -281,7 +280,7 @@ void MainWindow::loadWorkspaceFromFile(QString filename)
     }
     else
     {
-        log_error(QString("Unable to read measurement setup from workspace config file: %1").arg(filename));
+        log_error(QString(tr("Unable to read measurement setup from workspace config file: %1")).arg(filename));
     }
 }
 
@@ -304,7 +303,7 @@ bool MainWindow::saveWorkspaceToFile(QString filename)
         ConfigurableWidget *mdi = dynamic_cast<ConfigurableWidget *>(w->centralWidget());
         if (!mdi->saveXML(backend(), doc, tabEl))
         {
-            log_error(QString("Cannot save window settings to file: %1").arg(filename));
+            log_error(QString(tr("Cannot save window settings to file: %1")).arg(filename));
             return false;
         }
 
@@ -314,7 +313,7 @@ bool MainWindow::saveWorkspaceToFile(QString filename)
     QDomElement setupRoot = doc.createElement("setup");
     if (!backend().getSetup().saveXML(backend(), doc, setupRoot))
     {
-        log_error(QString("Cannot save measurement setup to file: %1").arg(filename));
+        log_error(QString(tr("Cannot save measurement setup to file: %1")).arg(filename));
         return false;
     }
     root.appendChild(setupRoot);
@@ -327,12 +326,12 @@ bool MainWindow::saveWorkspaceToFile(QString filename)
         outFile.close();
         _workspaceFileName = filename;
         setWorkspaceModified(false);
-        log_info(QString("Saved workspace settings to file: %1").arg(filename));
+        log_info(QString(tr("Saved workspace settings to file: %1")).arg(filename));
         return true;
     }
     else
     {
-        log_error(QString("Cannot open workspace file for writing: %1").arg(filename));
+        log_error(QString(tr("Cannot open workspace file for writing: %1")).arg(filename));
         return false;
     }
 }
@@ -565,22 +564,30 @@ bool MainWindow::showSetupDialog()
 
 void MainWindow::showAboutDialog()
 {
+    std::stringstream aboutMessage;
+    aboutMessage << "Cangaroo\n"
+                 << tr("Open Source CAN bus analyzer").toStdString()
+                 << "\n\n"
+                 << tr("Version").toStdString()
+                 << " v" << QCoreApplication::applicationVersion().toStdString() // version number in src/src.pro
+                 << "\n\n"
+                 << tr(
+                    "(c)2015-2017 Hubert Denkmair\n"
+                    "(c)2018-2022 Ethan Zonca\n"
+                    "(c)2024 WeAct Studio\n"
+                    "(c)2024-2026 Schildkroet\n"
+                    "(c)2025 Wikilift\n"
+                    "(c)2026 Beijing Stellar Fleet Technologies Co., Ltd."
+                    ).toStdString()
+                 << "\n\n"
+                 << tr(
+                    "CANgaroo is a free software licensed "
+                    "\n under the GPL v2 license.").toStdString();
     QMessageBox::about(this,
-                       tr("About CANgaroo"),
                        tr(
-                       "CANgaroo\n"
-                       "Open Source CAN bus analyzer\n"
-                       "\n"
-                       "version 0.3.1\n"
-                       "\n"
-                       "(c)2015-2017 Hubert Denkmair\n"
-                       "(c)2018-2022 Ethan Zonca\n"
-                       "(c)2024 WeAct Studio\n"
-                       "(c)2024-2026 Schildkroet\n"
-                       "(c)2025 Wikilift\n"
-                       "(c)2026 Beijing Stellar Fleet Co., Ltd."
-                        )
-                       );
+                        "About CANgaroo"),
+                        aboutMessage.str().c_str()
+                        );
 }
 
 void MainWindow::startMeasurement()
@@ -618,7 +625,7 @@ void MainWindow::saveTraceToFile()
     fileDialog.setDefaultSuffix("asc");
     if (fileDialog.exec())
     {
-        QString filename = fileDialog.selectedFiles()[0];
+        QString filename = fileDialog.selectedFiles().at(0);
         QFile file(filename);
         if (file.open(QIODevice::ReadWrite | QIODevice::Truncate))
         {
@@ -692,10 +699,14 @@ void MainWindow::switchLanguage(QAction *action)
     }
 
     qApp->installTranslator(&m_translator);
-    // Update trace import/export Action menu
-    // because they are created separately
     actionImportFull->setText(tr("Import full trace"));
     actionExportFull->setText(tr("Export full trace"));
+
+    if (ui->mainTabs) {
+        for (int i = 0; i < ui->mainTabs->count(); ++i) {
+            ui->mainTabs->setTabText(i, tr("Trace"));
+        }
+    }
 }
 
 void MainWindow::changeEvent(QEvent *event)

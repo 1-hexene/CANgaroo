@@ -452,7 +452,7 @@ bool BaseTraceViewModel::setData(const QModelIndex &index, const QVariant &value
     }
     quintptr internal = index.internalId();
     int msg_id = (internal & ~0x80000000u) - 1;
-    if (msg_id < 0 || msg_id >= trace()->size())
+    if (msg_id < 0 || static_cast<long unsigned int>(msg_id) >= trace()->size())
     {
         return false;
     }

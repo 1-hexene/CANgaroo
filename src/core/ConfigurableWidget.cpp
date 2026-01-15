@@ -4,6 +4,7 @@
 #include <QEvent>
 #include <QDockWidget>
 #include <QTabWidget>
+#include <QMdiSubWindow>
 
 ConfigurableWidget::ConfigurableWidget(QWidget *parent) : QWidget(parent)
 {
@@ -11,13 +12,10 @@ ConfigurableWidget::ConfigurableWidget(QWidget *parent) : QWidget(parent)
 
 void ConfigurableWidget::changeEvent(QEvent *event)
 {
-    // 当 installTranslator 被调用后，系统会发出 LanguageChange 事件
+    // installTranslator called -> LanguageChange
     if (event->type() == QEvent::LanguageChange) {
 
-        // 1. 调用子类的刷新逻辑（子类需重写此函数，并在里面调用 setWindowTitle）
         retranslateUi();
-
-        // 2. 将子类设置的新标题同步给外部的 QDockWidget 或 QTabWidget
         syncTitles();
     }
     QWidget::changeEvent(event);
@@ -25,31 +23,34 @@ void ConfigurableWidget::changeEvent(QEvent *event)
 
 void ConfigurableWidget::syncTitles()
 {
-    // 获取当前组件翻译后的 windowTitle
     QString newTitle = windowTitle();
-    if (newTitle.isEmpty()) {
-        return;
-    }
+    if (newTitle.isEmpty()) return;
 
+    // child 用于在向上寻找 TabWidget 时确定当前组件属于哪个页签
+    QWidget *child = this;
     QWidget *p = parentWidget();
+
     while (p) {
-        // 如果是在停靠窗口中（如 CAN Status, Log）
+        // 1. 处理 MDI 子窗口 (Trace Window 常属于此类)
+        if (QMdiSubWindow *sub = qobject_cast<QMdiSubWindow*>(p)) {
+            sub->setWindowTitle(newTitle);
+        }
+
+        // 2. 处理停靠窗口 (CanStatus, Log 视图)
         if (QDockWidget *dock = qobject_cast<QDockWidget*>(p)) {
             dock->setWindowTitle(newTitle);
-            break;
         }
 
-        // 如果是在主标签页中（如 Trace Window）
-        // 结构通常为：ConfigurableWidget -> QMainWindow -> QTabWidget
-        if (p->parentWidget()) {
-            if (QTabWidget *tabs = qobject_cast<QTabWidget*>(p->parentWidget())) {
-                int index = tabs->indexOf(p);
-                if (index != -1) {
-                    tabs->setTabText(index, newTitle);
-                    break;
-                }
+        // 3. 处理标签页容器 (MainWindow 的中心 Tab 区域)
+        if (QTabWidget *tabs = qobject_cast<QTabWidget*>(p)) {
+            int index = tabs->indexOf(child);
+            if (index != -1) {
+                tabs->setTabText(index, newTitle);
             }
         }
+
+        // 继续向上寻找，直到顶层
+        child = p;
         p = p->parentWidget();
     }
 }

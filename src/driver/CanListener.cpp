@@ -29,6 +29,7 @@
 #include "CanInterface.h"
 
 #include <QMessageBox>
+#include <iostream>
 
 CanListener::CanListener(QObject *parent, Backend &backend, CanInterface &intf)
   : QObject(parent),
@@ -70,7 +71,7 @@ void CanListener::run()
     _openComplete = true;
     while (_shouldBeRunning) {
         if (_intf.readMessage(rxMessages, 500)) {
-            for(const CanMessage &msg: qAsConst(rxMessages))
+            for(const CanMessage &msg: std::as_const(rxMessages))
             {
                 trace->enqueueMessage(msg, false);
             }

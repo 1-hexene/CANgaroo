@@ -620,4 +620,5 @@ void TraceWindow::retranslateUi() {
     ui->cbTimestampMode->setItemText(0, tr("Absolute"));
     ui->cbTimestampMode->setItemText(1, tr("Relative"));
     ui->cbTimestampMode->setItemText(2, tr("Delta"));
+    setWindowTitle(tr("Trace Window"));
 }

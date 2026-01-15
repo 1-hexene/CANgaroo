@@ -10,6 +10,7 @@ TARGET = cangaroo
 TEMPLATE = app
 CONFIG += warn_on
 CONFIG += link_pkgconfig
+VERSION = 0.4.0.2
 
 TRANSLATIONS = \
     translations/i18n_de_DE.ts \

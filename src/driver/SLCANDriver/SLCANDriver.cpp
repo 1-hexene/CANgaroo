@@ -55,7 +55,7 @@ bool SLCANDriver::update()
         // fprintf(stderr, "Name : %s \r\n",  info.portName().toStdString().c_str());
         // fprintf(stderr, "   Description : %s \r\n", info.description().toStdString().c_str());
         // fprintf(stderr, "   Manufacturer: %s \r\n", info.manufacturer().toStdString().c_str());
-        std::cout << "[" << std::hex << info.vendorIdentifier() << ":" << std::hex << info.productIdentifier() << "]";
+        std::cout << "    [" << std::hex << info.vendorIdentifier() << ":" << std::hex << info.productIdentifier() << "]";
 
         if(info.vendorIdentifier() == 0xad50 && info.productIdentifier() == 0x60C4)
         {
