@@ -20,7 +20,6 @@
 */
 
 #include "LinearTraceViewModel.h"
-#include <iostream>
 #include <stddef.h>
 #include <core/Backend.h>
 
@@ -195,7 +194,7 @@ bool LinearTraceViewModel::setData(const QModelIndex &index,
     quintptr internal = index.internalId();
     int msgId = (internal & ~0x80000000u) - 1;
 
-    if (msgId < 0 || msgId >= trace()->size())
+    if (msgId < 0 || static_cast<long unsigned int>(msgId) >= trace()->size())
         return false;
 
     const CanMessage *msg = trace()->getMessage(msgId);

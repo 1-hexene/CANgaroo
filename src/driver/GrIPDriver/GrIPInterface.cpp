@@ -91,16 +91,16 @@ QString GrIPInterface::getDetailsStr() const
     {
         if(_config.supports_canfd)
         {
-            return "CANIL with CANFD support";
+            return tr("CANIL with CANFD support");
         }
         else
         {
-            return "CANIL with standard CAN support";
+            return tr("CANIL with standard CAN support");
         }
     }
     else
     {
-        return "Not Supported";
+        return tr("Not Supported");
     }
 }
 

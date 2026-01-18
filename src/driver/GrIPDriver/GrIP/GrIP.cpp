@@ -223,7 +223,7 @@ void GrIP_Update(void)
 
     case GrIP_State_RX_Header:
         // Check if header data is available
-        if(serPort->bytesAvailable() > (GRIP_HEADER_SIZE*2u-1u))
+        if(serPort->bytesAvailable() > static_cast<qint64>(GRIP_HEADER_SIZE*2u-1u))
         {
             uint8_t head_buff[GRIP_HEADER_SIZE*2u] = {};
             uint8_t *pHeader = (uint8_t*)&RX_Buff.RX_Header;

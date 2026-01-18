@@ -414,10 +414,10 @@ void RawTxWindow::repeatmsg_timer_timeout()
         return;
     }
 
-    qint64 msec = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
+    qint64 msec = QDateTime::currentMSecsSinceEpoch();
     _can_msg.setTimestamp({
-        static_cast<long>(msec / 1000),        // Sekunden
-        static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
+        static_cast<long>(msec / 1000),        // Seconds
+        static_cast<long>((msec % 1000) * 1000) // Mikroseconds
     });
 
     // qDebug() << "  Interface:" << _intf->getName() << "isOpen=" << _intf->isOpen();
@@ -622,10 +622,10 @@ void RawTxWindow::reflash_can_msg()
     _can_msg.setRX(false);
     _can_msg.setShow(ui->checkBox_Display_TX->isChecked());
 
-    qint64 msec = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
+    qint64 msec = QDateTime::currentMSecsSinceEpoch();
     _can_msg.setTimestamp({
-        static_cast<long>(msec / 1000),        // Sekunden
-        static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
+        static_cast<long>(msec / 1000),        // Seconds
+        static_cast<long>((msec % 1000) * 1000) // Microseconds
     });
 }
 
