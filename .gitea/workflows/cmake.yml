@@ -1,0 +1,154 @@
+name: Build CANgaroo
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential git cmake \
+          qt6-base-dev qt6-base-private-dev qt6-tools-dev \
+          libqt6serialport6-dev libqt6charts6-dev \
+          libnl-3-dev libnl-route-3-dev libgl1-mesa-dev
+
+    - name: Run qmake6 and make
+      run: |
+        qmake6
+        make -j$(nproc)
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v6
+      with:
+        name: CANgaroo-build
+        path: bin/
+
+  build-windows:
+    name: Build CANgaroo (Windows / MinGW / Qt6)
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup MSYS2 (without install)
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+
+      - name: Cache MinGW and MSYS2 packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            C:/msys64/mingw64
+            C:/msys64/var/cache/pacman/pkg
+          key: >
+            msys2-mingw64-qt6-${{ runner.os }}-${{ hashFiles('.github/workflows/cmake.yml') }}
+          restore-keys: |
+            msys2-mingw64-qt6-${{ runner.os }}-
+
+      - name: Install MinGW + Qt6 (cached)
+        run: |
+          pacman -S --needed --noconfirm \
+            mingw-w64-x86_64-toolchain \
+            mingw-w64-x86_64-qt6 \
+            mingw-w64-x86_64-qt6-tools \
+            mingw-w64-x86_64-make \
+            mingw-w64-x86_64-ntldd \
+            git
+
+      - name: Verify Qt6 installation
+        run: |
+          qmake6 --version
+          which qmake6
+
+      - name: Configure build (Qt6 qmake)
+        run: |
+          qmake6 CONFIG+=release
+
+      - name: Build
+        run: |
+          mingw32-make -j$(nproc)
+
+      - name: List build output
+        run: |
+          echo "==== Project root ===="
+          ls -lah
+
+          echo "==== Executables ===="
+          find . -maxdepth 2 -name "*.exe" -type f -print
+
+      - name: Prepare distribution directory
+        run: |
+          mkdir -p dist
+          cp ./bin/*.exe dist/
+
+      - name: Deploy Qt6 runtime (windeployqt)
+        run: |
+          EXE=$(ls dist/*.exe | head -n 1)
+          windeployqt6 \
+            --release \
+            --no-system-d3d-compiler \
+            "$EXE"
+
+      - name: Add MinGW runtime DLLs
+        run: |
+          cp /mingw64/bin/libgcc_s_seh-1.dll dist/
+          cp /mingw64/bin/libstdc++-6.dll dist/
+          cp /mingw64/bin/libwinpthread-1.dll dist/
+          cp /mingw64/bin/libmd4c.dll dist/
+          cp /mingw64/bin/libharfbuzz-0.dll dist/
+          cp /mingw64/bin/libfreetype-6.dll dist/
+          cp /mingw64/bin/libpng16-16.dll dist/
+          cp /mingw64/bin/zlib1.dll dist/
+          cp /mingw64/bin/libdouble-conversion.dll dist/
+          cp /mingw64/bin/libb2-1.dll dist/
+          cp /mingw64/bin/libicuin78.dll dist/
+          cp /mingw64/bin/libbrotlidec.dll dist/
+          cp /mingw64/bin/libzstd.dll dist/
+          cp /mingw64/bin/libicuuc78.dll dist/
+          cp /mingw64/bin/libpcre2-16-0.dll dist/
+
+      - name: Deploy MinGW runtime dependencies
+        run: |
+          EXE=$(ls dist/*.exe | head -n 1)
+
+          echo "Resolving MinGW runtime dependencies for $EXE"
+
+          ntldd -R "$EXE" \
+            | grep mingw64 \
+            | awk '{print $3}' \
+            | sort -u \
+            | while IFS= read -r file; do
+              # Convert Windows path to Linux path
+              linux_path=$(echo "$file" | sed -E 's|([A-Za-z]):\\|/\L\1/|; s|\\|/|g')
+    
+              echo "Copying $linux_path"
+              cp "$linux_path" dist/ || echo "Skipped $linux_path"
+              done
+
+      - name: Verify missing DLLs
+        run: |
+          EXE=$(ls dist/*.exe | head -n 1)
+          ntldd "$EXE" || true
+
+      - name: Upload Windows Qt6 binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: CANgaroo-Windows-MinGW-Qt6
+          path: dist/*

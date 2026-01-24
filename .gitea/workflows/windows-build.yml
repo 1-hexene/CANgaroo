@@ -1,0 +1,61 @@
+name: Windows Build & Package (Qt 6.10.2)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main", "master", "ci-test", "feature" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Qt 6.10.2
+        uses: jurplel/install-qt-action@v4.3.0
+        with:
+          version: '6.10.2'
+          arch: 'win64_mingw'
+          modules: 'qtcharts qtserialport'
+
+      - name: Setup MSYS2 UCRT64
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-make
+            mingw-w64-ucrt-x86_64-qt6
+            mingw-w64-ucrt-x86_64-ninja
+
+      - name: Build Application
+        shell: msys2 {0}
+        run: |
+          export PATH="$Qt6_DIR/bin:/ucrt64/bin:$PATH"
+          qmake CONFIG+=release
+          mingw32-make -j$(nproc)
+
+      - name: Run windeployqt
+        shell: msys2 {0}
+        run: |
+          export PATH="$Qt6_DIR/bin:/ucrt64/bin:$PATH"
+          windeployqt --release --no-translations bin/cangaroo.exe
+
+      - name: Build Installer with Inno Setup
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
+        with:
+          path: install/cangaroo_installer.iss
+          options: /O+
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: CANgaroo-Installer-Windows
+          path: install/Output/*.exe
