@@ -148,7 +148,7 @@ jobs:
           ntldd "$EXE" || true
 
       - name: Upload Windows Qt6 binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: CANgaroo-Windows-MinGW-Qt6
           path: dist/*
