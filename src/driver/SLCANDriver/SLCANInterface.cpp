@@ -113,7 +113,7 @@ QString SLCANInterface::getDetailsStr() const
     }
     else
     {
-        return tr("Not Support");
+        return tr("Not Supported");
     }
 }
 
