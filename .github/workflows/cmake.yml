@@ -31,8 +31,8 @@ jobs:
     - name: List build output
       run: |
           echo "==== Project root ===="
+          cd bin/
           ls -lah
-          tree
 
     - name: Prepare AppDir
       run: |
@@ -40,7 +40,7 @@ jobs:
           mkdir -p AppDir/usr/share/applications
           mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
 
-          cp build/cangaroo AppDir/usr/bin/
+          cp bin/cangaroo AppDir/usr/bin/
           cp cangaroo.desktop AppDir/usr/share/applications/
           cp src/assets/cangaroo.png AppDir/usr/share/icons/hicolor/256x256/apps/
 
