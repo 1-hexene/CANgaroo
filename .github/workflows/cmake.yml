@@ -28,6 +28,11 @@ jobs:
         qmake6
         make -j$(nproc)
 
+    - name: List build output
+      run: |
+          echo "==== Project root ===="
+          ls -lah
+
     - name: Prepare AppDir
       run: |
           mkdir -p AppDir/usr/bin
