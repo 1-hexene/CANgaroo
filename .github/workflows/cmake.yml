@@ -9,7 +9,7 @@ on:
 jobs:
   build-ubuntu:
     name: Build CANgaroo (Ubuntu / Qt6)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Checkout repository
@@ -28,17 +28,13 @@ jobs:
         qmake6
         make -j$(nproc)
 
-    - name: List build output
-      run: |
-          echo "==== Project root ===="
-          cd bin/
-          ls -lah
-
     - name: Prepare AppDir
       run: |
           mkdir -p AppDir/usr/bin
           mkdir -p AppDir/usr/share/applications
           mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+
+          sed -i 's|Exec=/usr/bin/cangaroo %f|Exec=cangaroo %f|' cangaroo.desktop
 
           cp bin/cangaroo AppDir/usr/bin/
           cp cangaroo.desktop AppDir/usr/share/applications/
@@ -51,6 +47,8 @@ jobs:
           chmod +x linuxdeploy*.AppImage
 
     - name: Build AppImage
+      env:
+        QMAKE: qmake6
       run: |
           ./linuxdeploy-x86_64.AppImage \
             --appdir AppDir \
@@ -60,8 +58,8 @@ jobs:
     - name: Upload AppImage
       uses: actions/upload-artifact@v6
       with:
-          name: CANgaroo
-          path: "*.AppImage"
+          name: CANgaroo-Linux
+          path: "CAN*.AppImage"
 
   build-windows:
     name: Build CANgaroo (Windows / MinGW / Qt6)
