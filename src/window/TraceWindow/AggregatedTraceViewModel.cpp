@@ -331,7 +331,7 @@ QVariant AggregatedTraceViewModel::data_TextColorRole(const QModelIndex &index, 
         if (index.column() == BaseTraceViewModel::column_name ||
             index.column() == BaseTraceViewModel::column_canid)
         {
-            if (gray > 200)
+            if (gray > 180)
                 return QColor(0, 0, 0);
         }
 
