@@ -344,9 +344,7 @@ QVariant AggregatedTraceViewModel::data_TextColorRole(const QModelIndex &index, 
 
 void AggregatedTraceViewModel::updateAliasForId(const QString &idString, const QString &alias)
 {
-   
     _idAliases[idString] = alias;
-    
    
     for (auto it = _map.begin(); it != _map.end(); ++it)
     {

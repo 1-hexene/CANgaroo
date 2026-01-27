@@ -53,11 +53,14 @@
 #include <QActionGroup>
 #include <QEvent>
 
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
                                           ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     _baseWindowTitle = windowTitle();
+
+    QCoreApplication::setApplicationVersion(VERSION_STRING);
 
     QIcon icon(":/assets/cangaroo.png");
     setWindowIcon(icon);
@@ -233,7 +236,7 @@ void MainWindow::loadWorkspaceFromFile(QString filename)
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        log_error(QString("Cannot open workspace settings file: %1").arg(filename));
+        log_error(QString(tr("Cannot open workspace settings file: %1")).arg(filename));
         return;
     }
 
@@ -241,7 +244,7 @@ void MainWindow::loadWorkspaceFromFile(QString filename)
     if (!doc.setContent(&file))
     {
         file.close();
-        log_error(QString("Cannot load settings from file: %1").arg(filename));
+        log_error(QString(tr("Cannot load settings from file: %1")).arg(filename));
         return;
     }
     file.close();
@@ -255,7 +258,7 @@ void MainWindow::loadWorkspaceFromFile(QString filename)
     {
         if (!loadWorkspaceTab(tabs.item(i).toElement()))
         {
-            log_warning(QString("Could not read window %1 from file: %2").arg(QString::number(i), filename));
+            log_warning(QString(tr("Could not read window %1 from file: %2")).arg(QString::number(i), filename));
             continue;
         }
     }
@@ -268,7 +271,7 @@ void MainWindow::loadWorkspaceFromFile(QString filename)
     }
     else
     {
-        log_error(QString("Unable to read measurement setup from workspace config file: %1").arg(filename));
+        log_error(QString(tr("Unable to read measurement setup from workspace config file: %1")).arg(filename));
     }
 }
 
@@ -291,7 +294,7 @@ bool MainWindow::saveWorkspaceToFile(QString filename)
         ConfigurableWidget *mdi = dynamic_cast<ConfigurableWidget *>(w->centralWidget());
         if (!mdi->saveXML(backend(), doc, tabEl))
         {
-            log_error(QString("Cannot save window settings to file: %1").arg(filename));
+            log_error(QString(tr("Cannot save window settings to file: %1")).arg(filename));
             return false;
         }
 
@@ -301,7 +304,7 @@ bool MainWindow::saveWorkspaceToFile(QString filename)
     QDomElement setupRoot = doc.createElement("setup");
     if (!backend().getSetup().saveXML(backend(), doc, setupRoot))
     {
-        log_error(QString("Cannot save measurement setup to file: %1").arg(filename));
+        log_error(QString(tr("Cannot save measurement setup to file: %1")).arg(filename));
         return false;
     }
     root.appendChild(setupRoot);
@@ -314,12 +317,12 @@ bool MainWindow::saveWorkspaceToFile(QString filename)
         outFile.close();
         _workspaceFileName = filename;
         setWorkspaceModified(false);
-        log_info(QString("Saved workspace settings to file: %1").arg(filename));
+        log_info(QString(tr("Saved workspace settings to file: %1")).arg(filename));
         return true;
     }
     else
     {
-        log_error(QString("Cannot open workspace file for writing: %1").arg(filename));
+        log_error(QString(tr("Cannot open workspace file for writing: %1")).arg(filename));
         return false;
     }
 }
@@ -552,18 +555,22 @@ bool MainWindow::showSetupDialog()
 
 void MainWindow::showAboutDialog()
 {
+    std::string tt = "";
     QMessageBox::about(this,
                        tr("About CANgaroo"),
                        "CANgaroo\n"
                        "Open Source CAN bus analyzer\n"
                        "\n"
-                       "version 0.3.1\n"
+                       "v0.3.2\n"
                        "\n"
                        "(c)2015-2017 Hubert Denkmair\n"
                        "(c)2018-2022 Ethan Zonca\n"
                        "(c)2024 WeAct Studio\n"
                        "(c)2024-2026 Schildkroet\n"
-                       "(c)2025 Wikilift");
+                       "(c)2025 Wikilift"
+                       "\n\n"
+                       "CANgaroo is free software licensed"
+                       "\nunder the GPL v2 license.");
 }
 
 void MainWindow::startMeasurement()
@@ -601,7 +608,7 @@ void MainWindow::saveTraceToFile()
     fileDialog.setDefaultSuffix("asc");
     if (fileDialog.exec())
     {
-        QString filename = fileDialog.selectedFiles()[0];
+        QString filename = fileDialog.selectedFiles().at(0);
         QFile file(filename);
         if (file.open(QIODevice::ReadWrite | QIODevice::Truncate))
         {
@@ -695,7 +702,9 @@ void MainWindow::changeEvent(QEvent *event)
 
 void MainWindow::createLanguageMenu()
 {
-    m_languageMenu = ui->menuHelp->addMenu(tr("&Language"));
+    m_languageMenu = new QMenu(tr("&Language"));
+    QAction *aboutAction = ui->actionAbout;
+    ui->menuHelp->insertMenu(aboutAction, m_languageMenu);
 
     m_languageActionGroup = new QActionGroup(this);
 
@@ -831,7 +840,6 @@ void MainWindow::importFullTrace()
 
     backend().clearTrace();
 
-
     {
         QJsonObject colors = root["colors"].toObject();
         for (auto it = colors.begin(); it != colors.end(); ++it)
@@ -842,7 +850,6 @@ void MainWindow::importFullTrace()
             agg->setMessageColorForIdString(it.key(), c);
         }
     }
-
  
     {
         QJsonObject aliases = root["aliases"].toObject();
@@ -854,7 +861,6 @@ void MainWindow::importFullTrace()
             agg->updateAliasForIdString(it.key(), alias);
         }
     }
-
 
     QJsonArray msgs = root["messages"].toArray();
 
@@ -887,7 +893,6 @@ void MainWindow::importFullTrace()
             agg->setCommentForMessage(i, comment);
         }
     }
-
 
     QMetaObject::invokeMethod(linear, "modelReset", Qt::DirectConnection);
     QMetaObject::invokeMethod(agg,    "modelReset", Qt::DirectConnection);

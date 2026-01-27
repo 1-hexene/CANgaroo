@@ -695,7 +695,6 @@ bool RawTxWindow::loadXML(Backend &backend, QDomElement &el)
 
 void RawTxWindow::hideFDFields()
 {
-
     ui->label_col21->hide();
     ui->label_col22->hide();
     ui->label_col23->hide();
@@ -779,7 +778,6 @@ void RawTxWindow::hideFDFields()
 
 void RawTxWindow::showFDFields()
 {
-
     ui->label_col21->show();
     ui->label_col22->show();
     ui->label_col23->show();
