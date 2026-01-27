@@ -43,6 +43,7 @@ public:
     int Channels_CANFD() const;
 
     void EnableChannel(uint8_t ch, bool enable);
+    void Mode(uint8_t ch, bool listen_only);
 
     void CAN_SetBaudrate(uint8_t ch, uint32_t baud);
 

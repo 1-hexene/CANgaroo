@@ -203,16 +203,12 @@ uint32_t GrIPInterface::getCapabilities()
         retval =
             CanInterface::capability_auto_restart |
             CanInterface::capability_listen_only;
-    }
-    /*else if(_manufacturer == WeActStudio)
-    {
-        retval =
             // CanInterface::capability_config_os |
             // CanInterface::capability_auto_restart |
-            CanInterface::capability_listen_only |
-            CanInterface::capability_custom_bitrate |
-            CanInterface::capability_custom_canfd_bitrate;
-    }*/
+            //CanInterface::capability_listen_only |
+            //CanInterface::capability_custom_bitrate |
+            //CanInterface::capability_custom_canfd_bitrate;
+    }
 
     if (supportsCanFD())
     {
@@ -319,6 +315,7 @@ void GrIPInterface::open()
 
     // Close CAN port
     m_GrIPHandler->EnableChannel(_idx, false);
+    QThread::msleep(2);
 
     if(_settings.isCustomBitrate())
     {
@@ -406,22 +403,15 @@ void GrIPInterface::open()
     _serport->waitForBytesWritten(20);*/
 
     // Set Listen Only Mode
-    /*if(_settings.isListenOnlyMode())
+    if(_settings.isListenOnlyMode())
     {
-        _serport->write("M1\r", 3);
-        _serport->flush();
+        m_GrIPHandler->Mode(_idx, true);
     }
     else
     {
-        _serport->write("M0\r", 3);
-        _serport->flush();
+        m_GrIPHandler->Mode(_idx, false);
     }
-    _serport->waitForBytesWritten(100);
-
-    // Open the port
-    _serport->write("O\r", 2);
-    _serport->flush();
-    _serport->waitForBytesWritten(100);*/
+    /*_serport->waitForBytesWritten(100);*/
 
     m_GrIPHandler->SetStatus(true);
 
