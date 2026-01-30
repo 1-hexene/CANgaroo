@@ -76,7 +76,7 @@ void CanMessage::cloneFrom(const CanMessage &msg)
 
 
 uint32_t CanMessage::getRawId() const {
-	return _raw_id;
+    return _raw_id & id_mask_extended;
 }
 
 void CanMessage::setRawId(const uint32_t raw_id) {
@@ -369,6 +369,9 @@ QString CanMessage::getDataHexString() const
 {
     if(getLength() == 0)
         return "";
+
+    if(isErrorFrame())
+        return "ERROR";
 
     QString outstr = "";
     for(int i=0; i<getLength(); i++)

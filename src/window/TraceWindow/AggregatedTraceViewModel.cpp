@@ -316,6 +316,10 @@ QVariant AggregatedTraceViewModel::data_TextColorRole(const QModelIndex &index, 
             return QColor(0, 0, 0);
         }
 
+        if (item->_lastmsg.isErrorFrame()) {
+            return QColor(Qt::red);
+        }
+
         qint64 now_ms = QDateTime::currentMSecsSinceEpoch();
         // Diff in secs
         double diff_sec = (now_ms - item->_lastmsg.getTimestamp_ms()) / 1000.0;

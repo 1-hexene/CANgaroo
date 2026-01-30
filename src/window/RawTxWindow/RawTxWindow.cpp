@@ -647,9 +647,16 @@ void RawTxWindow::sendRawMessage()
 
     if (ui->checkBox_Display_TX->isChecked())
     {
-        _can_msg.setRX(false);
-        _can_msg.setShow(true);
-        _backend.getTrace()->enqueueMessage(_can_msg);
+        if (intf->getName().contains("CANIL-CAN"))
+        {
+            // Handled by CANIL-Driver
+        }
+        else
+        {
+            _can_msg.setRX(false);
+            _can_msg.setShow(true);
+            _backend.getTrace()->enqueueMessage(_can_msg);
+        }
     }
     // qDebug() << "  Sending CAN frame id=" << Qt::hex << _can_msg.getId()
     //          << "len=" << _can_msg.getLength()

@@ -35,6 +35,7 @@ public:
     void Stop();
 
     void SetStatus(bool open);
+    void SetEchoTx(bool enable);
 
     void RequestVersion();
     std::string GetVersion() const;

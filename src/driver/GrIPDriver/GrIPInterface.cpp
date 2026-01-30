@@ -415,6 +415,8 @@ void GrIPInterface::open()
 
     m_GrIPHandler->SetStatus(true);
 
+    m_GrIPHandler->SetEchoTx(true);
+
     m_GrIPHandler->EnableChannel(_idx, true);
     m_TxFrames.clear();
 
@@ -512,12 +514,12 @@ void GrIPInterface::sendMessage(const CanMessage &msg)
 
     if(m_GrIPHandler->CanTransmit(_idx, msg))
     {
-        _status.tx_count++;
-        _status.can_state = state_tx_success;
+        //_status.tx_count++;
+        //_status.can_state = state_tx_success;
 
         if(msg.isShow())
         {
-            m_TxFrames.append(msg);
+            //m_TxFrames.append(msg);
         }
     }
     else
@@ -546,11 +548,11 @@ bool GrIPInterface::readMessage(QList<CanMessage> &msglist, unsigned int timeout
     }
 
     // Add TX frames to trace window
-    if(m_TxFrames.size())
+    /*if(m_TxFrames.size())
     {
         msglist.append(m_TxFrames);
         m_TxFrames.clear();
-    }
+    }*/
 
     // Read all RX frames
     while(m_GrIPHandler->CanAvailable(_idx))
@@ -558,12 +560,32 @@ bool GrIPInterface::readMessage(QList<CanMessage> &msglist, unsigned int timeout
         auto msg = m_GrIPHandler->ReceiveCan(_idx);
         if(msg.getId() != 0)
         {
-            msg.setErrorFrame(0);
+            // Defaults
             msg.setInterfaceId(getId());
-            msg.setBRS(false);
 
-            msglist.append(msg);
-            _status.rx_count++;
+            if(msg.isRX() == false)
+            {
+                if(msg.isErrorFrame() == false)
+                {
+                    _status.tx_count++;
+                    _status.can_state = state_tx_success;
+                }
+                else
+                {
+                    _status.tx_errors++;
+                    _status.can_state = state_tx_fail;
+                }
+
+                if(msg.isShow())
+                {
+                    msglist.append(msg);
+                }
+            }
+            else
+            {
+                msglist.append(msg);
+                _status.rx_count++;
+            }
         }
     }
 

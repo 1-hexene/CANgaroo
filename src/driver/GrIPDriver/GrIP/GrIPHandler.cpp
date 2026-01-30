@@ -15,12 +15,15 @@
 #define SYSTEM_ADD_CAN_FRAME    24u
 #define SYSTEM_ADD_LIN_FRAME    25u
 #define SYSTEM_CAN_MODE         26u
+#define SYSTEM_CAN_TXECHO       27u
 #define SYSTEM_SEND_CAN_FRAME   30u
 
 // CAN Msg flags
 #define CAN_FLAGS_EXT_ID            0x01
 #define CAN_FLAGS_FD                0x02
 #define CAN_FLAGS_RTR               0x04
+#define CAN_FLAGS_BRS               0x08
+#define CAN_FLAGS_TX                0x80
 
 
 typedef struct __attribute__((packed))
@@ -53,6 +56,7 @@ typedef struct __attribute__((packed))
     uint32_t ID;
     uint8_t DLC;
     uint8_t Flags;
+    uint8_t ErrFlags;
     uint32_t Time;
     uint8_t Data[64];
 } Protocol_CanFrame_t;
@@ -142,6 +146,28 @@ void GrIPHandler::SetStatus(bool open)
     if(open)
     {
         header.Data = 2;
+    }
+
+    std::unique_lock<std::mutex> lck(m_MutexSerial);
+
+    GrIP_Transmit(PROT_GrIP, MSG_SYSTEM_CMD, RET_OK, &p);
+}
+
+
+void GrIPHandler::SetEchoTx(bool enable)
+{
+    Protocol_SystemHeader_t header;
+
+    header.Version = 1;
+    header.Command = SYSTEM_CAN_TXECHO;
+    header.Length = 0;
+    header.Data = 0;
+
+    GrIP_Pdu_t p = {reinterpret_cast<uint8_t*>(&header), sizeof(Protocol_SystemHeader_t)};
+
+    if(enable)
+    {
+        header.Data = 1;
     }
 
     std::unique_lock<std::mutex> lck(m_MutexSerial);
@@ -441,6 +467,13 @@ void GrIPHandler::ProcessData(GrIP_Packet_t &packet)
             qint64 msec = QDateTime::currentMSecsSinceEpoch();
 
             CanMessage msg(frame.ID);
+
+            // Defaults
+            msg.setErrorFrame(false);
+            msg.setRTR(false);
+            msg.setFD(false);
+            msg.setBRS(false);
+
             msg.setLength(frame.DLC);
             msg.setRX(true);
             msg.setTimestamp({
@@ -459,6 +492,20 @@ void GrIPHandler::ProcessData(GrIP_Packet_t &packet)
             if(frame.Flags & CAN_FLAGS_RTR)
             {
                 msg.setRTR(true);
+            }
+            if(frame.Flags & CAN_FLAGS_BRS)
+            {
+                msg.setBRS(true);
+            }
+            if(frame.Flags & CAN_FLAGS_TX)
+            {
+                msg.setRX(false);
+            }
+
+            if(frame.ErrFlags)
+            {
+                qDebug() << "ERR: " << frame.ErrFlags;
+                msg.setErrorFrame(true);
             }
 
             for(int i = 0; i < frame.DLC; i++)
