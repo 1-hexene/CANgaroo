@@ -28,8 +28,10 @@ jobs:
 
       - name: Check Mingw Installation
         run: |
-          $env:Path += ";$pwd\w64\w64devkit\bin\"
+          $myPaths = "$pwd\w64\w64devkit\bin"
+          $env:Path = "$myPaths;$env:Path"
           echo "===================Mingw version=================="
+          where gcc
           gcc --version
       
       - name: Check Python Environment
@@ -46,23 +48,23 @@ jobs:
       
       - name: Check Qt6 Installation
         run: |
-          $env:Path += ";$pwd\6.10.2\mingw_64\bin\"
-          $env:Path += ";$pwd\w64\w64devkit\bin\"
+          $myPaths = "$pwd\6.10.2\mingw_64\bin;$pwd\w64\w64devkit\bin"
+          $env:Path = "$myPaths;$env:Path"
           echo "=====================Qmake version==================="
           qmake.exe -v
 
       - name: Build Application
         run: |
-          $env:Path += ";$pwd\6.10.2\mingw_64\bin\"
-          $env:Path += ";$pwd\w64\w64devkit\bin\"
+          $myPaths = "$pwd\6.10.2\mingw_64\bin;$pwd\w64\w64devkit\bin"
+          $env:Path = "$myPaths;$env:Path"
           qmake.exe cangaroo.pro
           dir
           mingw32-make -j $env:NUMBER_OF_PROCESSORS
 
       - name: Run windeployqt
         run: |
-          $env:Path += ";$pwd\6.10.2\mingw_64\bin\"
-          $env:Path += ";$pwd\w64\w64devkit\bin\"
+          $myPaths = "$pwd\6.10.2\mingw_64\bin;$pwd\w64\w64devkit\bin"
+          $env:Path = "$myPaths;$env:Path"
           windeployqt --release --no-translations bin/cangaroo.exe
 
       - name: Build Installer with Inno Setup
