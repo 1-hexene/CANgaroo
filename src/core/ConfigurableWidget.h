@@ -19,9 +19,6 @@
 
 */
 
-/*
-  修改后的基类头文件，增加了事件处理和同步函数
-*/
 
 #pragma once
 
@@ -42,13 +39,11 @@ public:
     virtual bool loadXML(Backend &backend, QDomElement &el);
 
 protected:
-    // 捕获语言切换事件
+    // capture of language change event
     void changeEvent(QEvent *event) override;
 
-    // 供子类实现的 UI 翻译钩子
+    // UI translate hook for children classes
     virtual void retranslateUi() {}
-
-    // 自动同步标题到外层容器（Dock 或 Tab）
     void syncTitles();
 
 signals:
