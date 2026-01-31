@@ -10,7 +10,7 @@ TARGET = cangaroo
 TEMPLATE = app
 CONFIG += warn_on
 CONFIG += link_pkgconfig
-VERSION = 0.4.0.2
+VERSION = 0.4.0.3
 
 DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
 
