@@ -1,5 +1,5 @@
 #define MyAppName "Cangaroo"
-#define MyAppVersion "0.4.0.2"
+#define MyAppVersion "0.4.0.3"
 #define MyAppPublisher "北京星途千舟科技有限公司"
 #define MyAppURL "https://www.canable.io/"
 #define MyAppExeName "cangaroo.exe"
@@ -18,6 +18,7 @@ Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
 SetupIconFile="..\src\cangaroo.ico"
+LicenseFile="gpl-2.0.rtf"
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=yes
