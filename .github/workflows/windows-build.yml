@@ -3,7 +3,7 @@ name: Windows Build
 on:
   workflow_dispatch:
   push:
-    branches: [ "main", "master", "ci-test", "feature" ]
+    branches: [ "main", "master", "test", "feature" ]
   pull_request:
     branches: [ "main", "master" ]
 

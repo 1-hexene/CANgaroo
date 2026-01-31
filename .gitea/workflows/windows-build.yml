@@ -3,7 +3,7 @@ name: Windows Build
 on:
   workflow_dispatch:
   push:
-    branches: [ "main", "master", "ci-test", "feature" ]
+    branches: [ "main", "master", "test", "feature" ]
   pull_request:
     branches: [ "main", "master" ]
 
@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
