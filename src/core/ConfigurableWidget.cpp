@@ -26,22 +26,23 @@ void ConfigurableWidget::syncTitles()
     QString newTitle = windowTitle();
     if (newTitle.isEmpty()) return;
 
-    // child 用于在向上寻找 TabWidget 时确定当前组件属于哪个页签
+    // "child" is for determining which tab does current
+    // widget belong to when finding its parent TabWidget
     QWidget *child = this;
     QWidget *p = parentWidget();
 
     while (p) {
-        // 1. 处理 MDI 子窗口 (Trace Window 常属于此类)
+        // MDI window (e.g. Trace window)
         if (QMdiSubWindow *sub = qobject_cast<QMdiSubWindow*>(p)) {
             sub->setWindowTitle(newTitle);
         }
 
-        // 2. 处理停靠窗口 (CanStatus, Log 视图)
+        // Docking window (e.g. CanStatus, Log window)
         if (QDockWidget *dock = qobject_cast<QDockWidget*>(p)) {
             dock->setWindowTitle(newTitle);
         }
 
-        // 3. 处理标签页容器 (MainWindow 的中心 Tab 区域)
+        // Tab window (e.g. Tab in MainWindow)
         if (QTabWidget *tabs = qobject_cast<QTabWidget*>(p)) {
             int index = tabs->indexOf(child);
             if (index != -1) {
@@ -49,7 +50,7 @@ void ConfigurableWidget::syncTitles()
             }
         }
 
-        // 继续向上寻找，直到顶层
+        // continue to find the parent widget until reached the top
         child = p;
         p = p->parentWidget();
     }

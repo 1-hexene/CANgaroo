@@ -7,9 +7,6 @@ on:
   pull_request:
     branches: [ "main", "master" ]
 
-permissions:
-  contents: write
-
 jobs:
   build:
     runs-on: windows-latest
@@ -31,10 +28,8 @@ jobs:
 
       - name: Check Mingw Installation
         run: |
-          $myPaths = "$pwd\w64\w64devkit\bin"
-          $env:Path = "$myPaths;$env:Path"
+          $env:Path += ";$pwd\w64\w64devkit\bin\"
           echo "===================Mingw version=================="
-          where gcc
           gcc --version
       
       - name: Check Python Environment
@@ -51,23 +46,23 @@ jobs:
       
       - name: Check Qt6 Installation
         run: |
-          $myPaths = "$pwd\6.10.2\mingw_64\bin;$pwd\w64\w64devkit\bin"
-          $env:Path = "$myPaths;$env:Path"
+          $env:Path += ";$pwd\6.10.2\mingw_64\bin\"
+          $env:Path += ";$pwd\w64\w64devkit\bin\"
           echo "=====================Qmake version==================="
           qmake.exe -v
 
       - name: Build Application
         run: |
-          $myPaths = "$pwd\6.10.2\mingw_64\bin;$pwd\w64\w64devkit\bin"
-          $env:Path = "$myPaths;$env:Path"
+          $env:Path += ";$pwd\6.10.2\mingw_64\bin\"
+          $env:Path += ";$pwd\w64\w64devkit\bin\"
           qmake.exe cangaroo.pro
           dir
           mingw32-make -j $env:NUMBER_OF_PROCESSORS
 
       - name: Run windeployqt
         run: |
-          $myPaths = "$pwd\6.10.2\mingw_64\bin;$pwd\w64\w64devkit\bin"
-          $env:Path = "$myPaths;$env:Path"
+          $env:Path += ";$pwd\6.10.2\mingw_64\bin\"
+          $env:Path += ";$pwd\w64\w64devkit\bin\"
           windeployqt --release --no-translations bin/cangaroo.exe
 
       - name: Build Installer with Inno Setup
@@ -77,16 +72,7 @@ jobs:
           options: /O+
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v3
         with:
           name: CANgaroo-Installer-Windows
           path: install/Output/*.exe
-      
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: install/Output/*.exe
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

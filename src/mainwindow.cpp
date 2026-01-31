@@ -54,11 +54,14 @@
 #include <QActionGroup>
 #include <QEvent>
 
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
                                           ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     _baseWindowTitle = windowTitle();
+
+    QCoreApplication::setApplicationVersion(VERSION_STRING);
 
     QIcon icon(":/assets/cangaroo.png");
     setWindowIcon(icon);
@@ -565,7 +568,7 @@ bool MainWindow::showSetupDialog()
 void MainWindow::showAboutDialog()
 {
     std::stringstream aboutMessage;
-    aboutMessage << "Cangaroo\n"
+    aboutMessage << "CANgaroo\n"
                  << tr("Open Source CAN bus analyzer").toStdString()
                  << "\n\n"
                  << tr("Version").toStdString()
@@ -727,7 +730,9 @@ void MainWindow::changeEvent(QEvent *event)
 
 void MainWindow::createLanguageMenu()
 {
-    m_languageMenu = ui->menuHelp->addMenu(tr("&Language"));
+    m_languageMenu = new QMenu(tr("&Language"));
+    QAction *aboutAction = ui->actionAbout;
+    ui->menuHelp->insertMenu(aboutAction, m_languageMenu);
 
     m_languageActionGroup = new QActionGroup(this);
 
@@ -866,7 +871,6 @@ void MainWindow::importFullTrace()
 
     backend().clearTrace();
 
-
     {
         QJsonObject colors = root["colors"].toObject();
         for (auto it = colors.begin(); it != colors.end(); ++it)
@@ -877,7 +881,6 @@ void MainWindow::importFullTrace()
             agg->setMessageColorForIdString(it.key(), c);
         }
     }
-
  
     {
         QJsonObject aliases = root["aliases"].toObject();
@@ -889,7 +892,6 @@ void MainWindow::importFullTrace()
             agg->updateAliasForIdString(it.key(), alias);
         }
     }
-
 
     QJsonArray msgs = root["messages"].toArray();
 
@@ -922,7 +924,6 @@ void MainWindow::importFullTrace()
             agg->setCommentForMessage(i, comment);
         }
     }
-
 
     QMetaObject::invokeMethod(linear, "modelReset", Qt::DirectConnection);
     QMetaObject::invokeMethod(agg,    "modelReset", Qt::DirectConnection);

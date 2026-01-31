@@ -20,7 +20,6 @@
 */
 
 #include "LinearTraceViewModel.h"
-#include <iostream>
 #include <stddef.h>
 #include <core/Backend.h>
 
@@ -102,6 +101,7 @@ void LinearTraceViewModel::afterClear()
 {
     endResetModel();
 }
+
 QVariant LinearTraceViewModel::data_DisplayRole(const QModelIndex &index, int role) const
 {
     quintptr internal = index.internalId();
@@ -160,6 +160,14 @@ QVariant LinearTraceViewModel::data(const QModelIndex &index, int role) const
             return pastel;
     }
 
+    if(!isSignal && role == Qt::ForegroundRole)
+    {
+        if(msg->isErrorFrame())
+        {
+            return QColor(Qt::red);
+        }
+    }
+
     if (role == Qt::ForegroundRole)
         return data_TextColorRole(index, role);
 
@@ -178,8 +186,6 @@ QVariant LinearTraceViewModel::data(const QModelIndex &index, int role) const
 
     return QVariant();
 }
-
-
 
 bool LinearTraceViewModel::setData(const QModelIndex &index,
                                    const QVariant &value,

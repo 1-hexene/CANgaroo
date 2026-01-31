@@ -428,6 +428,7 @@ QVariant BaseTraceViewModel::data_TextColorRole_Signal(const QModelIndex &index,
         return QVariant::fromValue(QColor(200, 200, 200));
     }
 }
+
 Qt::ItemFlags BaseTraceViewModel::flags(const QModelIndex &index) const
 {
     Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
@@ -444,6 +445,7 @@ Qt::ItemFlags BaseTraceViewModel::flags(const QModelIndex &index) const
 
     return defaultFlags;
 }
+
 bool BaseTraceViewModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (role != Qt::EditRole || value.toString().isEmpty())
@@ -556,6 +558,7 @@ void BaseTraceViewModel::setCommentForMessage(int msgId, const QString &c)
 {
     _perMessageComment[msgId] = c;
 }
+
 void BaseTraceViewModel::setMessageColorForIdString(const QString &idString,
                                                     const QColor &color)
 {

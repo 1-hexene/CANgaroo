@@ -625,8 +625,8 @@ void RawTxWindow::reflash_can_msg()
 
     qint64 msec = QDateTime::currentMSecsSinceEpoch();
     _can_msg.setTimestamp({
-        static_cast<long>(msec / 1000),        // Sekunden
-        static_cast<long>((msec % 1000) * 1000) // Mikrosekunden
+        static_cast<long>(msec / 1000),        // Seconds
+        static_cast<long>((msec % 1000) * 1000) // Microseconds
     });
 }
 
@@ -648,9 +648,16 @@ void RawTxWindow::sendRawMessage()
 
     if (ui->checkBox_Display_TX->isChecked())
     {
-        _can_msg.setRX(false);
-        _can_msg.setShow(true);
-        _backend.getTrace()->enqueueMessage(_can_msg);
+        if (intf->getName().contains("CANIL-CAN"))
+        {
+            // Handled by CANIL-Driver
+        }
+        else
+        {
+            _can_msg.setRX(false);
+            _can_msg.setShow(true);
+            _backend.getTrace()->enqueueMessage(_can_msg);
+        }
     }
     // qDebug() << "  Sending CAN frame id=" << Qt::hex << _can_msg.getId()
     //          << "len=" << _can_msg.getLength()
@@ -696,7 +703,6 @@ bool RawTxWindow::loadXML(Backend &backend, QDomElement &el)
 
 void RawTxWindow::hideFDFields()
 {
-
     ui->label_col21->hide();
     ui->label_col22->hide();
     ui->label_col23->hide();
@@ -780,7 +786,6 @@ void RawTxWindow::hideFDFields()
 
 void RawTxWindow::showFDFields()
 {
-
     ui->label_col21->show();
     ui->label_col22->show();
     ui->label_col23->show();

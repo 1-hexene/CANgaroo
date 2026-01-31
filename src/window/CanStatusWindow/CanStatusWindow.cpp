@@ -108,10 +108,10 @@ Backend &CanStatusWindow::backend()
 
 
 void CanStatusWindow::retranslateUi() {
-    // A. 更新 .ui 文件中定义的控件
+    // update widgets defined in .ui files
     ui->retranslateUi(this);
 
-    // B. 手动更新代码中定义的表头（这是解决问题的关键）
+    // update table headers
     ui->treeWidget->setHeaderLabels(QStringList()
                                     << tr("Driver")
                                     << tr("Interface")

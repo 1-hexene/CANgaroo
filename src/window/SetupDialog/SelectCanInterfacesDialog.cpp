@@ -75,7 +75,7 @@ void SelectCanInterfacesDialog::changeEvent(QEvent *event)
         ui->retranslateUi(this);
         setWindowTitle(tr("Select CAN Interfaces"));
 
-        // 如果有 TreeWidget/TableWidget 的表头，需要像 CanStatusWindow 那样刷新
+        // If there's table headers of TreeWidget/TableWidget, should refresh like how CanStatusWindow does
         // ui->treeWidget->setHeaderLabels(QStringList() << tr("Interface") << tr("Description"));
     }
     QDialog::changeEvent(event);
