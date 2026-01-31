@@ -568,7 +568,7 @@ bool MainWindow::showSetupDialog()
 void MainWindow::showAboutDialog()
 {
     std::stringstream aboutMessage;
-    aboutMessage << "Cangaroo\n"
+    aboutMessage << "CANgaroo\n"
                  << tr("Open Source CAN bus analyzer").toStdString()
                  << "\n\n"
                  << tr("Version").toStdString()
