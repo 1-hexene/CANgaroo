@@ -137,10 +137,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Address:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+    <string>ID (Hex)</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -198,8 +195,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>80</y>
-     <width>141</width>
+     <y>120</y>
+     <width>121</width>
      <height>23</height>
     </rect>
    </property>

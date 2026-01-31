@@ -279,6 +279,7 @@ bool TraceWindow::saveXML(Backend &backend, QDomDocument &xml, QDomElement &root
 
     return true;
 }
+
 bool TraceWindow::loadXML(Backend &backend, QDomElement &el)
 {
     if (!ConfigurableWidget::loadXML(backend, el))

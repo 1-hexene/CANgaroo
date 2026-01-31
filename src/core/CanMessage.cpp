@@ -76,7 +76,7 @@ void CanMessage::cloneFrom(const CanMessage &msg)
 
 
 uint32_t CanMessage::getRawId() const {
-	return _raw_id;
+    return _raw_id & id_mask_extended;
 }
 
 void CanMessage::setRawId(const uint32_t raw_id) {
@@ -336,12 +336,14 @@ void CanMessage::setTimestamp(qint64 ms)
 void CanMessage::setTimestamp(const timeval timestamp)
 {
     _timestamp = timestamp;
+    _timestamp_ms = (_timestamp.tv_sec * 1000 + _timestamp.tv_usec / 1000);
 }
 
 void CanMessage::setTimestamp(const uint64_t seconds, const uint32_t micro_seconds)
 {
     _timestamp.tv_sec = seconds;
     _timestamp.tv_usec = micro_seconds;
+    _timestamp_ms = (_timestamp.tv_sec * 1000 + _timestamp.tv_usec / 1000);
 }
 
 double CanMessage::getFloatTimestamp() const
@@ -367,6 +369,9 @@ QString CanMessage::getDataHexString() const
 {
     if(getLength() == 0)
         return "";
+
+    if(isErrorFrame())
+        return "ERROR";
 
     QString outstr = "";
     for(int i=0; i<getLength(); i++)

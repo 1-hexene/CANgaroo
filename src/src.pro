@@ -12,6 +12,9 @@ CONFIG += warn_on
 CONFIG += link_pkgconfig
 VERSION = 0.4.0.2
 
+VERSION = 0.3.2
+DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
+
 TRANSLATIONS = \
     translations/i18n_de_DE.ts \
     translations/i18n_en_us.ts \

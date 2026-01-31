@@ -3,10 +3,25 @@
 #include <QDebug>
 
 
+typedef struct __attribute__((packed))
+{
+    uint8_t Version;
+    uint8_t Command;
+    uint8_t Length;
+    uint8_t Data;
+} Protocol_SystemHeader_t;
+
+
 void Protocol_RequestDeviceInfo()
 {
-    uint8_t msg = SYSTEM_REPORT_INFO;
-    GrIP_Pdu_t p = {&msg, 1};
+    Protocol_SystemHeader_t header;
+
+    header.Version = 1;
+    header.Command = SYSTEM_REPORT_INFO;
+    header.Length = 0;
+    header.Data = 0;
+
+    GrIP_Pdu_t p = {reinterpret_cast<uint8_t*>(&header), sizeof(Protocol_SystemHeader_t)};
 
     GrIP_Transmit(PROT_GrIP, MSG_SYSTEM_CMD, RET_OK, &p);
 }
@@ -14,30 +29,35 @@ void Protocol_RequestDeviceInfo()
 
 void Protocol_SetStatusLED(StatusLedState_e state)
 {
-    uint8_t msg[2] = {};
-    GrIP_Pdu_t p = {msg, 2};
+    Protocol_SystemHeader_t header;
 
-    msg[0] = SYSTEM_SET_STATUS;
+    header.Version = 1;
+    header.Command = SYSTEM_SET_STATUS;
+    header.Length = 0;
+    header.Data = 0;
+
+    GrIP_Pdu_t p = {reinterpret_cast<uint8_t*>(&header), sizeof(Protocol_SystemHeader_t)};
+
     switch (state)
     {
     case LED_OFF:
-        msg[1] = 0;
+        header.Data = 0;
         break;
 
     case LED_RED:
-        msg[1] = 1;
+        header.Data = 1;
         break;
 
     case LED_GREEN:
-        msg[1] = 2;
+        header.Data = 2;
         break;
 
     case LED_ORANGE:
-        msg[1] = 3;
+        header.Data = 3;
         break;
 
     default:
-        msg[1] = 0;
+        header.Data = 0;
         break;
     }
 

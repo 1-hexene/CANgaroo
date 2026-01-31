@@ -8,7 +8,8 @@ on:
 
 jobs:
   build-ubuntu:
-    runs-on: ubuntu-latest
+    name: Build CANgaroo (Ubuntu / Qt6)
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Checkout repository
@@ -20,18 +21,45 @@ jobs:
         sudo apt install -y build-essential git cmake \
           qt6-base-dev qt6-base-private-dev qt6-tools-dev \
           libqt6serialport6-dev libqt6charts6-dev \
-          libnl-3-dev libnl-route-3-dev libgl1-mesa-dev
+          libnl-3-dev libnl-route-3-dev libgl1-mesa-dev fuse libfuse2 wget
 
     - name: Run qmake6 and make
       run: |
         qmake6
         make -j$(nproc)
 
-    - name: Upload artifact
+    - name: Prepare AppDir
+      run: |
+          mkdir -p AppDir/usr/bin
+          mkdir -p AppDir/usr/share/applications
+          mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+
+          sed -i 's|Exec=/usr/bin/cangaroo %f|Exec=cangaroo %f|' cangaroo.desktop
+
+          cp bin/cangaroo AppDir/usr/bin/
+          cp cangaroo.desktop AppDir/usr/share/applications/
+          cp src/assets/cangaroo.png AppDir/usr/share/icons/hicolor/256x256/apps/
+
+    - name: Download linuxdeploy
+      run: |
+          wget -q https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          wget -q https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+          chmod +x linuxdeploy*.AppImage
+
+    - name: Build AppImage
+      env:
+        QMAKE: qmake6
+      run: |
+          ./linuxdeploy-x86_64.AppImage \
+            --appdir AppDir \
+            --plugin qt \
+            --output appimage
+
+    - name: Upload AppImage
       uses: actions/upload-artifact@v6
       with:
-        name: CANgaroo-build
-        path: bin/
+          name: CANgaroo-Linux
+          path: "CAN*.AppImage"
 
   build-windows:
     name: Build CANgaroo (Windows / MinGW / Qt6)

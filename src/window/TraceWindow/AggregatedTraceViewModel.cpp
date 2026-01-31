@@ -316,6 +316,10 @@ QVariant AggregatedTraceViewModel::data_TextColorRole(const QModelIndex &index, 
             return QColor(0, 0, 0);
         }
 
+        if (item->_lastmsg.isErrorFrame()) {
+            return QColor(Qt::red);
+        }
+
         qint64 now_ms = QDateTime::currentMSecsSinceEpoch();
         // Diff in secs
         double diff_sec = (now_ms - item->_lastmsg.getTimestamp_ms()) / 1000.0;
@@ -331,7 +335,7 @@ QVariant AggregatedTraceViewModel::data_TextColorRole(const QModelIndex &index, 
         if (index.column() == BaseTraceViewModel::column_name ||
             index.column() == BaseTraceViewModel::column_canid)
         {
-            if (gray > 200)
+            if (gray > 180)
                 return QColor(0, 0, 0);
         }
 
@@ -344,9 +348,7 @@ QVariant AggregatedTraceViewModel::data_TextColorRole(const QModelIndex &index, 
 
 void AggregatedTraceViewModel::updateAliasForId(const QString &idString, const QString &alias)
 {
-   
     _idAliases[idString] = alias;
-    
    
     for (auto it = _map.begin(); it != _map.end(); ++it)
     {
