@@ -352,8 +352,13 @@ void SetupDialog::changeEvent(QEvent *event)
         ui->retranslateUi(this);
         setWindowTitle(tr("Setup"));
 
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
-        ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+        // Delay this method to the next frame, otherwise the buttons won't translate
+        QMetaObject::invokeMethod(this, [this](){
+            if (auto okBtn = ui->buttonBox->button(QDialogButtonBox::Ok))
+                okBtn->setText(tr("OK"));
+            if (auto cancelBtn = ui->buttonBox->button(QDialogButtonBox::Cancel))
+                cancelBtn->setText(tr("Cancel"));
+        }, Qt::QueuedConnection);
     }
     QDialog::changeEvent(event);
 }

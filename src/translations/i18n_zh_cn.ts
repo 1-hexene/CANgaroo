@@ -877,7 +877,7 @@ version 0.3.1
     <message>
         <location filename="../window/RawTxWindow/RawTxWindow.ui" line="140"/>
         <source>ID (Hex)</source>
-        <translation>ID (十六进制)</translation>
+        <translation>ID (16进制)</translation>
     </message>
     <message>
         <location filename="../window/RawTxWindow/RawTxWindow.ui" line="153"/>
@@ -1252,7 +1252,7 @@ version 0.3.1
     <message>
         <location filename="../window/SetupDialog/SetupDialog.cpp" line="355"/>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation>好</translation>
     </message>
     <message>
         <location filename="../window/SetupDialog/SetupDialog.cpp" line="356"/>
