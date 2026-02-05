@@ -20,6 +20,7 @@
 */
 
 #include "LinearTraceViewModel.h"
+#include <iostream>
 #include <stddef.h>
 #include <core/Backend.h>
 
@@ -57,7 +58,7 @@ int LinearTraceViewModel::rowCount(const QModelIndex &parent) const
         quintptr id = parent.internalId();
         if (id & 0x80000000) { // node of a message
             return 0;
-        } else { 
+        } else { // a message
             const CanMessage *msg = trace()->getMessage(id-1);
             if (msg) {
                 CanDbMessage *dbmsg = backend()->findDbMessage(*msg);
@@ -104,24 +105,25 @@ void LinearTraceViewModel::afterClear()
 
 QVariant LinearTraceViewModel::data_DisplayRole(const QModelIndex &index, int role) const
 {
-    quintptr internal = index.internalId();
-    int msgId = (internal & ~0x80000000u) - 1;
+    quintptr id = index.internalId();
+    int msg_id = (id & ~0x80000000)-1;
 
-    const CanMessage *msg = trace()->getMessage(msgId);
-    if (!msg) return QVariant();
+    const CanMessage *msg = trace()->getMessage(msg_id);
+    if (!msg) { return QVariant(); }
 
-    if (internal & 0x80000000u) {
+    if (id & 0x80000000) {
         return data_DisplayRole_Signal(index, role, *msg);
+    } else if (id) {
+        if (msg_id>=1) {
+            const CanMessage *prev_msg = trace()->getMessage(msg_id-1);
+            return data_DisplayRole_Message(index, role, *msg, *prev_msg);
+        } else {
+            return data_DisplayRole_Message(index, role, *msg, CanMessage());
+        }
     }
 
-    if (msgId >= 1) {
-        const CanMessage *prev = trace()->getMessage(msgId - 1);
-        return data_DisplayRole_Message(index, role, *msg, *prev);
-    }
-
-    return data_DisplayRole_Message(index, role, *msg, CanMessage());
+    return QVariant();
 }
-
 
 QVariant LinearTraceViewModel::data_TextColorRole(const QModelIndex &index, int role) const
 {
@@ -138,95 +140,4 @@ QVariant LinearTraceViewModel::data_TextColorRole(const QModelIndex &index, int 
     }
 
     return QVariant();
-}
-
-QVariant LinearTraceViewModel::data(const QModelIndex &index, int role) const
-{
-    if (!index.isValid()) {
-        return QVariant();
-    }
-
-    quintptr internal = index.internalId();
-    bool isSignal = (internal & 0x80000000u);
-    int msgId = (internal & ~0x80000000u) - 1;
-
-    const CanMessage *msg = trace()->getMessage(msgId);
-    if (!msg) return QVariant();
-
-    if (!isSignal && role == Qt::BackgroundRole)
-    {
-        QColor pastel = messageColorForIdString(msg->getIdString());
-        if (pastel.isValid())
-            return pastel;
-    }
-
-    if(!isSignal && role == Qt::ForegroundRole)
-    {
-        if(msg->isErrorFrame())
-        {
-            return QColor(Qt::red);
-        }
-    }
-
-    if (role == Qt::ForegroundRole)
-        return data_TextColorRole(index, role);
-
-
-    if (role == Qt::DisplayRole)
-    {
-        if (index.column() == column_comment)
-        {
-            QString perMsg = commentForMessage(msgId);
-            if (!perMsg.isEmpty())
-                return perMsg;
-        }
-
-        return data_DisplayRole(index, role);
-    }
-
-    return QVariant();
-}
-
-bool LinearTraceViewModel::setData(const QModelIndex &index,
-                                   const QVariant &value,
-                                   int role)
-{
-    if (role != Qt::EditRole)
-        return false;
-
-    QString text = value.toString().trimmed();
-    if (text.isEmpty())
-        return false;
-
-    quintptr internal = index.internalId();
-    int msgId = (internal & ~0x80000000u) - 1;
-
-    if (msgId < 0 || static_cast<long unsigned int>(msgId) >= trace()->size())
-        return false;
-
-    const CanMessage *msg = trace()->getMessage(msgId);
-    if (!msg)
-        return false;
-
-
-    if (index.column() == column_name)
-    {
-        QString alias = text;
-        QString idString = msg->getIdString();
-
-        updateAliasForIdString(idString, alias);
-
-        emit dataChanged(index, index, { Qt::DisplayRole });
-        return true;
-    }
-
-    if (index.column() == column_comment)
-    {
-        setCommentForMessage(msgId, text);
-
-        emit dataChanged(index, index, { Qt::DisplayRole });
-        return true;
-    }
-
-    return false;
 }

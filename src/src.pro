@@ -11,7 +11,7 @@ TEMPLATE = app
 CONFIG += warn_on
 CONFIG += link_pkgconfig
 
-VERSION = 0.3.2
+VERSION = 0.4.0
 DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
 
 TRANSLATIONS = \
@@ -42,6 +42,7 @@ RESOURCES = cangaroo.qrc
 include($$PWD/core/core.pri)
 include($$PWD/driver/driver.pri)
 include($$PWD/parser/dbc/dbc.pri)
+include($$PWD/decoders/decoders.pri)
 include($$PWD/window/TraceWindow/TraceWindow.pri)
 include($$PWD/window/SetupDialog/SetupDialog.pri)
 include($$PWD/window/LogWindow/LogWindow.pri)
@@ -54,6 +55,7 @@ include($$PWD/helpers/helpers.pri)
 
 unix:PKGCONFIG += libnl-3.0
 unix:PKGCONFIG += libnl-route-3.0
+unix:INCLUDEPATH += /usr/include/libnl3
 unix:include($$PWD/driver/SocketCanDriver/SocketCanDriver.pri)
 
 include($$PWD/driver/CANBlastDriver/CANBlastDriver.pri)

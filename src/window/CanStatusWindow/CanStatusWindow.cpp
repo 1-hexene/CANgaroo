@@ -47,9 +47,24 @@ CanStatusWindow::CanStatusWindow(QWidget *parent, Backend &backend) :
     ui->treeWidget->setColumnWidth(0, 100);
     // Interface width
     ui->treeWidget->setColumnWidth(1, 110);
+    // State width
+    ui->treeWidget->setColumnWidth(2, 80);
+    // Rx Frame width
+    ui->treeWidget->setColumnWidth(3, 90);
+    // Rx Errors width
+    ui->treeWidget->setColumnWidth(4, 80);
+    // Rx Overrun width
+    ui->treeWidget->setColumnWidth(5, 90);
+    // Tx Frame width
+    ui->treeWidget->setColumnWidth(6, 90);
+    // Tx Errors width
+    ui->treeWidget->setColumnWidth(7, 90);
+    // Tx Dropped width
+    ui->treeWidget->setColumnWidth(8, 90);
 
     connect(&backend, SIGNAL(beginMeasurement()), this, SLOT(beginMeasurement()));
     connect(&backend, SIGNAL(endMeasurement()), this, SLOT(endMeasurement()));
+    connect(&backend, SIGNAL(onClearTraceRequested()), this, SLOT(clearStatistics()));
     connect(_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
@@ -61,7 +76,8 @@ CanStatusWindow::~CanStatusWindow()
 void CanStatusWindow::beginMeasurement()
 {
     ui->treeWidget->clear();
-    foreach (CanInterfaceId ifid, backend().getInterfaceList()) {
+    foreach (CanInterfaceId ifid, backend().getInterfaceList())
+    {
         CanInterface *intf = backend().getInterfaceById(ifid);
         QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
         item->setData(0, Qt::UserRole, QVariant::fromValue((void*)intf));
@@ -71,7 +87,8 @@ void CanStatusWindow::beginMeasurement()
         item->setTextAlignment(column_driver, Qt::AlignLeft);
         item->setTextAlignment(column_interface, Qt::AlignLeft);
         item->setTextAlignment(column_state, Qt::AlignCenter);
-        for (int i=column_rx_frames; i<column_count; i++) {
+        for (int i=column_rx_frames; i<column_count; i++)
+        {
             item->setTextAlignment(i, Qt::AlignRight);
         }
 
@@ -87,12 +104,29 @@ void CanStatusWindow::endMeasurement()
     _timer->stop();
 }
 
+void CanStatusWindow::clearStatistics()
+{
+    // Reset statistics in all active interfaces
+    foreach (CanInterfaceId ifid, backend().getInterfaceList())
+    {
+        CanInterface *intf = backend().getInterfaceById(ifid);
+        if (intf)
+        {
+            intf->resetStatistics();
+            intf->updateStatistics();
+        }
+    }
+    update();
+}
+
 void CanStatusWindow::update()
 {
-    for (QTreeWidgetItemIterator it(ui->treeWidget); *it; ++it) {
+    for (QTreeWidgetItemIterator it(ui->treeWidget); *it; ++it)
+    {
         QTreeWidgetItem *item = *it;
         CanInterface *intf = (CanInterface *)item->data(0, Qt::UserRole).value<void *>();
-        if (intf) {
+        if (intf)
+        {
             intf->updateStatistics();
             item->setText(column_state, intf->getStateText());
             item->setText(column_rx_frames, QString().number(intf->getNumRxFrames()));
@@ -103,10 +137,14 @@ void CanStatusWindow::update()
             item->setText(column_tx_dropped, QString().number(intf->getNumTxDropped()));
         }
     }
-
 }
 
 Backend &CanStatusWindow::backend()
 {
     return _backend;
+}
+
+QSize CanStatusWindow::sizeHint() const
+{
+    return QSize(1200, 600);
 }

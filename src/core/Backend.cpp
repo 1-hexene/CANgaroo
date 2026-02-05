@@ -23,6 +23,7 @@
 #include "LogModel.h"
 
 #include <QDateTime>
+#include <QFileInfo>
 
 #include <core/CanTrace.h>
 #include <core/MeasurementSetup.h>
@@ -149,6 +150,7 @@ void Backend::loadDefaultSetup(MeasurementSetup &setup)
 void Backend::setDefaultSetup()
 {
     loadDefaultSetup(_setup);
+    emit onSetupChanged();
 }
 
 MeasurementSetup &Backend::getSetup()
@@ -174,6 +176,7 @@ CanTrace *Backend::getTrace()
 void Backend::clearTrace()
 {
     _trace->clear();
+    emit onClearTraceRequested();
 }
 
 CanDbMessage *Backend::findDbMessage(const CanMessage &msg) const
@@ -245,13 +248,26 @@ CanInterface *Backend::getInterfaceByDriverAndName(QString driverName, QString d
 
 }
 
-pCanDb Backend::loadDbc(QString filename)
+pCanDb Backend::loadDbc(QString filename, QString *errorMsg)
 {
     DbcParser parser;
 
+    QFileInfo info(filename);
+    if (!info.exists() || !info.isReadable()) {
+        if (errorMsg) {
+            *errorMsg = tr("File not found or not readable.");
+        }
+        return pCanDb();
+    }
+
     QFile *dbc = new QFile(filename);
+
     pCanDb candb(new CanDb());
-    parser.parseFile(dbc, *candb);
+    if (!parser.parseFile(dbc, *candb)) {
+        if (errorMsg) {
+            *errorMsg = tr("Failed to parse DBC file. Please check the log for details.");
+        }
+    }
     delete dbc;
 
     return candb;

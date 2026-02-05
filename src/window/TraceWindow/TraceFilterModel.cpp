@@ -1,5 +1,6 @@
 #include "TraceFilterModel.h"
 #include "BaseTraceViewModel.h"
+#include <QRegularExpression>
 
 TraceFilterModel::TraceFilterModel(QObject *parent)
     : QSortFilterProxyModel{parent},
@@ -14,17 +15,9 @@ void TraceFilterModel::setFilterText(QString filtertext)
     _filterText = filtertext;
 }
 
-QVariant TraceFilterModel::data(const QModelIndex &index, int role) const
-{
-
-    QModelIndex sourceIndex = mapToSource(index);
-
-
-    return sourceModel()->data(sourceIndex, role);
-}
 bool TraceFilterModel::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
 {
-   
+    // Pass all on no filter
     if(_filterText.length() == 0)
         return true;
 
@@ -40,14 +33,22 @@ bool TraceFilterModel::filterAcceptsRow(int source_row, const QModelIndex & sour
     QString datastr3 = sourceModel()->data(idx3).toString();
     QString datastr4 = sourceModel()->data(idx4).toString();
 
-    //fprintf(stderr, "Data for acceptance is %s\r\n", datastr1.toStdString().c_str());
+    QRegularExpression re(_filterText, QRegularExpression::CaseInsensitiveOption);
+    if (re.isValid()) {
+        if (datastr0.contains(re) ||
+            datastr1.contains(re) ||
+            datastr2.contains(re) ||
+            datastr3.contains(re) ||
+            datastr4.contains(re))
+            return true;
+    } else {
+        if (datastr0.contains(_filterText, Qt::CaseInsensitive) ||
+            datastr1.contains(_filterText, Qt::CaseInsensitive) ||
+            datastr2.contains(_filterText, Qt::CaseInsensitive) ||
+            datastr3.contains(_filterText, Qt::CaseInsensitive) ||
+            datastr4.contains(_filterText, Qt::CaseInsensitive))
+            return true;
+    }
 
-    if( datastr0.contains(_filterText) ||
-        datastr1.contains(_filterText) ||
-        datastr2.contains(_filterText) ||
-        datastr3.contains(_filterText) ||
-        datastr4.contains(_filterText))
-        return true;
-    else
-        return false;
+    return false;
 }

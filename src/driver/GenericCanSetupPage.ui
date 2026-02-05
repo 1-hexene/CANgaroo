@@ -40,9 +40,9 @@
   <widget class="QLabel" name="laDriver">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>160</x>
      <y>9</y>
-     <width>590</width>
+     <width>610</width>
      <height>16</height>
     </rect>
    </property>
@@ -72,9 +72,9 @@
   <widget class="QLabel" name="laInterface">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>160</x>
      <y>28</y>
-     <width>590</width>
+     <width>610</width>
      <height>16</height>
     </rect>
    </property>
@@ -104,9 +104,9 @@
   <widget class="QLabel" name="laInterfaceDetails">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>160</x>
      <y>47</y>
-     <width>590</width>
+     <width>610</width>
      <height>16</height>
     </rect>
    </property>
@@ -118,10 +118,16 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>109</y>
+     <y>110</y>
      <width>69</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+     <kerning>false</kerning>
+    </font>
    </property>
    <property name="text">
     <string>Bitrate:</string>
@@ -130,8 +136,8 @@
   <widget class="QComboBox" name="cbBitrate">
    <property name="geometry">
     <rect>
-     <x>181</x>
-     <y>109</y>
+     <x>161</x>
+     <y>110</y>
      <width>170</width>
      <height>20</height>
     </rect>
@@ -141,10 +147,16 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>135</y>
-     <width>141</width>
+     <y>136</y>
+     <width>121</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+     <kerning>false</kerning>
+    </font>
    </property>
    <property name="text">
     <string>Sample Point:</string>
@@ -153,8 +165,8 @@
   <widget class="QComboBox" name="cbSamplePoint">
    <property name="geometry">
     <rect>
-     <x>181</x>
-     <y>135</y>
+     <x>161</x>
+     <y>136</y>
      <width>170</width>
      <height>20</height>
     </rect>
@@ -163,11 +175,17 @@
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>185</y>
+     <x>9</x>
+     <y>200</y>
      <width>121</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+     <kerning>false</kerning>
+    </font>
    </property>
    <property name="text">
     <string>Data Bitrate:</string>
@@ -176,8 +194,8 @@
   <widget class="QComboBox" name="cbBitrateFD">
    <property name="geometry">
     <rect>
-     <x>181</x>
-     <y>185</y>
+     <x>160</x>
+     <y>200</y>
      <width>170</width>
      <height>20</height>
     </rect>
@@ -186,11 +204,17 @@
   <widget class="QLabel" name="label_10">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>211</y>
-     <width>161</width>
+     <x>9</x>
+     <y>226</y>
+     <width>151</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+     <kerning>false</kerning>
+    </font>
    </property>
    <property name="text">
     <string>Data Sample Point:</string>
@@ -199,8 +223,8 @@
   <widget class="QComboBox" name="cbSamplePointFD">
    <property name="geometry">
     <rect>
-     <x>181</x>
-     <y>211</y>
+     <x>160</x>
+     <y>226</y>
      <width>170</width>
      <height>20</height>
     </rect>
@@ -209,10 +233,10 @@
   <widget class="QLabel" name="label_11">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>255</y>
-     <width>71</width>
-     <height>21</height>
+     <x>9</x>
+     <y>260</y>
+     <width>91</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="font">
@@ -228,9 +252,9 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>181</x>
-     <y>255</y>
-     <width>431</width>
+     <x>160</x>
+     <y>260</y>
+     <width>401</width>
      <height>248</height>
     </rect>
    </property>
@@ -238,21 +262,21 @@
     <item>
      <widget class="QCheckBox" name="cbConfigOS">
       <property name="text">
-       <string>Configured by Operating System</string>
+       <string>Configured by OS</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QCheckBox" name="cbListenOnly">
       <property name="text">
-       <string>Bus Monitoring mode</string>
+       <string>Bus Monitoring Mode (Listen Only)</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QCheckBox" name="cbOneShot">
       <property name="text">
-       <string>One-Shot mode</string>
+       <string>One-Shot Mode</string>
       </property>
      </widget>
     </item>
@@ -266,14 +290,14 @@
     <item>
      <widget class="QCheckBox" name="cbAutoRestart">
       <property name="text">
-       <string>Auto-Restart on Bus-Off condition</string>
+       <string>Auto-Restart on Bus-Off Condition</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QCheckBox" name="cbCustomBitrate">
       <property name="text">
-       <string>Custom CAN Bitrate + Sample Point</string>
+       <string>Custom Bitrate + Sample Point</string>
       </property>
      </widget>
     </item>
@@ -292,8 +316,8 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>371</x>
-     <y>135</y>
+     <x>351</x>
+     <y>136</y>
      <width>72</width>
      <height>20</height>
     </rect>
@@ -326,8 +350,8 @@
   <widget class="QLabel" name="label_12">
    <property name="geometry">
     <rect>
-     <x>371</x>
-     <y>109</y>
+     <x>351</x>
+     <y>110</y>
      <width>181</width>
      <height>16</height>
     </rect>
@@ -339,8 +363,8 @@
   <widget class="QLabel" name="label_13">
    <property name="geometry">
     <rect>
-     <x>371</x>
-     <y>185</y>
+     <x>350</x>
+     <y>200</y>
      <width>181</width>
      <height>16</height>
     </rect>
@@ -355,8 +379,8 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>371</x>
-     <y>211</y>
+     <x>350</x>
+     <y>226</y>
      <width>72</width>
      <height>20</height>
     </rect>
@@ -389,8 +413,8 @@
   <widget class="QLabel" name="label_14">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>163</y>
+     <x>9</x>
+     <y>178</y>
      <width>231</width>
      <height>21</height>
     </rect>
@@ -410,8 +434,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>85</y>
-     <width>401</width>
+     <y>86</y>
+     <width>391</width>
      <height>21</height>
     </rect>
    </property>
@@ -430,9 +454,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>60</y>
-     <width>531</width>
-     <height>31</height>
+     <y>70</y>
+     <width>551</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="orientation">
@@ -443,9 +467,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>230</y>
-     <width>531</width>
-     <height>31</height>
+     <y>160</y>
+     <width>551</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="orientation">

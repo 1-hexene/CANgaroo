@@ -23,8 +23,6 @@
 
 #include <QAbstractItemModel>
 #include "TraceViewTypes.h"
-#include <QHash>
-#include <QColor>
 
 class Backend;
 class CanTrace;
@@ -36,8 +34,7 @@ class BaseTraceViewModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    enum
-    {
+    enum {
         column_index,
         column_timestamp,
         column_channel,
@@ -64,45 +61,6 @@ public:
     timestamp_mode_t timestampMode() const;
     void setTimestampMode(timestamp_mode_t timestampMode);
 
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
-    virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-    void updateAliasForIdString(const QString &idString,
-                                const QString &alias);
-    void setMessageColorForIdString(const QString &idString, const QColor &color);
-    QColor messageColorForIdString(const QString &idString) const;
-    QColor getColorForId(quint32 rawId) const;
-    QString commentForMessage(int msgId) const;
-    void setCommentForMessage(int msgId, const QString &c);
-    QHash<QString, QColor> getAllIdColors() const
-    {
-        return _idColors;
-    }
-
-    QHash<QString, QString> getAllIdAliases() const
-    {
-        return _idAliases;
-    }
-
-    QHash<int, QString> getAllMessageComments() const
-    {
-        return _perMessageComment;
-    }
-    void restoreIdColors(const QHash<QString, QColor> &colors)
-    {
-        _idColors = colors;
-    }
-
-    void restoreIdAliases(const QHash<QString, QString> &aliases)
-    {
-        _idAliases = aliases;
-    }
-
-    void restoreMessageComments(const QHash<int, QString> &comments)
-    {
-        _perMessageComment = comments;
-    }
- 
-
 protected:
     virtual QVariant data_DisplayRole(const QModelIndex &index, int role) const;
     virtual QVariant data_DisplayRole_Message(const QModelIndex &index, int role, const CanMessage &currentMsg, const CanMessage &lastMsg) const;
@@ -112,11 +70,9 @@ protected:
     virtual QVariant data_TextColorRole_Signal(const QModelIndex &index, int role, const CanMessage &msg) const;
 
     QVariant formatTimestamp(timestamp_mode_t mode, const CanMessage &currentMsg, const CanMessage &lastMsg) const;
-    QHash<QString, QColor> _idColors;
-    QHash<int, QString> _perMessageComment;
-    QHash<QString, QString> _idAliases;
 
 private:
     Backend *_backend;
     timestamp_mode_t _timestampMode;
+
 };

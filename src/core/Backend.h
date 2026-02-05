@@ -82,7 +82,7 @@ public:
     CanDriver *getDriverByName(QString driverName);
     CanInterface *getInterfaceByDriverAndName(QString driverName, QString deviceName);
 
-    pCanDb loadDbc(QString filename);
+    pCanDb loadDbc(QString filename, QString *errorMsg = 0);
 
     void clearLog();
     LogModel &getLogModel() const;
@@ -92,6 +92,8 @@ signals:
     void endMeasurement();
 
     void onSetupChanged();
+
+    void onClearTraceRequested();
 
     void onLogMessage(const QDateTime dt, const log_level_t level, const QString msg);
 

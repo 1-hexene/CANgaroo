@@ -26,22 +26,14 @@
 #include <QTimer>
 #include <core/Backend.h>
 #include <driver/CanInterface.h>
-#include <core/CanTrace.h>
-#include <QVBoxLayout>
-#include <QDateTime>
 
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QSpinBox>
-#include <QPushButton>
-
-
-RawTxWindow::RawTxWindow(QWidget *parent, Backend &backend) : ConfigurableWidget(parent),
-                                                              ui(new Ui::RawTxWindow),
-                                                              _backend(backend)
+RawTxWindow::RawTxWindow(QWidget *parent, Backend &backend) :
+    ConfigurableWidget(parent),
+    ui(new Ui::RawTxWindow),
+    _backend(backend),
+    _currentDbMsg(nullptr)
 {
     ui->setupUi(this);
-    ui->checkBox_Display_TX->setChecked(true);
 
     connect(ui->singleSendButton, SIGNAL(released()), this, SLOT(sendRawMessage()));
     connect(ui->repeatSendButton, SIGNAL(toggled(bool)), this, SLOT(sendRepeatMessage(bool)));
@@ -50,7 +42,7 @@ RawTxWindow::RawTxWindow(QWidget *parent, Backend &backend) : ConfigurableWidget
 
     connect(ui->fieldAddress, SIGNAL(textChanged(QString)), this, SLOT(fieldAddress_textChanged(QString)));
 
-    connect(ui->comboBoxInterface, SIGNAL(currentIndexChanged(int)), this, SLOT(updateCapabilities()));
+    // connect(ui->comboBoxInterface, SIGNAL(currentIndexChanged(int)), this, SLOT(updateCapabilities()));
     connect(ui->checkbox_FD, SIGNAL(stateChanged(int)), this, SLOT(updateCapabilities()));
 
     connect(&backend, SIGNAL(beginMeasurement()), this, SLOT(refreshInterfaces()));
@@ -67,11 +59,45 @@ RawTxWindow::RawTxWindow(QWidget *parent, Backend &backend) : ConfigurableWidget
     connect(sendstate_timer, SIGNAL(timeout()), this, SLOT(sendstate_timer_timeout()));
 
     // TODO: Grey out checkboxes that are invalid depending on DLC spinbox state
-    // connect(ui->fieldDLC, SIGNAL(valueChanged(int)), this, SLOT(changeDLC(int)));
+    //connect(ui->fieldDLC, SIGNAL(valueChanged(int)), this, SLOT(changeDLC(int)));
     connect(ui->comboBoxDLC, SIGNAL(currentIndexChanged(int)), this, SLOT(changeDLC()));
 
-    // Disable TX until interfaces are present
-    this->setDisabled(1);
+    _is_setting_message = false;
+
+    QList<QLineEdit*> lines = this->findChildren<QLineEdit*>();
+    QRegularExpression hex8("^[0-9A-Fa-f]{0,8}$");
+    QRegularExpression hex2("^[0-9A-Fa-f]{0,2}$");
+
+    for (QLineEdit *l : lines) {
+        l->setInputMask("");
+        if (l == ui->fieldAddress) {
+            l->setValidator(new QRegularExpressionValidator(hex8, this));
+        } else if (l->objectName().startsWith("fieldByte")) {
+            l->setValidator(new QRegularExpressionValidator(hex2, this));
+        }
+
+        connect(l, &QLineEdit::textChanged, this, [l, this](const QString &text){
+            if (text != text.toUpper()) {
+                int pos = l->cursorPosition();
+                l->setText(text.toUpper());
+                l->setCursorPosition(pos);
+            }
+            this->reflash_can_msg();
+        });
+    }
+    QList<QCheckBox*> checks = this->findChildren<QCheckBox*>();
+    for (QCheckBox *c : checks) {
+        connect(c, SIGNAL(stateChanged(int)), this, SLOT(reflash_can_msg()));
+    }
+    connect(ui->comboBoxDLC, SIGNAL(currentIndexChanged(int)), this, SLOT(reflash_can_msg()));
+
+    connect(ui->comboBoxDLC, SIGNAL(currentIndexChanged(int)), this, SLOT(reflash_can_msg()));
+
+    ui->fieldAddress->clear();
+    this->setEnabled(false);
+
+    // Signal name
+    ui->tableSignals->setColumnWidth(0, 200);
 }
 
 RawTxWindow::~RawTxWindow()
@@ -156,68 +182,68 @@ void RawTxWindow::changeDLC()
     uint8_t dlc = ui->comboBoxDLC->currentData().toUInt();
 
     // If DLC > 8, must be FD
-    if (dlc > 8)
+    if(dlc > 8)
     {
         ui->checkbox_FD->setChecked(true);
     }
 
-    switch (dlc)
+    switch(dlc)
     {
-    case 0:
-        ui->fieldByte0_0->setEnabled(false);
-        // fallthrough
-    case 1:
-        ui->fieldByte1_0->setEnabled(false);
-        // fallthrough
+        case 0:
+            ui->fieldByte0_0->setEnabled(false);
+            //fallthrough
+        case 1:
+            ui->fieldByte1_0->setEnabled(false);
+            //fallthrough
 
-    case 2:
-        ui->fieldByte2_0->setEnabled(false);
-        // fallthrough
+        case 2:
+            ui->fieldByte2_0->setEnabled(false);
+            //fallthrough
 
-    case 3:
-        ui->fieldByte3_0->setEnabled(false);
-        // fallthrough
+        case 3:
+            ui->fieldByte3_0->setEnabled(false);
+            //fallthrough
 
-    case 4:
-        ui->fieldByte4_0->setEnabled(false);
-        // fallthrough
+        case 4:
+            ui->fieldByte4_0->setEnabled(false);
+            //fallthrough
 
-    case 5:
-        ui->fieldByte5_0->setEnabled(false);
-        // fallthrough
+        case 5:
+            ui->fieldByte5_0->setEnabled(false);
+            //fallthrough
 
-    case 6:
-        ui->fieldByte6_0->setEnabled(false);
-        // fallthrough
+        case 6:
+            ui->fieldByte6_0->setEnabled(false);
+            //fallthrough
 
-    case 7:
-        ui->fieldByte7_0->setEnabled(false);
-        // fallthrough
+        case 7:
+            ui->fieldByte7_0->setEnabled(false);
+            //fallthrough
 
-    case 8:
-        ui->fieldByte0_1->setEnabled(false);
-        ui->fieldByte1_1->setEnabled(false);
-        ui->fieldByte2_1->setEnabled(false);
-        ui->fieldByte3_1->setEnabled(false);
-        // fallthrough
-    case 12:
-        ui->fieldByte4_1->setEnabled(false);
-        ui->fieldByte5_1->setEnabled(false);
-        ui->fieldByte6_1->setEnabled(false);
-        ui->fieldByte7_1->setEnabled(false);
-        // fallthrough
+        case 8:
+            ui->fieldByte0_1->setEnabled(false);
+            ui->fieldByte1_1->setEnabled(false);
+            ui->fieldByte2_1->setEnabled(false);
+            ui->fieldByte3_1->setEnabled(false);
+            //fallthrough
+        case 12:
+            ui->fieldByte4_1->setEnabled(false);
+            ui->fieldByte5_1->setEnabled(false);
+            ui->fieldByte6_1->setEnabled(false);
+            ui->fieldByte7_1->setEnabled(false);
+            //fallthrough
     case 16:
         ui->fieldByte0_2->setEnabled(false);
         ui->fieldByte1_2->setEnabled(false);
         ui->fieldByte2_2->setEnabled(false);
         ui->fieldByte3_2->setEnabled(false);
-        // fallthrough
+        //fallthrough
     case 20:
         ui->fieldByte4_2->setEnabled(false);
         ui->fieldByte5_2->setEnabled(false);
         ui->fieldByte6_2->setEnabled(false);
         ui->fieldByte7_2->setEnabled(false);
-        // fallthrough
+        //fallthrough
     case 24:
         ui->fieldByte0_3->setEnabled(false);
         ui->fieldByte1_3->setEnabled(false);
@@ -227,7 +253,7 @@ void RawTxWindow::changeDLC()
         ui->fieldByte5_3->setEnabled(false);
         ui->fieldByte6_3->setEnabled(false);
         ui->fieldByte7_3->setEnabled(false);
-        // fallthrough
+        //fallthrough
     case 32:
         ui->fieldByte0_4->setEnabled(false);
         ui->fieldByte1_4->setEnabled(false);
@@ -246,7 +272,7 @@ void RawTxWindow::changeDLC()
         ui->fieldByte5_5->setEnabled(false);
         ui->fieldByte6_5->setEnabled(false);
         ui->fieldByte7_5->setEnabled(false);
-        // fallthrough
+        //fallthrough
     case 48:
         ui->fieldByte0_6->setEnabled(false);
         ui->fieldByte1_6->setEnabled(false);
@@ -265,110 +291,108 @@ void RawTxWindow::changeDLC()
         ui->fieldByte5_7->setEnabled(false);
         ui->fieldByte6_7->setEnabled(false);
         ui->fieldByte7_7->setEnabled(false);
+
     }
-    //    repeatmsg_timer->setInterval(ms);
+//    repeatmsg_timer->setInterval(ms);
 }
 
 void RawTxWindow::updateCapabilities()
 {
-    // check if intf suports fd, if, enable, else dis
-    // CanInterface *intf = _backend.getInterfaceById(idx);
-    if (ui->comboBoxInterface->count() > 0)
+    // By default BRS should be available
+    CanInterface *intf = _backend.getInterfaceById(_slavedInterfaceId);
+
+    if(intf == NULL)
     {
-        // By default BRS should be available
+        return;
+    }
 
-        CanInterface *intf = _backend.getInterfaceById((CanInterfaceId)ui->comboBoxInterface->currentData().toUInt());
+    _intf = intf; // store current interface
 
-        if (intf == NULL)
+    int idx_restore = ui->comboBoxDLC->currentIndex();
+
+    // If CANFD is available
+    if(intf->getCapabilities() & intf->capability_canfd)
+    {
+        ui->comboBoxDLC->clear();
+        ui->comboBoxDLC->addItem("0", 0);
+        ui->comboBoxDLC->addItem("1", 1);
+        ui->comboBoxDLC->addItem("2", 2);
+        ui->comboBoxDLC->addItem("3", 3);
+        ui->comboBoxDLC->addItem("4", 4);
+        ui->comboBoxDLC->addItem("5", 5);
+        ui->comboBoxDLC->addItem("6", 6);
+        ui->comboBoxDLC->addItem("7", 7);
+        ui->comboBoxDLC->addItem("8", 8);
+        ui->comboBoxDLC->addItem("12", 12);
+        ui->comboBoxDLC->addItem("16", 16);
+        ui->comboBoxDLC->addItem("20", 20);
+        ui->comboBoxDLC->addItem("24", 24);
+        ui->comboBoxDLC->addItem("32", 32);
+        ui->comboBoxDLC->addItem("48", 48);
+        ui->comboBoxDLC->addItem("64", 64);
+
+        // Restore previous selected DLC if available
+        if(idx_restore > 1 && idx_restore < ui->comboBoxDLC->count())
+            ui->comboBoxDLC->setCurrentIndex(idx_restore);
+
+        ui->checkbox_FD->setDisabled(0);
+
+        // Enable BRS if this is an FD frame
+        if(ui->checkbox_FD->isChecked())
         {
-            return;
-        }
+            // Enable BRS if FD enabled
+            ui->checkbox_BRS->setDisabled(0);
 
-        int idx_restore = ui->comboBoxDLC->currentIndex();
-
-        // If CANFD is available
-        if (intf->getCapabilities() & intf->capability_canfd)
-        {
-            ui->comboBoxDLC->clear();
-            ui->comboBoxDLC->addItem("0", 0);
-            ui->comboBoxDLC->addItem("1", 1);
-            ui->comboBoxDLC->addItem("2", 2);
-            ui->comboBoxDLC->addItem("3", 3);
-            ui->comboBoxDLC->addItem("4", 4);
-            ui->comboBoxDLC->addItem("5", 5);
-            ui->comboBoxDLC->addItem("6", 6);
-            ui->comboBoxDLC->addItem("7", 7);
-            ui->comboBoxDLC->addItem("8", 8);
-            ui->comboBoxDLC->addItem("12", 12);
-            ui->comboBoxDLC->addItem("16", 16);
-            ui->comboBoxDLC->addItem("20", 20);
-            ui->comboBoxDLC->addItem("24", 24);
-            ui->comboBoxDLC->addItem("32", 32);
-            ui->comboBoxDLC->addItem("48", 48);
-            ui->comboBoxDLC->addItem("64", 64);
-
-            // Restore previous selected DLC if available
-            if (idx_restore > 1 && idx_restore < ui->comboBoxDLC->count())
-                ui->comboBoxDLC->setCurrentIndex(idx_restore);
-
-            ui->checkbox_FD->setDisabled(0);
-
-            // Enable BRS if this is an FD frame
-            if (ui->checkbox_FD->isChecked())
-            {
-                // Enable BRS if FD enabled
-                ui->checkbox_BRS->setDisabled(0);
-
-                // Disable RTR if FD enabled
-                ui->checkBox_IsRTR->setDisabled(1);
-                ui->checkBox_IsRTR->setChecked(false);
-            }
-            else
-            {
-                // Disable BRS if FD disabled
-                ui->checkbox_BRS->setDisabled(1);
-                ui->checkbox_BRS->setChecked(false);
-
-                // Enable RTR if FD disabled
-                ui->checkBox_IsRTR->setDisabled(0);
-            }
-            showFDFields();
+            // Disable RTR if FD enabled
+            ui->checkBox_IsRTR->setDisabled(1);
+            ui->checkBox_IsRTR->setChecked(false);
         }
         else
         {
-            // CANFD not available
-            ui->comboBoxDLC->clear();
-            ui->comboBoxDLC->addItem("0", 0);
-            ui->comboBoxDLC->addItem("1", 1);
-            ui->comboBoxDLC->addItem("2", 2);
-            ui->comboBoxDLC->addItem("3", 3);
-            ui->comboBoxDLC->addItem("4", 4);
-            ui->comboBoxDLC->addItem("5", 5);
-            ui->comboBoxDLC->addItem("6", 6);
-            ui->comboBoxDLC->addItem("7", 7);
-            ui->comboBoxDLC->addItem("8", 8);
-
-            // Restore previous selected DLC if available
-            if (idx_restore > 1 && idx_restore < ui->comboBoxDLC->count())
-                ui->comboBoxDLC->setCurrentIndex(idx_restore);
-
-            // Unset/disable FD / BRS checkboxes
-            ui->checkbox_FD->setDisabled(1);
+            // Disable BRS if FD disabled
             ui->checkbox_BRS->setDisabled(1);
-            ui->checkbox_FD->setChecked(false);
             ui->checkbox_BRS->setChecked(false);
 
-            // Enable RTR (could be disabled by FD checkbox being set)
+            // Enable RTR if FD disabled
             ui->checkBox_IsRTR->setDisabled(0);
 
-            hideFDFields();
         }
+        showFDFields();
+    }
+    else
+    {
+        // CANFD not available
+        ui->comboBoxDLC->clear();
+        ui->comboBoxDLC->addItem("0", 0);
+        ui->comboBoxDLC->addItem("1", 1);
+        ui->comboBoxDLC->addItem("2", 2);
+        ui->comboBoxDLC->addItem("3", 3);
+        ui->comboBoxDLC->addItem("4", 4);
+        ui->comboBoxDLC->addItem("5", 5);
+        ui->comboBoxDLC->addItem("6", 6);
+        ui->comboBoxDLC->addItem("7", 7);
+        ui->comboBoxDLC->addItem("8", 8);
+
+        // Restore previous selected DLC if available
+        if(idx_restore > 1 && idx_restore < ui->comboBoxDLC->count())
+            ui->comboBoxDLC->setCurrentIndex(idx_restore);
+
+        // Unset/disable FD / BRS checkboxes
+        ui->checkbox_FD->setDisabled(1);
+        ui->checkbox_BRS->setDisabled(1);
+        ui->checkbox_FD->setChecked(false);
+        ui->checkbox_BRS->setChecked(false);
+
+        // Enable RTR (could be disabled by FD checkbox being set)
+        ui->checkBox_IsRTR->setDisabled(0);
+
+        hideFDFields();
     }
 }
 
 void RawTxWindow::changeRepeatRate(int ms)
 {
-    if (ms)
+    if(ms)
         repeatmsg_timer->setInterval(ms);
     else
         ui->spinBox_RepeatRate->setValue(1);
@@ -376,15 +400,12 @@ void RawTxWindow::changeRepeatRate(int ms)
 
 void RawTxWindow::sendRepeatMessage(bool enable)
 {
-    // qDebug() << "[RawTxWindow] sendRepeatMessage enable=" << enable;
-
-    if (enable)
+    if(enable)
     {
         reflash_can_msg();
-        // qDebug() << "  Starting repeat with rate=" << ui->spinBox_RepeatRate->value();
 
         char outmsg[256];
-        _intf = _backend.getInterfaceById((CanInterfaceId)ui->comboBoxInterface->currentData().toUInt());
+        _intf = _backend.getInterfaceById(_slavedInterfaceId);
         snprintf(outmsg, 256, "Send [%s] to %d on port %s [ext=%u rtr=%u err=%u fd=%u brs=%u]",
                  _can_msg.getDataHexString().toLocal8Bit().constData(), _can_msg.getId(), _intf->getName().toLocal8Bit().constData(),
                  _can_msg.isExtended(), _can_msg.isRTR(), _can_msg.isErrorFrame(), _can_msg.isFD(), _can_msg.isBRS());
@@ -393,58 +414,39 @@ void RawTxWindow::sendRepeatMessage(bool enable)
         repeatmsg_timer->start(ui->spinBox_RepeatRate->value());
         ui->spinBox_RepeatRate->setEnabled(false);
         ui->singleSendButton->setEnabled(false);
-        ui->comboBoxInterface->setEnabled(false);
+        // ui->comboBoxInterface->setEnabled(false);
     }
     else
     {
         repeatmsg_timer->stop();
         ui->spinBox_RepeatRate->setEnabled(true);
         ui->singleSendButton->setEnabled(true);
-        ui->comboBoxInterface->setEnabled(true);
+        // ui->comboBoxInterface->setEnabled(true);
     }
 }
 
 void RawTxWindow::repeatmsg_timer_timeout()
 {
-    // qDebug() << "[RawTxWindow] repeatmsg_timer_timeout() ENTER";
-    if (!_intf->isOpen())
+    if(!_intf->isOpen())
     {
-        // qDebug() << "  ERROR: _intf == NULL";
         log_error(_intf->getName() + " not Open!");
         return;
     }
-
-    qint64 msec = QDateTime::currentMSecsSinceEpoch();
-    _can_msg.setTimestamp({
-        static_cast<long>(msec / 1000),        // Seconds
-        static_cast<long>((msec % 1000) * 1000) // Mikroseconds
-    });
-
-    // qDebug() << "  Interface:" << _intf->getName() << "isOpen=" << _intf->isOpen();
     _intf->sendMessage(_can_msg);
-    if (ui->checkBox_Display_TX->isChecked())
-    {
-        _can_msg.setRX(false);
-        _can_msg.setShow(true);
-        _backend.getTrace()->enqueueMessage(_can_msg);
-    }
-    // qDebug() << "  Sending periodic CAN frame id=" << Qt::hex << _can_msg.getId()
-    //          << "len=" << _can_msg.getLength()
-    //          << "data=" << _can_msg.getDataHexString();
 }
 
 void RawTxWindow::disableTxWindow(int disable)
 {
-    if (disable)
+    if(disable)
     {
-        if (ui->repeatSendButton->isChecked())
+        if(ui->repeatSendButton->isChecked())
             ui->repeatSendButton->toggle();
         this->setDisabled(1);
     }
     else
     {
         // Only enable if an interface is present
-        if (_backend.getInterfaceList().count() > 0)
+        if(_backend.getInterfaceList().count() > 0)
             this->setDisabled(0);
         else
             this->setDisabled(1);
@@ -453,50 +455,17 @@ void RawTxWindow::disableTxWindow(int disable)
 
 void RawTxWindow::refreshInterfaces()
 {
-    qDebug() << "[RawTxWindow] refreshInterfaces()";
-
-    ui->comboBoxInterface->clear();
-
-    int cb_idx = 0;
-
-    // TODO: Only show interfaces that are included in active MeasurementInterfaces!
-    foreach (CanInterfaceId ifid, _backend.getInterfaceList())
-    {
-        CanInterface *intf = _backend.getInterfaceById(ifid);
-
-        if (intf->isOpen())
-        {
-            ui->comboBoxInterface->addItem(intf->getName() + " " + intf->getDriver()->getName());
-            ui->comboBoxInterface->setItemData(cb_idx, QVariant(ifid));
-            cb_idx++;
-        }
-    }
-
-    if (cb_idx == 0)
-    {
-        disableTxWindow(1);
-        if (sendstate_timer->isActive())
-        {
-            sendstate_timer->stop();
-        }
-    }
-    else
-    {
-        disableTxWindow(0);
-        if (!sendstate_timer->isActive())
-        {
-            sendstate_timer->start();
-        }
-    }
-
+    // No longer have a combo box to refresh.
+    // The Generator window handles interface selection.
+    _is_setting_message = true;
+    this->setEnabled(_backend.isMeasurementRunning());
     updateCapabilities();
+    _is_setting_message = false;
 }
 
 void RawTxWindow::reflash_can_msg()
 {
-    // qDebug() << "[RawTxWindow] reflash_can_msg() id="
-    //          << ui->fieldAddress->text()
-    //          << "dlc=" << ui->comboBoxDLC->currentData().toUInt();
+    if (_is_setting_message) return;
 
     bool en_extended = ui->checkBox_IsExtended->isChecked();
     bool en_rtr = ui->checkBox_IsRTR->isChecked();
@@ -581,29 +550,30 @@ void RawTxWindow::reflash_can_msg()
     uint32_t address = ui->fieldAddress->text().toUpper().toUInt(NULL, 16);
 
     // If address is beyond std address namespace, force extended
-    if (address > 0x7ff)
+    if(address > 0x7ff)
     {
         en_extended = true;
         ui->checkBox_IsExtended->setChecked(true);
     }
 
     // If address is larger than max for extended, clip
-    if (address >= 0x1FFFFFFF)
+    if(address >= 0x1FFFFFFF)
     {
         address = address & 0x1FFFFFFF;
-        ui->fieldAddress->setText(QString::number(address, 16).toUpper());
+        ui->fieldAddress->setText(QString::number( address, 16 ).toUpper());
     }
 
-    uint8_t dlc = ui->comboBoxDLC->currentData().toUInt();
+    uint8_t dlc =ui->comboBoxDLC->currentData().toUInt();
 
     // If DLC > 8, must be FD
-    if (dlc > 8)
+    if(dlc > 8)
     {
         en_fd = true;
         ui->checkbox_FD->setChecked(true);
     }
 
     _can_msg.setId(address);
+    _can_msg.setInterfaceId(_slavedInterfaceId);
     _can_msg.setLength(dlc);
 
     _can_msg.setExtended(en_extended);
@@ -614,67 +584,72 @@ void RawTxWindow::reflash_can_msg()
     _can_msg.setFD(en_fd);
 
     // Set payload data
-    for (int i = 0; i < dlc; i++)
+    for(int i = 0; i < dlc; i++)
     {
         _can_msg.setDataAt(i, data_int[i]);
     }
 
     _can_msg.setRX(false);
-    _can_msg.setShow(ui->checkBox_Display_TX->isChecked());
+    _can_msg.setShow(true);
 
     qint64 msec = QDateTime::currentMSecsSinceEpoch();
     _can_msg.setTimestamp({
         static_cast<long>(msec / 1000),        // Seconds
         static_cast<long>((msec % 1000) * 1000) // Microseconds
     });
+
+    if (!_is_setting_message) {
+        emit messageUpdated(_can_msg);
+        updateSignalTable();
+    }
+}
+
+void RawTxWindow::updateSignalTable()
+{
+    ui->tableSignals->setRowCount(0);
+    if (!_currentDbMsg) return;
+
+    CanDbSignalList sigList = _currentDbMsg->getSignals();
+    ui->tableSignals->setRowCount(sigList.size());
+
+    for (int i = 0; i < sigList.size(); ++i) {
+        CanDbSignal *sig = sigList[i];
+        double val = sig->extractPhysicalFromMessage(_can_msg);
+        
+        ui->tableSignals->setItem(i, 0, new QTableWidgetItem(sig->name()));
+        ui->tableSignals->setItem(i, 1, new QTableWidgetItem(QString::number(val, 'f', 2)));
+        ui->tableSignals->setItem(i, 2, new QTableWidgetItem(sig->getUnit()));
+    }
 }
 
 void RawTxWindow::sendRawMessage()
 {
-    // qDebug() << "[RawTxWindow] sendRawMessage() ENTER";
     reflash_can_msg();
 
-    CanInterface *intf = _backend.getInterfaceById((CanInterfaceId)ui->comboBoxInterface->currentData().toUInt());
-    if (!intf->isOpen())
+    CanInterface *intf = _backend.getInterfaceById(_slavedInterfaceId);
+    if(!intf) return;
+    if(!intf->isOpen())
     {
         log_error(intf->getName() + " not Open!");
         return;
     }
-    // qDebug() << "  Interface:" << intf->getName() << "isOpen=" << intf->isOpen();
-
     _can_msg.setInterfaceId(intf->getId());
     intf->sendMessage(_can_msg);
-
-    if (ui->checkBox_Display_TX->isChecked())
-    {
-        if (intf->getName().contains("CANIL-CAN"))
-        {
-            // Handled by CANIL-Driver
-        }
-        else
-        {
-            _can_msg.setRX(false);
-            _can_msg.setShow(true);
-            _backend.getTrace()->enqueueMessage(_can_msg);
-        }
-    }
-    // qDebug() << "  Sending CAN frame id=" << Qt::hex << _can_msg.getId()
-    //          << "len=" << _can_msg.getLength()
-    //          << "data=" << _can_msg.getDataHexString();
 
     char outmsg[256];
     snprintf(outmsg, 256, "Send [%s] to %d on port %s [ext=%u rtr=%u err=%u fd=%u brs=%u]",
              _can_msg.getDataHexString().toLocal8Bit().constData(), _can_msg.getId(), intf->getName().toLocal8Bit().constData(),
              _can_msg.isExtended(), _can_msg.isRTR(), _can_msg.isErrorFrame(), _can_msg.isFD(), _can_msg.isBRS());
     log_info(outmsg);
+
 }
 
 void RawTxWindow::sendstate_timer_timeout()
 {
-    CanInterface *intf = _backend.getInterfaceById((CanInterfaceId)ui->comboBoxInterface->currentData().toUInt());
-    if (intf->isOpen())
+    CanInterface *intf = _backend.getInterfaceById(_slavedInterfaceId);
+    if(intf && intf->isOpen())
     {
-        if (intf->getState() == CanInterface::state_tx_fail || intf->getState() == CanInterface::state_tx_success)
+        if(intf->getState() == CanInterface::state_tx_fail || intf->getState() == CanInterface::state_tx_success)
             ui->label_3->setText(intf->getName() + ' ' + intf->getStateText());
         else
             ui->label_3->setText("");
@@ -783,6 +758,7 @@ void RawTxWindow::hideFDFields()
     ui->fieldByte7_7->hide();
 }
 
+
 void RawTxWindow::showFDFields()
 {
     ui->label_col21->show();
@@ -801,6 +777,7 @@ void RawTxWindow::showFDFields()
     ui->label_pay6->show();
     ui->label_pay7->show();
     ui->label_pay8->show();
+
 
     ui->fieldByte0_1->show();
     ui->fieldByte1_1->show();
@@ -871,7 +848,7 @@ void RawTxWindow::fieldAddress_textChanged(QString str)
     uint32_t address = ui->fieldAddress->text().toUpper().toUInt(NULL, 16);
 
     // If address is beyond std address namespace, force extended
-    if (address > 0x7ff || str.length() > 3)
+    if(address > 0x7ff || str.length() > 3)
     {
         ui->checkBox_IsExtended->setChecked(true);
     }
@@ -881,108 +858,59 @@ void RawTxWindow::fieldAddress_textChanged(QString str)
     }
 }
 
-void RawTxWindow::setDialogMode(bool en)
+void RawTxWindow::setMessage(const CanMessage &msg, const QString &name, CanInterfaceId interfaceId, CanDbMessage *dbMsg)
 {
-    if (_dialogMode == en)
-    {
-        return;
+    _is_setting_message = true;
+    
+    this->setEnabled(true);
+    Q_UNUSED(name);
+
+    _slavedInterfaceId = interfaceId;
+    updateCapabilities();
+    this->setEnabled(true);
+
+    _currentDbMsg = dbMsg;
+
+    bool isExtended = msg.isExtended();
+    bool isFD = msg.isFD();
+    bool isBRS = msg.isBRS();
+    int dlc = msg.getLength();
+
+    ui->fieldAddress->setText(QString("%1").arg(msg.getId(), 0, 16).toUpper());
+
+    if (dbMsg) {
+        isExtended = (dbMsg->getRaw_id() & 0x80000000) != 0;
+        int dlcCode = dbMsg->getDlc();
+        if (dlcCode <= 8) {
+            dlc = dlcCode;
+        } else {
+            isFD = true;
+            static const int dlcToLen[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 16, 20, 24, 32, 48, 64};
+            if (dlcCode < 16) {
+                dlc = dlcToLen[dlcCode];
+            }
+        }
     }
 
-    _dialogMode = en;
+    ui->checkBox_IsExtended->setChecked(isExtended);
+    ui->checkbox_FD->setChecked(isFD);
+    ui->checkbox_BRS->setChecked(isBRS);
 
-    if (en)
-    {
-        ui->singleSendButton->hide();
-        ui->repeatSendButton->hide();
-        ui->label_3->hide();
-        ui->checkBox_Display_TX->hide();
-
-      
-        QRect byteGeom = ui->fieldByte0_0->geometry();
-        int spinY = byteGeom.y();         
-        int spinX = ui->spinBox_RepeatRate->geometry().x()-50;
-
-
-        ui->spinBox_RepeatRate->setGeometry(spinX, spinY, 80, 24);
-        ui->spinBox_RepeatRate->show();
-
-       
-        int msX = spinX + 85;
-        ui->label_11->setGeometry(msX, spinY, 31, 26);
-        ui->label_11->show();
-
+    int dlc_index = ui->comboBoxDLC->findData(dlc);
+    if (dlc_index != -1) {
+        ui->comboBoxDLC->setCurrentIndex(dlc_index);
     }
-    else
-    {
-        ui->singleSendButton->show();
-        ui->repeatSendButton->show();
-        ui->label_3->show();
-        ui->checkBox_Display_TX->show();
-
-        ui->spinBox_RepeatRate->setGeometry(600, 10, 61, 26);
-        ui->spinBox_RepeatRate->show();
-
-        ui->label_11->setGeometry(667, 10, 31, 26);
-        ui->label_11->show();
-    }
-}
-
-void RawTxWindow::setTaskEditMode(bool en)
-{
-    if (_dialogMode)
-    {
-        return;
+    
+    // Load data bytes into fields
+    for (int i = 0; i < 64; ++i) {
+        QString fieldName = QString("fieldByte%1_%2").arg(i % 8).arg(i / 8);
+        QLineEdit *field = this->findChild<QLineEdit*>(fieldName);
+        if (field) {
+            field->setText(QString("%1").arg(msg.getByte(i), 2, 16, QChar('0')).toUpper());
+        }
     }
 
-    if (en)
-    {
-        ui->singleSendButton->hide();
-        ui->repeatSendButton->hide();
-        ui->checkBox_Display_TX->hide();
+    updateSignalTable();
 
-        if (ui->comboBoxInterface)
-            ui->comboBoxInterface->hide();
-        if (ui->label_12)
-            ui->label_12->hide();
-
-        if (ui->label_11)
-            ui->label_11->setText("ms");
-        if (ui->spinBox_RepeatRate)
-            ui->spinBox_RepeatRate->show();
-    }
-    else
-    {
-        ui->singleSendButton->show();
-        ui->repeatSendButton->show();
-        ui->checkBox_Display_TX->show();
-
-        if (ui->comboBoxInterface)
-            ui->comboBoxInterface->show();
-        if (ui->label_12)
-            ui->label_12->show();
-
-        if (ui->label_11)
-            ui->label_11->setText("ms");
-        if (ui->spinBox_RepeatRate)
-            ui->spinBox_RepeatRate->show();
-    }
-}
-
-void RawTxWindow::getCurrentMessage(CanMessage &out)
-{
-    reflash_can_msg();
-
-    CanInterface *intf = _backend.getInterfaceById(
-        (CanInterfaceId)ui->comboBoxInterface->currentData().toUInt());
-    if (intf && intf->isOpen())
-    {
-        _can_msg.setInterfaceId(intf->getId());
-    }
-
-    out = _can_msg;
-}
-
-int RawTxWindow::getPeriodMs() const
-{
-    return ui->spinBox_RepeatRate->value();
+    _is_setting_message = false;
 }

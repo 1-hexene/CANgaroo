@@ -39,4 +39,4 @@ test.dbc
 .vscode/
 
 build/
-to_ignore.in
+bin/

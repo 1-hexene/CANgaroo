@@ -30,6 +30,16 @@
        <number>0</number>
       </property>
       <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>View:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cbViewMode"/>
+      </item>
+      <item>
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Timestamps:</string>
@@ -38,63 +48,6 @@
       </item>
       <item>
        <widget class="QComboBox" name="cbTimestampMode"/>
-      </item>
-      <item>
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="cbAggregated">
-        <property name="text">
-         <string>Group by ID</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../cangaroo.qrc">
-          <normaloff>:/assets/stack.png</normaloff>:/assets/stack.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="cbAutoScroll">
-        <property name="toolTip">
-         <string>Autoscroll</string>
-        </property>
-        <property name="text">
-         <string>Autoscroll</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../cangaroo.qrc">
-          <normaloff>:/assets/auto-scroll.svg</normaloff>:/assets/auto-scroll.svg</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
       </item>
       <item>
        <spacer name="horizontalSpacer">

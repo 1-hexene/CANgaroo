@@ -24,6 +24,7 @@
 #include <QAbstractItemModel>
 #include <QMap>
 #include <QList>
+#include <sys/time.h>
 
 #include "BaseTraceViewModel.h"
 #include <core/CanMessage.h>
@@ -48,7 +49,6 @@ public:
     virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
     virtual QModelIndex parent(const QModelIndex &child) const;
     virtual int rowCount(const QModelIndex &parent) const;
-     void updateAliasForId(const QString &idString, const QString &alias);
 
 private:
     CanIdMap _map;
@@ -63,7 +63,6 @@ private:
 protected:
     virtual QVariant data_DisplayRole(const QModelIndex &index, int role) const;
     virtual QVariant data_TextColorRole(const QModelIndex &index, int role) const;
-    virtual QVariant data(const QModelIndex &index, int role) const override;
 
 private slots:
     void createItem(const CanMessage &msg);

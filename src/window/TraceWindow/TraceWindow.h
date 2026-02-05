@@ -22,12 +22,12 @@
 #pragma once
 
 #include <core/ConfigurableWidget.h>
+#include <core/CanMessage.h>
 #include "TraceViewTypes.h"
 #include "TraceFilterModel.h"
 
-namespace Ui
-{
-    class TraceWindow;
+namespace Ui {
+class TraceWindow;
 }
 class Backend;
 class QDomDocument;
@@ -35,55 +35,52 @@ class QDomElement;
 class QSortFilterProxyModel;
 class LinearTraceViewModel;
 class AggregatedTraceViewModel;
+class UnifiedTraceViewModel;
+
 
 class TraceWindow : public ConfigurableWidget
 {
     Q_OBJECT
 
 public:
-    typedef enum mode
-    {
-        mode_linear,
-        mode_aggregated
+    typedef enum mode {
+        mode_aggregated,
+        mode_unified
     } mode_t;
 
     explicit TraceWindow(QWidget *parent, Backend &backend);
     ~TraceWindow();
 
     void setMode(mode_t mode);
-    void setAutoScroll(bool doAutoScroll);
     void setTimestampMode(int mode);
 
     virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
     virtual bool loadXML(Backend &backend, QDomElement &el);
-    LinearTraceViewModel *linearModel() const { return _linearTraceViewModel; }
+
+    UnifiedTraceViewModel *linearModel() const { return _unifiedTraceViewModel; }
     AggregatedTraceViewModel* aggregatedModel() const{return _aggregatedTraceViewModel;}
 
 public slots:
-    void rowsInserted(const QModelIndex &parent, int first, int last);
+    void addMessage(const CanMessage &msg);
+    void rowsInserted(const QModelIndex & parent, int first, int last);
 
 private slots:
-    void on_cbAggregated_stateChanged(int i);
-    void on_cbAutoScroll_stateChanged(int i);
 
     void on_cbTimestampMode_currentIndexChanged(int index);
     void on_cbFilterChanged(void);
 
     void on_cbTraceClearpushButton(void);
-    void onTraceRowDoubleClicked(const QModelIndex &index);
+    void on_cbViewMode_currentIndexChanged(int index);
 
 private:
     Ui::TraceWindow *ui;
     Backend *_backend;
     mode_t _mode;
-    bool _doAutoScroll;
     timestamp_mode_t _timestampMode;
 
-    TraceFilterModel *_aggFilteredModel;
-    TraceFilterModel *_linFilteredModel;
-    LinearTraceViewModel *_linearTraceViewModel;
+    TraceFilterModel * _aggFilteredModel;
+    TraceFilterModel * _uniFilteredModel;
     AggregatedTraceViewModel *_aggregatedTraceViewModel;
+    UnifiedTraceViewModel *_unifiedTraceViewModel;
     QSortFilterProxyModel *_aggregatedProxyModel;
-
-    QSortFilterProxyModel *_linearProxyModel;
 };

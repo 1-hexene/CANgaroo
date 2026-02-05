@@ -21,7 +21,7 @@
 
 #include "AggregatedTraceViewModel.h"
 #include <QColor>
-#include <QDebug>   
+
 #include <core/Backend.h>
 #include <core/CanTrace.h>
 #include <core/CanDbMessage.h>
@@ -43,13 +43,11 @@ void AggregatedTraceViewModel::createItem(const CanMessage &msg)
     item->_lastmsg = msg;
 
     CanDbMessage *dbmsg = backend()->findDbMessage(msg);
-
-    int sigCount = 0;
-    if (dbmsg)
-        sigCount = dbmsg->getSignals().length();
-
-    for (int i = 0; i < sigCount; i++)
-        item->appendChild(new AggregatedTraceViewItem(item));
+    if (dbmsg) {
+        for (int i = 0; i < dbmsg->getSignals().length(); i++) {
+            item->appendChild(new AggregatedTraceViewItem(item));
+        }
+    }
 
     _rootItem->appendChild(item);
     _map[makeUniqueKey(msg)] = item;
@@ -58,8 +56,7 @@ void AggregatedTraceViewModel::createItem(const CanMessage &msg)
 void AggregatedTraceViewModel::updateItem(const CanMessage &msg)
 {
     AggregatedTraceViewItem *item = _map.value(makeUniqueKey(msg));
-    if (item)
-    {
+    if (item) {
         item->_prevmsg = item->_lastmsg;
         item->_lastmsg = msg;
     }
@@ -68,29 +65,33 @@ void AggregatedTraceViewModel::updateItem(const CanMessage &msg)
 void AggregatedTraceViewModel::onUpdateModel()
 {
 
-    if (!_pendingMessageInserts.isEmpty())
-    {
-        beginInsertRows(QModelIndex(), _rootItem->childCount(), _rootItem->childCount() + _pendingMessageInserts.size() - 1);
-        foreach (CanMessage msg, _pendingMessageInserts)
-        {
+    if (!_pendingMessageInserts.isEmpty()) {
+        beginInsertRows(QModelIndex(), _rootItem->childCount(), _rootItem->childCount()+_pendingMessageInserts.size()-1);
+        foreach (CanMessage msg, _pendingMessageInserts) {
             createItem(msg);
         }
         endInsertRows();
         _pendingMessageInserts.clear();
     }
 
-    if (!_pendingMessageUpdates.isEmpty())
-    {
-        foreach (CanMessage msg, _pendingMessageUpdates)
-        {
-            updateItem(msg);
+    if (!_pendingMessageUpdates.isEmpty()) {
+        foreach (CanMessage msg, _pendingMessageUpdates) {
+            AggregatedTraceViewItem *item = _map.value(makeUniqueKey(msg));
+            if (item) {
+                updateItem(msg);
+
+                int r = item->row();
+                QModelIndex msgIdx = createIndex(r, 0, item);
+                emit dataChanged(msgIdx, msgIdx.sibling(r, column_count - 1));
+
+                if (item->childCount() > 0) {
+                    QModelIndex firstChild = index(0, 0, msgIdx);
+                    QModelIndex lastChild = index(item->childCount() - 1, column_count - 1, msgIdx);
+                    emit dataChanged(firstChild, lastChild);
+                }
+            }
         }
         _pendingMessageUpdates.clear();
-    }
-
-    if (_rootItem->childCount() > 0)
-    {
-        dataChanged(createIndex(0, 0, _rootItem->firstChild()), createIndex(_rootItem->childCount() - 1, column_count - 1, _rootItem->lastChild()));
     }
 }
 
@@ -105,16 +106,12 @@ void AggregatedTraceViewModel::beforeAppend(int num_messages)
     CanTrace *trace = backend()->getTrace();
     int start_id = trace->size();
 
-    for (int i = start_id; i < start_id + num_messages; i++)
-    {
+    for (int i = start_id; i < (start_id + num_messages); i++) {
         const CanMessage *msg = trace->getMessage(i);
         unique_key_t key = makeUniqueKey(*msg);
-        if (_map.contains(key) || _pendingMessageInserts.contains(key))
-        {
+        if (_map.contains(key) || _pendingMessageInserts.contains(key)) {
             _pendingMessageUpdates.append(*msg);
-        }
-        else
-        {
+        } else {
             _pendingMessageInserts[key] = *msg;
         }
     }
@@ -147,38 +144,33 @@ double AggregatedTraceViewModel::getTimeDiff(const timeval t1, const timeval t2)
     return diff;
 }
 
+
 QModelIndex AggregatedTraceViewModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if (!hasIndex(row, column, parent))
-    {
+    if (!hasIndex(row, column, parent)) {
         return QModelIndex();
     }
 
-    const AggregatedTraceViewItem *parentItem = parent.isValid() ? static_cast<AggregatedTraceViewItem *>(parent.internalPointer()) : _rootItem;
+    const AggregatedTraceViewItem *parentItem = parent.isValid() ? static_cast<AggregatedTraceViewItem*>(parent.internalPointer()) : _rootItem;
     const AggregatedTraceViewItem *childItem = parentItem->child(row);
 
-    if (childItem)
-    {
-        return createIndex(row, column, const_cast<AggregatedTraceViewItem *>(childItem));
-    }
-    else
-    {
+    if (childItem) {
+        return createIndex(row, column, const_cast<AggregatedTraceViewItem*>(childItem));
+    } else {
         return QModelIndex();
     }
 }
 
 QModelIndex AggregatedTraceViewModel::parent(const QModelIndex &index) const
 {
-    if (!index.isValid())
-    {
+    if (!index.isValid()) {
         return QModelIndex();
     }
 
-    AggregatedTraceViewItem *childItem = (AggregatedTraceViewItem *)index.internalPointer();
+    AggregatedTraceViewItem *childItem = (AggregatedTraceViewItem*) index.internalPointer();
     AggregatedTraceViewItem *parentItem = childItem->parent();
 
-    if (parentItem == _rootItem)
-    {
+    if (parentItem == _rootItem) {
         return QModelIndex();
     }
 
@@ -187,181 +179,46 @@ QModelIndex AggregatedTraceViewModel::parent(const QModelIndex &index) const
 
 int AggregatedTraceViewModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.column() > 0)
-    {
+    if (parent.column() > 0) {
         return 0;
     }
 
     AggregatedTraceViewItem *parentItem;
-    if (parent.isValid())
-    {
-        parentItem = (AggregatedTraceViewItem *)parent.internalPointer();
-    }
-    else
-    {
+    if (parent.isValid()) {
+        parentItem = (AggregatedTraceViewItem*)parent.internalPointer();
+    } else {
         parentItem = _rootItem;
     }
     return parentItem->childCount();
 }
 
-QVariant AggregatedTraceViewModel::data(const QModelIndex &index, int role) const
-{
-    if (!index.isValid())
-        return QVariant();
-
-    AggregatedTraceViewItem *item =
-        static_cast<AggregatedTraceViewItem *>(index.internalPointer());
-    if (!item)
-        return QVariant();
-
-    if (role == Qt::BackgroundRole)
-    {
-        if (item->parent() != _rootItem)
-            return QVariant();
-
-        QString idString = item->_lastmsg.getIdString();
-        QColor pastel = messageColorForIdString(idString);
-
-        if (!pastel.isValid())
-            return QColor(255, 255, 255);
-
-        qint64 now_ms = QDateTime::currentMSecsSinceEpoch();
-        double diff = (now_ms - item->_lastmsg.getTimestamp_ms()) / 1000.0; // sec
-
-        double factor = 1.0 - diff * 0.4;
-        if (factor < 0.0)
-            factor = 0.0;
-        if (factor > 1.0)
-            factor = 1.0;
-
-        QColor intenso;
-        intenso.setRed(std::min(255, (int)(pastel.red() * 1.25)));
-        intenso.setGreen(std::min(255, (int)(pastel.green() * 1.25)));
-        intenso.setBlue(std::min(255, (int)(pastel.blue() * 1.25)));
-
-        auto lerp = [&](int a, int b)
-        {
-            return (int)(a * (1.0 - factor) + b * factor);
-        };
-
-        int r = lerp(pastel.red(), intenso.red());
-        int g = lerp(pastel.green(), intenso.green());
-        int b = lerp(pastel.blue(), intenso.blue());
-
-        return QColor(r, g, b);
-    }
-
-    if (role == Qt::ForegroundRole)
-    {
-        return data_TextColorRole(index, role);
-    }
-
-    if (role == Qt::DisplayRole)
-    {
-        return data_DisplayRole(index, role);
-    }
-
-    return QVariant();
-}
-
 QVariant AggregatedTraceViewModel::data_DisplayRole(const QModelIndex &index, int role) const
 {
     AggregatedTraceViewItem *item = (AggregatedTraceViewItem *)index.internalPointer();
-    if (!item)
-    {
-        return QVariant();
+    if (!item) { return QVariant(); }
+
+    if (index.column() == column_index) {
+        return (item->parent() == _rootItem) ? QVariant((uint32_t)(index.row() + 1)) : QVariant();
     }
 
-    if (item->parent() == _rootItem)
-    { 
-        // CanMessage row
-        if (index.column() == BaseTraceViewModel::column_name)
-        {
-            QString id = item->_lastmsg.getIdString();
-            QString alias = _idAliases.value(id);
-            // qDebug() << "[AggregatedTraceViewModel" << this
-            //          << "] data_DisplayRole NAME for id" << id
-            //          << "alias in hash =" << alias;
-        }
-
+    if (item->parent() == _rootItem) { // CanMessage row
         return data_DisplayRole_Message(index, role, item->_lastmsg, item->_prevmsg);
-    }
-    else
-    { 
-        // CanSignal Row
+    } else { // CanSignal Row
         return data_DisplayRole_Signal(index, role, item->parent()->_lastmsg);
     }
 }
 
-
 QVariant AggregatedTraceViewModel::data_TextColorRole(const QModelIndex &index, int role) const
 {
-    (void)role;
+    (void) role;
+    AggregatedTraceViewItem *item = (AggregatedTraceViewItem *)index.internalPointer();
+    if (!item) { return QVariant(); }
 
-    AggregatedTraceViewItem *item =
-        static_cast<AggregatedTraceViewItem *>(index.internalPointer());
-    if (!item)
-        return QVariant();
-
-    bool isMessageRow = (item->parent() == _rootItem);
-
-    if (isMessageRow)
-    {
-        QString idString = item->_lastmsg.getIdString();
-        QColor aliasColor = messageColorForIdString(idString);
-
-        if (aliasColor.isValid())
-        {
-
-            return QColor(0, 0, 0);
-        }
-
-        if (item->_lastmsg.isErrorFrame()) {
-            return QColor(Qt::red);
-        }
-
-        qint64 now_ms = QDateTime::currentMSecsSinceEpoch();
-        // Diff in secs
-        double diff_sec = (now_ms - item->_lastmsg.getTimestamp_ms()) / 1000.0;
-
-        int gray = diff_sec * 100;
-        if (gray > 180)
-            gray = 180;
-        if (gray < 0)
-            gray = 0;
-
-        QColor text(gray, gray, gray);
-
-        if (index.column() == BaseTraceViewModel::column_name ||
-            index.column() == BaseTraceViewModel::column_canid)
-        {
-            if (gray > 180)
-                return QColor(0, 0, 0);
-        }
-
-        return text;
-    }
-
-    return data_TextColorRole_Signal(index, role, item->parent()->_lastmsg);
-}
-
-
-void AggregatedTraceViewModel::updateAliasForId(const QString &idString, const QString &alias)
-{
-    _idAliases[idString] = alias;
-   
-    for (auto it = _map.begin(); it != _map.end(); ++it)
-    {
-        AggregatedTraceViewItem *item = it.value();
-        if (item && item->_lastmsg.getIdString() == idString)
-        {
-         
-            int row = item->row();
-            QModelIndex topLeft = createIndex(row, 0, item);
-            QModelIndex bottomRight = createIndex(row, column_count - 1, item);
-            
-            emit dataChanged(topLeft, bottomRight, { Qt::DisplayRole });
-            break;  
-        }
+    if (item->parent() == _rootItem) { // CanMessage row
+        return QColor(Qt::black);
+    } else { // CanSignal Row
+        return data_TextColorRole_Signal(index, role, item->parent()->_lastmsg);
     }
 }
+
+
