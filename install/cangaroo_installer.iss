@@ -1,6 +1,6 @@
-#define MyAppName "Cangaroo"
+#define MyAppName "CANgaroo"
 #define MyAppVersion "0.4.0.3"
-#define MyAppPublisher "北京星途千舟科技有限公司"
+#define MyAppPublisher "Beijing Stellar Fleet Co., Ltd."
 #define MyAppURL "https://www.canable.io/"
 #define MyAppExeName "cangaroo.exe"
 
