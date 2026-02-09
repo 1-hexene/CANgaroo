@@ -354,7 +354,8 @@ void TxGeneratorWindow::on_comboBoxInterface_currentIndexChanged(int index)
 
 void TxGeneratorWindow::on_treeAvailable_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
-    (void)column;
+    Q_UNUSED(item);
+    Q_UNUSED(column);
     on_btnAddToList_released();
 }
 

@@ -151,15 +151,23 @@
      <addaction name="actionGenerator_View"/>
     </widget>
     <addaction name="menu_New"/>
+    <addaction name="actionRestore_Window"/>
    </widget>
    <widget class="QMenu" name="menuMeasurement">
     <property name="title">
      <string>&amp;Measurement</string>
     </property>
+    <widget class="QMenu" name="menuDriver">
+     <property name="title">
+      <string>Driver</string>
+     </property>
+     <addaction name="actionCANblaster"/>
+    </widget>
     <addaction name="actionStart_Measurement"/>
     <addaction name="actionStop_Measurement"/>
     <addaction name="separator"/>
     <addaction name="actionSetup"/>
+    <addaction name="menuDriver"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -311,6 +319,25 @@
   <action name="actionGenerator_View">
    <property name="text">
     <string>Generator View</string>
+   </property>
+  </action>
+  <action name="actionRestore_Window">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Restore Window on startup</string>
+   </property>
+   <property name="toolTip">
+    <string>Restore Window Position on startup</string>
+   </property>
+  </action>
+  <action name="actionCANblaster">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>CANblaster</string>
    </property>
   </action>
  </widget>

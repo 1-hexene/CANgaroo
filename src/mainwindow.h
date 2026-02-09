@@ -25,6 +25,7 @@
 #include <QList>
 #include <core/Backend.h>
 #include <QTranslator>
+#include <QSettings>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -51,6 +52,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    bool isMaxi();
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
@@ -90,6 +93,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     SetupDialog *_setupDlg;
+    QSettings settings;
 
     bool _workspaceModified;
     QString _workspaceFileName;

@@ -36,6 +36,13 @@ int main(int argc, char *argv[])
     }
 
     MainWindow w;
-    w.show();
+    if(w.isMaxi())
+    {
+        w.showMaximized();
+    }
+    else
+    {
+        w.show();
+    }
     return a.exec();
 }

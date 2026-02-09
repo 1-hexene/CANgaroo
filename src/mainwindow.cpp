@@ -61,6 +61,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     _baseWindowTitle = windowTitle();
 
     QCoreApplication::setApplicationVersion(VERSION_STRING);
+    QCoreApplication::setOrganizationName("Schildkroet");
+    QCoreApplication::setApplicationName("CANgaroo");
 
     QLabel* versionLabel = new QLabel(this);
     versionLabel->setText(QString("v%1").arg(QCoreApplication::applicationVersion()));
@@ -98,6 +100,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(actionImportFull, &QAction::triggered, this, &MainWindow::importFullTrace);
     traceMenu->addAction(actionImportFull);
 
+    // Load settings
+    bool restoreEnabled = settings.value("ui/restoreWindowGeometry", false).toBool();
+    bool CANblasterEnabled = settings.value("mainWindow/CANblaster", false).toBool();
+
+    ui->actionRestore_Window->setChecked(restoreEnabled);
+    ui->actionCANblaster->setChecked(CANblasterEnabled);
+
+    if (settings.value("ui/restoreWindowGeometry", false).toBool()) {
+        if (!restoreGeometry(settings.value("mainWindow/geometry").toByteArray()))
+        {
+            resize(1365, 900);
+            move(QGuiApplication::primaryScreen()->availableGeometry().center() - rect().center());
+            settings.setValue("mainWindow/maximized", false);
+        }
+        restoreState(settings.value("mainWindow/state").toByteArray());
+    }
+
 #if defined(__linux__)
     Backend::instance().addCanDriver(*(new SocketCanDriver(Backend::instance())));
 #else
@@ -105,7 +124,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #endif
     Backend::instance().addCanDriver(*(new SLCANDriver(Backend::instance())));
     Backend::instance().addCanDriver(*(new GrIPDriver(Backend::instance())));
-    // Backend::instance().addCanDriver(*(new CANBlasterDriver(Backend::instance())));
+
+    if (CANblasterEnabled)
+    {
+        Backend::instance().addCanDriver(*(new CANBlasterDriver(Backend::instance())));
+    }
 
     setWorkspaceModified(false);
     newWorkspace();
@@ -174,18 +197,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::updateMeasurementActions()
-{
-    bool running = backend().isMeasurementRunning();
-    ui->actionStart_Measurement->setEnabled(!running);
-    ui->actionSetup->setEnabled(!running);
-    ui->actionStop_Measurement->setEnabled(running);
-
-    ui->btnStartMeasurement->setEnabled(!running);
-    ui->btnSetupMeasurement->setEnabled(!running);
-    ui->btnStopMeasurement->setEnabled(running);
-}
-
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     if (askSaveBecauseWorkspaceModified() != QMessageBox::Cancel)
@@ -205,18 +216,31 @@ void MainWindow::closeEvent(QCloseEvent *event)
         event->ignore();
     }
 
-    /*QSettings settings("MyCompany", "MyApp");
-    settings.setValue("geometry", saveGeometry());
-    settings.setValue("windowState", saveState());
-    QMainWindow::closeEvent(event);*/
+    settings.setValue("mainWindow/geometry", saveGeometry());
+    settings.setValue("mainWindow/state", saveState());
+    settings.setValue("mainWindow/maximized", isMaximized());
+    settings.setValue("ui/restoreWindowGeometry", ui->actionRestore_Window->isChecked());
+    settings.setValue("mainWindow/CANblaster", ui->actionCANblaster->isChecked());
+
+    QMainWindow::closeEvent(event);
 }
 
-/*void MainWindow::readSettings()
+bool MainWindow::isMaxi()
 {
-    QSettings settings("MyCompany", "MyApp");
-    restoreGeometry(settings.value("myWidget/geometry").toByteArray());
-    restoreState(settings.value("myWidget/windowState").toByteArray());
-}*/
+    return settings.value("mainWindow/maximized").toBool();
+}
+
+void MainWindow::updateMeasurementActions()
+{
+    bool running = backend().isMeasurementRunning();
+    ui->actionStart_Measurement->setEnabled(!running);
+    ui->actionSetup->setEnabled(!running);
+    ui->actionStop_Measurement->setEnabled(running);
+
+    ui->btnStartMeasurement->setEnabled(!running);
+    ui->btnSetupMeasurement->setEnabled(!running);
+    ui->btnStopMeasurement->setEnabled(running);
+}
 
 Backend &MainWindow::backend()
 {
@@ -574,6 +598,20 @@ QMainWindow *MainWindow::createGraphWindow(QString title)
     addLogWidget(mm);
 
     return mm;
+}
+
+void MainWindow::createStandaloneGraphWindow()
+{
+    GraphWindow *gw = new GraphWindow(nullptr, backend());
+    gw->setWindowTitle(tr("Standalone Graph"));
+    gw->setAttribute(Qt::WA_DeleteOnClose);
+    
+    _standaloneGraphWindows.append(gw);
+    connect(gw, &QObject::destroyed, this, [this, gw]() {
+        _standaloneGraphWindows.removeAll(gw);
+    });
+
+    gw->show();
 }
 
 void MainWindow::addGraphWidget(QMainWindow *parent)
