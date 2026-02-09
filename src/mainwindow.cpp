@@ -600,20 +600,6 @@ QMainWindow *MainWindow::createGraphWindow(QString title)
     return mm;
 }
 
-void MainWindow::createStandaloneGraphWindow()
-{
-    GraphWindow *gw = new GraphWindow(nullptr, backend());
-    gw->setWindowTitle(tr("Standalone Graph"));
-    gw->setAttribute(Qt::WA_DeleteOnClose);
-    
-    _standaloneGraphWindows.append(gw);
-    connect(gw, &QObject::destroyed, this, [this, gw]() {
-        _standaloneGraphWindows.removeAll(gw);
-    });
-
-    gw->show();
-}
-
 void MainWindow::addGraphWidget(QMainWindow *parent)
 {
     if (!parent)
