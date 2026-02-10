@@ -2,7 +2,7 @@
 # <img src="src/assets/cangaroo.png" width="48" height="48"> CANgaroo
 **Open-source CAN bus analyzer for Linux 🐧 / Windows 🪟**
 
-** 🔩 Supported Interfaces & Hardware:**
+**🔩 Supported Interfaces & Hardware:**
 
 *   **PEAK-System (PCAN)**: 
     *   PCAN-USB, PCAN-USB Pro, PCAN-PCIe, etc. (Native driver: `peak_usb`).
@@ -19,7 +19,7 @@
 *   **Remote / Network CAN**: 
     *   [CANblaster](https://github.com/OpenAutoDiagLabs/CANblaster) (UDP)
     *   tcpcan / candlelight-over-ethernet
-*   **GrIP Driver
+*   **GrIP Driver**
 
 ## ⚙️ Features
 
