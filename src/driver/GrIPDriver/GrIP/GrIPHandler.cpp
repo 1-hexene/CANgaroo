@@ -1,6 +1,6 @@
 #include "GrIPHandler.h"
 #include "CRC.h"
-#include "Protocol.h"
+//#include "Protocol.h"
 #include <chrono>
 #include <cstring>
 
@@ -223,8 +223,6 @@ int GrIPHandler::Channels_CANFD() const
 
 void GrIPHandler::Send(GrIP_ProtocolType_e ProtType, GrIP_MessageType_e MsgType, GrIP_ReturnType_e ReturnCode, const GrIP_Pdu_t *pdu)
 {
-    //SendPacket_t packet = {ProtType, MsgType, ReturnCode, *pdu};
-
     std::unique_lock<std::mutex> lck(m_MutexSerial);
     GrIP_Transmit(ProtType, MsgType, ReturnCode, pdu);
 }
@@ -293,7 +291,22 @@ void GrIPHandler::Mode(uint8_t ch, bool listen_only)
 void GrIPHandler::CAN_SetBaudrate(uint8_t ch, uint32_t baud)
 {
     std::unique_lock<std::mutex> lck(m_MutexSerial);
-    Protocol_SendCANCfg(ch, baud);
+
+    uint8_t msg[9] = {};
+    GrIP_Pdu_t p = {msg, 9};
+
+    // Set cmd
+    msg[0] = SYSTEM_SEND_CAN_CFG;
+
+    msg[1] = ch;
+
+    msg[2] = (baud >> 24) & 0xFF;
+    msg[3] = (baud >> 16) & 0xFF;
+    msg[4] = (baud >> 8) & 0xFF;
+    msg[5] = (baud) & 0xFF;
+
+    GrIP_Transmit(PROT_GrIP, MSG_SYSTEM_CMD, RET_OK, &p);
+
     m_SerialPort->waitForBytesWritten(5);
 }
 

@@ -1,18 +1,36 @@
 
-# <img src="src/assets/cangaroo.png" width="48" height="48"> Cangaroo
+# <img src="src/assets/cangaroo.png" width="48" height="48"> CANgaroo
 **Open-source CAN bus analyzer for Linux 🐧 / Windows 🪟**
 
-**Supported interfaces:**
+** 🔩 Supported Interfaces & Hardware:**
 
-* [CANable](http://canable.io) SLCAN interfaces on Windows and Linux
-* [CANable 2](http://canable.io) SLCAN interfaces on Windows and Linux with FD support
-* Candlelight interfaces on Windows
-* Socketcan interfaces on Linux
-* [CANblaster](https://github.com/normaldotcom/canblaster) socketCAN over UDP server with auto-discovery
-* GrIP Driver
+*   **PEAK-System (PCAN)**: 
+    *   PCAN-USB, PCAN-USB Pro, PCAN-PCIe, etc. (Native driver: `peak_usb`).
+*   **Native USB-CAN Adapters**: 
+    *   [CANable](https://canable.io/) (with Candlelight firmware)
+    *   Kvaser USB/CAN Leaf
+    *   Candlelight compatible devices (e.g., MKS CANable, cantact)
+*   **USB SLCAN Adapters**:
+    *   CANable (with set-default SLCAN firmware)
+    *   Arduino-based CAN shields (running SLCAN sketches)
+*   **Industrial / Embedded CAN**:
+    *   PCIe/mPCIe CAN cards
+    *   Embedded CAN controllers on SoCs (e.g., Raspberry Pi with MCP2515)
+*   **Remote / Network CAN**: 
+    *   [CANblaster](https://github.com/OpenAutoDiagLabs/CANblaster) (UDP)
+    *   tcpcan / candlelight-over-ethernet
+*   **GrIP Driver
 
-![demo1](https://user-images.githubusercontent.com/2422337/179544017-0deb66ab-e81d-4e6c-9d99-4059a14921c0.gif)
+## ⚙️ Features
 
+*   **Real-time CAN/CAN-FD Decoding**: Support for standard and high-speed flexible data-rate frames.
+*   **Wide Hardware Compatibility**: Works with **SocketCAN** (Linux), **CANable** (SLCAN), **Candlelight**, and **CANblaster** (UDP).
+*   **DBC Database Support**: Load multiple `.dbc` files to instantly decode frames into human-readable signals.
+*   **Powerful Data Visualization**: Integrated Graphing tools supporting Time-series, Scatter charts, Text-based monitoring, and interactive Gauge views with zoom and live tooltips.
+*   **Advanced Filtering & Logging**: Isolate critical data with live filters and export captures for offline analysis.
+*   **Modern Workspace**: A clean, dockable userinterface optimized for multi-monitor setups.
+
+<br>![Cangaroo Trace View](src/docs/view.png)<br>
 
 ## 📜 Credits
 Written by Hubert Denkmair <hubert@denkmair.de>
@@ -69,59 +87,3 @@ canconvert TCU.arxml TCU.dbc
 ## 📥 Download
 
 Download the latest release from the [Releases](https://github.com/Schildkroet/CANgaroo).
-
-## TODO
-
-### backend
-* support non-message frames in traces (e.g. markers)
-* implement plugin API
-* embed python for scripting
-
-### can drivers
-* allow socketcan interface config through suid binary
-* socketcan: use hardware timestamps (SIOCSHWTSTAMP) if possible
-* cannelloni support
-* windows vector driver
-
-### import / export
-* export to other file formats (e.g. Vector ASC, BLF, MDF)    (no changes)
-* import CAN-Traces    ✔ done in v0.3.1: full .ctrace import/export with colors, comments and aliases
-
-### general ui
-* give some style to dock windows
-* load/save docks from/to config
-* ✔ done in v0.3.1: runtime language switching (new menu, .qm loader)
-
-### log window
-* filter log messages by level
-
-### can status window
-* display #warnings, #passive, #busoff, #restarts of socketcan devices
-
-### trace window
-* assign colors to can interfaces / messages    ✔ done in v0.3.1: posible asignation colors by id 
-* limit displayed number of messages
-* show error frames and other non-message frames
-* sort signals by startbit, name or position in candb
-* ✔ done in v0.3.1: per-message comments + persistence
-* ✔ done in v0.3.1: per-ID aliases + persistence
-
-### CanDB based generator
-* generate can messages from candbs
-* set signals according to value tables etc.
-* provide generator functions for signal values
-* allow scripting of signal values
-
-### replay window
-* replay can traces
-* map interfaces in traces to available networks
-
-### graph window
-* test QCustomPlot
-* allow for graphing of interface stats, message stats and signals
-
-### packaging / deployment
-* provide clean debian package   ✔ done in v0.3.1: go to releases
-* Flatpak
-* provide static linked binary
-* add windows installer

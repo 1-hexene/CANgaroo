@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     QLocale locale;
     if( locale.language() == QLocale::Chinese )
     {
-        translator.load(":/i18n_zh_cn.qm");
+        (void)translator.load(":/i18n_zh_cn.qm");
         a.installTranslator(&translator);
     }
 

@@ -33,7 +33,7 @@ DecodeStatus J1939Decoder::tryDecode(const CanMessage& frame, ProtocolMessage& o
         uint32_t sessionKey = sa;
         if (m_sessions.contains(sessionKey)) {
             J1939Session& session = m_sessions[sessionKey];
-            uint8_t sn = frame.getByte(0);
+            //uint8_t sn = frame.getByte(0);
             session.receivedPackets++;
             session.frames.append(frame);
             for (int i = 1; i < 8 && session.data.size() < session.expectedSize; ++i) {
