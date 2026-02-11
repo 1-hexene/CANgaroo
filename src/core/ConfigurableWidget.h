@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include <QWidget>
+#include <QEvent>
 
 class Backend;
 class QDomDocument;
@@ -35,6 +36,15 @@ public:
     explicit ConfigurableWidget(QWidget *parent = 0);
     virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
     virtual bool loadXML(Backend &backend, QDomElement &el);
+
+protected:
+    void changeEvent(QEvent *event) override {
+        if (event->type() == QEvent::LanguageChange) {
+            retranslateUi();           // pure virtual
+        }
+        QWidget::changeEvent(event);
+    }
+    virtual void retranslateUi() = 0;
 
 signals:
     void settingsChanged(ConfigurableWidget *sender);

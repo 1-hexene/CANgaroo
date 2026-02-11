@@ -50,6 +50,11 @@ LogWindow::~LogWindow()
     delete ui;
 }
 
+void LogWindow::retranslateUi()
+{
+    ui->retranslateUi(this);
+}
+
 bool LogWindow::saveXML(Backend &backend, QDomDocument &xml, QDomElement &root)
 {
     if (!ConfigurableWidget::saveXML(backend, xml, root)) { return false; }

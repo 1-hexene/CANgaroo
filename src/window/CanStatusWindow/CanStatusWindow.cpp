@@ -73,6 +73,18 @@ CanStatusWindow::~CanStatusWindow()
     delete ui;
 }
 
+void CanStatusWindow::retranslateUi()
+{
+    ui->retranslateUi(this);
+
+    ui->treeWidget->setHeaderLabels(QStringList()
+                                    << tr("Driver") << tr("Interface") << tr("State")
+                                    << tr("Rx Frames") << tr("Rx Errors") << tr("Rx Overrun")
+                                    << tr("Tx Frames") << tr("Tx Errors") << tr("Tx Dropped")
+                                    // << "# Warning" << "# Passive" << "# Bus Off" << " #Restarts"
+                                    );
+}
+
 void CanStatusWindow::beginMeasurement()
 {
     ui->treeWidget->clear();

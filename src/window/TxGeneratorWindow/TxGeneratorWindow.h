@@ -49,6 +49,9 @@ public:
     virtual bool loadXML(Backend &backend, QDomElement &el);
     virtual QSize sizeHint() const override;
 
+protected:
+    void retranslateUi() override;
+
 signals:
     void loopbackFrame(const CanMessage &msg);
     void messageSelected(const CanMessage &msg, const QString &name, CanInterfaceId interfaceId, CanDbMessage *dbMsg);

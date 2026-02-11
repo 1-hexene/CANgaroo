@@ -27,13 +27,6 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QTranslator translator;
-    QLocale locale;
-    if( locale.language() == QLocale::Chinese )
-    {
-        (void)translator.load(":/i18n_zh_cn.qm");
-        a.installTranslator(&translator);
-    }
 
     MainWindow w;
     if(w.isMaxi())

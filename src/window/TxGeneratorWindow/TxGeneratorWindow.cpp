@@ -73,6 +73,11 @@ TxGeneratorWindow::~TxGeneratorWindow()
     delete ui;
 }
 
+void TxGeneratorWindow::retranslateUi()
+{
+    ui->retranslateUi(this);
+}
+
 bool TxGeneratorWindow::saveXML(Backend &backend, QDomDocument &xml, QDomElement &root)
 {
     if (!ConfigurableWidget::saveXML(backend, xml, root)) { return false; }

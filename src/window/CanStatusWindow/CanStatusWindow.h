@@ -22,6 +22,7 @@
 #pragma once
 
 #include <core/ConfigurableWidget.h>
+#include <QEvent>
 
 namespace Ui {
 class CanStatusWindow;
@@ -55,6 +56,9 @@ public:
 public:
     explicit CanStatusWindow(QWidget *parent, Backend &backend);
     ~CanStatusWindow();
+
+protected:
+    void retranslateUi() override;
 
 private slots:
     void beginMeasurement();

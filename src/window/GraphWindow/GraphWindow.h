@@ -46,6 +46,9 @@ public:
     virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
     virtual bool loadXML(Backend &backend, QDomElement &el);
 
+protected:
+    void retranslateUi() override;
+
 private slots:
     void onViewTypeChanged(int index);
     void onAddSignalClicked();

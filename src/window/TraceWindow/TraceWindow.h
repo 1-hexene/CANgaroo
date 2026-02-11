@@ -60,6 +60,9 @@ public:
     UnifiedTraceViewModel *linearModel() const { return _unifiedTraceViewModel; }
     AggregatedTraceViewModel* aggregatedModel() const{return _aggregatedTraceViewModel;}
 
+protected:
+    void retranslateUi() override;
+
 public slots:
     void addMessage(const CanMessage &msg);
     void rowsInserted(const QModelIndex & parent, int first, int last);

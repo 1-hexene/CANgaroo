@@ -81,6 +81,11 @@ GraphWindow::~GraphWindow()
     delete ui;
 }
 
+void GraphWindow::retranslateUi()
+{
+    ui->retranslateUi(this);
+}
+
 void GraphWindow::setupVisualizations()
 {
     // Add visualizations to list and stacked widget

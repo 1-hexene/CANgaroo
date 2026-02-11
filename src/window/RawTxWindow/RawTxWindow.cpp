@@ -105,6 +105,11 @@ RawTxWindow::~RawTxWindow()
     delete ui;
 }
 
+void RawTxWindow::retranslateUi()
+{
+    ui->retranslateUi(this);
+}
+
 void RawTxWindow::changeDLC()
 {
     ui->fieldByte0_0->setEnabled(true);

@@ -86,7 +86,6 @@ TraceWindow::TraceWindow(QWidget *parent, Backend &backend) :
     connect(ui->TraceClearpushButton, SIGNAL(released()), this, SLOT(on_cbTraceClearpushButton()));
 
     connect(ui->cbViewMode, SIGNAL(currentIndexChanged(int)), this, SLOT(on_cbViewMode_currentIndexChanged(int)));
-
 }
 
 TraceWindow::~TraceWindow()
@@ -94,6 +93,11 @@ TraceWindow::~TraceWindow()
     delete ui;
     delete _aggregatedTraceViewModel;
     delete _unifiedTraceViewModel;
+}
+
+void TraceWindow::retranslateUi()
+{
+    ui->retranslateUi(this);
 }
 
 void TraceWindow::setMode(TraceWindow::mode_t mode)
