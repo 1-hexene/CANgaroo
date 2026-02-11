@@ -32,16 +32,6 @@
 
 <br>![Cangaroo Trace View](src/docs/view.png)<br>
 
-## 📜 Credits
-Written by Hubert Denkmair <hubert@denkmair.de>
-
-Further development by:
-* Ethan Zonca <e@ethanzonca.com>
-* WeAct Studio
-* Schildkroet (https://github.com/Schildkroet/CANgaroo)
-* Wikilift (https://github.com/wikilift/CANgaroo)
-* Jayachandran Dharuman (https://github.com/OpenAutoDiagLabs/cangaroo)
-
 ## Languages
 * 🇩🇪 German
 * 🇺🇸 English
@@ -87,3 +77,14 @@ canconvert TCU.arxml TCU.dbc
 ## 📥 Download
 
 Download the latest release from the [Releases](https://github.com/Schildkroet/CANgaroo).
+
+
+## 📜 Credits
+Written by Hubert Denkmair <hubert@denkmair.de>
+
+Further development by:
+* Ethan Zonca <e@ethanzonca.com>
+* WeAct Studio
+* Schildkroet (https://github.com/Schildkroet/CANgaroo)
+* Wikilift (https://github.com/wikilift/CANgaroo)
+* Jayachandran Dharuman (https://github.com/OpenAutoDiagLabs/cangaroo)
