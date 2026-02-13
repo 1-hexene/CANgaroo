@@ -61,6 +61,7 @@ Backend &Backend::instance()
 Backend::~Backend()
 {
     delete _trace;
+    qDeleteAll(_drivers);
 }
 
 void Backend::addCanDriver(CanDriver &driver)
@@ -76,9 +77,7 @@ bool Backend::startMeasurement()
     _measurementStartTime = QDateTime::currentMSecsSinceEpoch();
     _timerSinceStart.start();
 
-    int i=0;
     foreach (MeasurementNetwork *network, _setup.getNetworks()) {
-        i++;
         foreach (MeasurementInterface *mi, network->interfaces()) {
 
             CanInterface *intf = getInterfaceById(mi->canInterface());

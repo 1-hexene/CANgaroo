@@ -68,8 +68,7 @@
          <string>Clear</string>
         </property>
         <property name="icon">
-         <iconset resource="../../cangaroo.qrc">
-          <normaloff>:/assets/trash-can-black-icon.svg</normaloff>:/assets/trash-can-black-icon.svg</iconset>
+         <iconset theme="user-trash-full"/>
         </property>
         <property name="iconSize">
          <size>
@@ -117,8 +116,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../cangaroo.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

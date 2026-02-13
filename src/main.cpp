@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     MainWindow w;
-    if(w.isMaxi())
+    if(w.isMaximizedWindow())
     {
         w.showMaximized();
     }

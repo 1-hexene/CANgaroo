@@ -53,7 +53,6 @@
 #endif
 
 
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -66,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     QLabel* versionLabel = new QLabel(this);
     versionLabel->setText(QString("v%1").arg(QCoreApplication::applicationVersion()));
-    versionLabel->setStyleSheet("padding-right: 15px; color: #000000; font-weight: bold; font-size: 11px;");
+    versionLabel->setStyleSheet("padding-right: 15px; font-weight: bold; font-size: 11px;");
     statusBar()->addPermanentWidget(versionLabel);
 
     QIcon icon(":/assets/cangaroo.png");
@@ -117,11 +116,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->actionRestore_Window->setChecked(restoreEnabled);
     ui->actionCANblaster->setChecked(CANblasterEnabled);
 
-    if (settings.value("ui/restoreWindowGeometry", false).toBool()) {
+    if (restoreEnabled) {
         if (!restoreGeometry(settings.value("mainWindow/geometry").toByteArray()))
         {
             resize(1365, 900);
-            move(QGuiApplication::primaryScreen()->availableGeometry().center() - rect().center());
+
+            QScreen *screen = QGuiApplication::primaryScreen();
+            if (screen) {
+                move(screen->availableGeometry().center() - rect().center());
+            }
+
             settings.setValue("mainWindow/maximized", false);
         }
         restoreState(settings.value("mainWindow/state").toByteArray());
@@ -203,16 +207,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     // Load saved application style/theme
     QString savedStyle = settings.value("ui/applicationStyle", "").toString();
-    if (!savedStyle.isEmpty()) {
+    if (!savedStyle.isEmpty())
+    {
         QStringList availableStyles = QStyleFactory::keys();
         bool styleFound = false;
-        for (const QString &style : availableStyles) {
-            if (style.compare(savedStyle, Qt::CaseInsensitive) == 0) {
+        for (const QString &style : availableStyles)
+        {
+            if (style.compare(savedStyle, Qt::CaseInsensitive) == 0)
+            {
                 styleFound = true;
                 break;
             }
         }
-        if (styleFound) {
+        if (styleFound)
+        {
             QApplication::setStyle(QStyleFactory::create(savedStyle));
             qDebug() << "Loaded saved style:" << savedStyle;
         }
@@ -252,7 +260,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QMainWindow::closeEvent(event);
 }
 
-bool MainWindow::isMaxi()
+bool MainWindow::isMaximizedWindow()
 {
     return settings.value("mainWindow/maximized").toBool();
 }

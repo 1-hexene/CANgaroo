@@ -53,7 +53,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    bool isMaxi();
+    bool isMaximizedWindow();
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
@@ -129,7 +129,7 @@ private:
   
     void createLanguageMenu();
     QTranslator m_translator;
-    QMenu *m_languageMenu;
-    QActionGroup *m_languageActionGroup;
+    QMenu *m_languageMenu = nullptr;
+    QActionGroup *m_languageActionGroup = nullptr;
    
 };
