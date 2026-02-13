@@ -118,26 +118,6 @@ jobs:
             --plugin qt \
             --output appimage
 
-    - name: Verify AppImage contents
-      run: |
-          echo "=== Extracting AppImage for verification ==="
-          APPIMAGE=$(ls CAN*.AppImage | head -n 1)
-          ./$APPIMAGE --appimage-extract
-          
-          echo "=== Checking for Adwaita plugins ==="
-          ls -la squashfs-root/usr/plugins/styles/ || echo "No styles in AppImage"
-          ls -la squashfs-root/usr/plugins/platformthemes/ || echo "No platformthemes in AppImage"
-          
-          echo "=== Checking for Adwaita libraries ==="
-          ls -la squashfs-root/usr/lib/ | grep adwaita || echo "No Adwaita libraries in AppImage"
-          
-          echo "=== Checking qt.conf ==="
-          if [ -f "squashfs-root/usr/bin/qt.conf" ]; then
-            cat squashfs-root/usr/bin/qt.conf
-          else
-            echo "Warning: qt.conf not found in AppImage"
-          fi
-
     - name: Upload AppImage
       uses: actions/upload-artifact@v6
       with:

@@ -63,7 +63,7 @@ public slots:
     QMainWindow *createTraceWindow(QString title=QString());
     QMainWindow *createGraphWindow(QString title=QString());
     void createStandaloneGraphWindow();
-    void addGraphWidget(QMainWindow *parent=0);
+    QDockWidget *addGraphWidget(QMainWindow *parent=0);
     QDockWidget *addRawTxWidget(QMainWindow *parent=0);
     QDockWidget *addLogWidget(QMainWindow *parent=0);
     QDockWidget *addStatusWidget(QMainWindow *parent=0);
@@ -86,6 +86,7 @@ private slots:
     void on_action_TraceClear_triggered();
     void on_actionCan_Status_View_triggered();
     void on_actionGenerator_View_triggered();
+    void showThemeDialog();
 
     void switchLanguage(QAction *action);
     void exportFullTrace();

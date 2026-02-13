@@ -47,15 +47,15 @@
 #include <driver/CANBlastDriver/CANBlasterDriver.h>
 
 #if defined(__linux__)
-  #include <driver/SocketCanDriver/SocketCanDriver.h>
+#include <driver/SocketCanDriver/SocketCanDriver.h>
 #else
-  #include <driver/CandleApiDriver/CandleApiDriver.h>
+#include <driver/CandleApiDriver/CandleApiDriver.h>
 #endif
 
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
-                                          ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     _baseWindowTitle = windowTitle();
@@ -84,6 +84,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     actionStandaloneGraph->setShortcut(QKeySequence("Ctrl+Shift+B"));
     ui->menuWindow->addAction(actionStandaloneGraph);
     connect(actionStandaloneGraph, &QAction::triggered, this, &MainWindow::createStandaloneGraphWindow);
+
+    QAction *actionTheme = new QAction(tr("Theme..."), this);
+    ui->menuWindow->addAction(actionTheme);
+    connect(actionTheme, &QAction::triggered, this, &MainWindow::showThemeDialog);
 
     connect(ui->actionStart_Measurement, SIGNAL(triggered()), this, SLOT(startMeasurement()));
     connect(ui->btnStartMeasurement, SIGNAL(released()), this, SLOT(startMeasurement()));
@@ -188,13 +192,30 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
         "QPushButton#btnStopMeasurement:disabled {"
         "  background-color: #f1aeb5;"
         "}"
-    );
+        );
 
     qApp->installTranslator(&m_translator);
     createLanguageMenu();
     if (!m_languageActionGroup->actions().isEmpty())
     {
         m_languageActionGroup->actions().first()->trigger();
+    }
+
+    // Load saved application style/theme
+    QString savedStyle = settings.value("ui/applicationStyle", "").toString();
+    if (!savedStyle.isEmpty()) {
+        QStringList availableStyles = QStyleFactory::keys();
+        bool styleFound = false;
+        for (const QString &style : availableStyles) {
+            if (style.compare(savedStyle, Qt::CaseInsensitive) == 0) {
+                styleFound = true;
+                break;
+            }
+        }
+        if (styleFound) {
+            QApplication::setStyle(QStyleFactory::create(savedStyle));
+            qDebug() << "Loaded saved style:" << savedStyle;
+        }
     }
 }
 
@@ -208,13 +229,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if (askSaveBecauseWorkspaceModified() != QMessageBox::Cancel)
     {
         backend().stopMeasurement();
-        
+
         // Auto-save to the current workspace file if one is set
         if (!_workspaceFileName.isEmpty())
         {
             saveWorkspaceToFile(_workspaceFileName);
         }
-        
+
         event->accept();
     }
     else
@@ -456,7 +477,7 @@ void MainWindow::newWorkspace()
         clearWorkspace();
         createTraceWindow();
         backend().setDefaultSetup();
-        
+
         // Clear the workspace filename for a fresh start
         _workspaceFileName.clear();
         setWorkspaceModified(false);
@@ -569,6 +590,7 @@ QMainWindow *MainWindow::createTraceWindow(QString title)
     QDockWidget *dockStatusWidget = addStatusWidget(mm);
     QDockWidget *dockRawTxWidget = addRawTxWidget(mm);
     QDockWidget *dockGeneratorWidget = addTxGeneratorWidget(mm);
+    QDockWidget *dockGraphWidget = addGraphWidget(mm);
 
     TxGeneratorWindow *gen = qobject_cast<TxGeneratorWindow*>(dockGeneratorWidget->widget());
     RawTxWindow *rawtx = qobject_cast<RawTxWindow*>(dockRawTxWidget->widget());
@@ -578,27 +600,27 @@ QMainWindow *MainWindow::createTraceWindow(QString title)
         connect(gen, &TxGeneratorWindow::loopbackFrame, trace, &TraceWindow::addMessage);
     }
 
-
-
     mm->splitDockWidget(dockRawTxWidget,dockLogWidget,Qt::Horizontal);
     mm->splitDockWidget(dockGeneratorWidget,dockLogWidget,Qt::Horizontal);
+    mm->splitDockWidget(dockGraphWidget,dockLogWidget,Qt::Horizontal);
     mm->tabifyDockWidget(dockGeneratorWidget, dockRawTxWidget); // Generator first, Message next
+    mm->tabifyDockWidget(dockRawTxWidget, dockGraphWidget);
     mm->splitDockWidget(dockStatusWidget,dockLogWidget,Qt::Horizontal);
     mm->tabifyDockWidget(dockStatusWidget, dockLogWidget); // Status first, Log next
-    
-    
+
     // Use QTimer to resize docks and ensure correct focus/visibility after layout is complete
     QTimer::singleShot(0, mm, [mm, dockLogWidget, dockRawTxWidget, dockGeneratorWidget, dockStatusWidget]() {
         dockStatusWidget->show();
         dockStatusWidget->raise();
         dockGeneratorWidget->show();
         dockGeneratorWidget->raise();
-        
+
         mm->resizeDocks({dockLogWidget, dockRawTxWidget, dockGeneratorWidget, dockStatusWidget}, {600, 600, 600, 600}, Qt::Vertical);
         mm->resizeDocks({dockLogWidget, dockRawTxWidget, dockGeneratorWidget, dockStatusWidget}, {1200, 1200, 1200, 1200}, Qt::Horizontal);
     });
 
     ui->mainTabs->setCurrentWidget(mm);
+
     return mm;
 }
 
@@ -629,7 +651,7 @@ void MainWindow::createStandaloneGraphWindow()
     gw->show();
 }
 
-void MainWindow::addGraphWidget(QMainWindow *parent)
+QDockWidget *MainWindow::addGraphWidget(QMainWindow *parent)
 {
     if (!parent)
     {
@@ -638,6 +660,8 @@ void MainWindow::addGraphWidget(QMainWindow *parent)
     QDockWidget *dock = new QDockWidget(tr("Graph"), parent);
     dock->setWidget(new GraphWindow(dock, backend()));
     parent->addDockWidget(Qt::BottomDockWidgetArea, dock);
+
+    return dock;
 }
 
 QDockWidget *MainWindow::addRawTxWidget(QMainWindow *parent)
@@ -669,6 +693,7 @@ QDockWidget *MainWindow::addLogWidget(QMainWindow *parent)
     QDockWidget *dock = new QDockWidget(tr("Log"), parent);
     dock->setWidget(new LogWindow(dock, backend()));
     parent->addDockWidget(Qt::BottomDockWidgetArea, dock);
+
     return dock;
 }
 
@@ -681,6 +706,7 @@ QDockWidget *MainWindow::addStatusWidget(QMainWindow *parent)
     QDockWidget *dock = new QDockWidget(tr("CAN Status"), parent);
     dock->setWidget(new CanStatusWindow(dock, backend()));
     parent->addDockWidget(Qt::BottomDockWidgetArea, dock);
+
     return dock;
 }
 
@@ -994,7 +1020,7 @@ void MainWindow::exportFullTrace()
 
 void MainWindow::importFullTrace()
 {
-   /*TraceWindow *tw = currentTab()->findChild<TraceWindow*>();
+    /*TraceWindow *tw = currentTab()->findChild<TraceWindow*>();
     if (!tw)
     {
         QMessageBox::warning(this, tr("Error"), tr("No Trace window active"));
@@ -1036,7 +1062,7 @@ void MainWindow::importFullTrace()
             agg->setMessageColorForIdString(it.key(), c);
         }
     }
- 
+
     {
         QJsonObject aliases = root["aliases"].toObject();
         for (auto it = aliases.begin(); it != aliases.end(); ++it)
@@ -1085,4 +1111,80 @@ void MainWindow::importFullTrace()
 
     linear->layoutChanged();
     agg->layoutChanged();*/
+}
+
+void MainWindow::showThemeDialog()
+{
+    QDialog *themeDialog = new QDialog(this);
+    themeDialog->setWindowTitle(tr("Theme Selection"));
+    themeDialog->setModal(true);
+    themeDialog->setMinimumWidth(350);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(themeDialog);
+
+    // Label
+    QLabel *label = new QLabel(tr("Select application theme:"), themeDialog);
+    mainLayout->addWidget(label);
+
+    // ComboBox with available styles
+    QComboBox *styleComboBox = new QComboBox(themeDialog);
+    QStringList availableStyles = QStyleFactory::keys();
+    styleComboBox->addItems(availableStyles);
+
+    // Set current style as selected
+    QString currentStyle = QApplication::style()->objectName();
+    int currentIndex = -1;
+    for (int i = 0; i < availableStyles.size(); ++i) {
+        if (availableStyles[i].compare(currentStyle, Qt::CaseInsensitive) == 0) {
+            currentIndex = i;
+            break;
+        }
+    }
+    if (currentIndex >= 0) {
+        styleComboBox->setCurrentIndex(currentIndex);
+    }
+
+    mainLayout->addWidget(styleComboBox);
+
+    // Info label
+    QLabel *infoLabel = new QLabel(tr("Current style: %1").arg(currentStyle), themeDialog);
+    infoLabel->setStyleSheet("color: gray; font-size: 10px;");
+    mainLayout->addWidget(infoLabel);
+
+    mainLayout->addSpacing(20);
+
+    // Buttons
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(
+        QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+        themeDialog);
+
+    connect(buttonBox, &QDialogButtonBox::accepted, themeDialog, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, themeDialog, &QDialog::reject);
+
+    mainLayout->addWidget(buttonBox);
+
+    // Connect style change preview
+    connect(styleComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            [styleComboBox, infoLabel](int index) {
+                QString selectedStyle = styleComboBox->itemText(index);
+                infoLabel->setText(QObject::tr("Selected: %1").arg(selectedStyle));
+            });
+
+    // Execute dialog
+    if (themeDialog->exec() == QDialog::Accepted) {
+        QString selectedStyle = styleComboBox->currentText();
+
+        // Apply the selected style
+        QApplication::setStyle(QStyleFactory::create(selectedStyle));
+
+        // Save to settings
+        settings.setValue("ui/applicationStyle", selectedStyle);
+
+        QMessageBox::information(this,
+                                 tr("Theme Changed"),
+                                 tr("The theme has been changed to %1.\n"
+                                    "Some changes may require an application restart.").arg(selectedStyle));
+    }
+
+    themeDialog->deleteLater();
 }
