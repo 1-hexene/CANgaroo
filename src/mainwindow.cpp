@@ -1134,13 +1134,16 @@ void MainWindow::showThemeDialog()
     // Set current style as selected
     QString currentStyle = QApplication::style()->objectName();
     int currentIndex = -1;
-    for (int i = 0; i < availableStyles.size(); ++i) {
-        if (availableStyles[i].compare(currentStyle, Qt::CaseInsensitive) == 0) {
+    for (int i = 0; i < availableStyles.size(); ++i)
+    {
+        if (availableStyles[i].compare(currentStyle, Qt::CaseInsensitive) == 0)
+        {
             currentIndex = i;
             break;
         }
     }
-    if (currentIndex >= 0) {
+    if (currentIndex >= 0)
+    {
         styleComboBox->setCurrentIndex(currentIndex);
     }
 
@@ -1165,13 +1168,15 @@ void MainWindow::showThemeDialog()
 
     // Connect style change preview
     connect(styleComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            [styleComboBox, infoLabel](int index) {
+            [styleComboBox, infoLabel](int index)
+            {
                 QString selectedStyle = styleComboBox->itemText(index);
                 infoLabel->setText(QObject::tr("Selected: %1").arg(selectedStyle));
             });
 
     // Execute dialog
-    if (themeDialog->exec() == QDialog::Accepted) {
+    if (themeDialog->exec() == QDialog::Accepted)
+    {
         QString selectedStyle = styleComboBox->currentText();
 
         // Apply the selected style
@@ -1188,3 +1193,4 @@ void MainWindow::showThemeDialog()
 
     themeDialog->deleteLater();
 }
+

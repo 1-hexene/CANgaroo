@@ -66,9 +66,10 @@ jobs:
           QT6_PLUGIN_PATH=$(qmake6 -query QT_INSTALL_PLUGINS)
           
           echo "=== Copying Adwaita style plugin ==="
-          if [ -f "$QT6_PLUGIN_PATH/styles/libadwaita.so" ]; then
-            cp -v "$QT6_PLUGIN_PATH/styles/libadwaita.so" AppDir/usr/plugins/styles/
-            echo "✓ Adwaita style copied"
+          ls $QT6_PLUGIN_PATH/styles/
+          if [ -f "$QT6_PLUGIN_PATH/styles/adwaita.so" ]; then
+            cp -v "$QT6_PLUGIN_PATH/styles/adwaita.so" AppDir/usr/plugins/styles/
+            echo "Adwaita style copied"
           else
             echo "Warning: Adwaita style not found"
           fi
@@ -76,7 +77,7 @@ jobs:
           echo "=== Copying QGnomePlatform plugin ==="
           if [ -f "$QT6_PLUGIN_PATH/platformthemes/libqgnomeplatform.so" ]; then
             cp -v "$QT6_PLUGIN_PATH/platformthemes/libqgnomeplatform.so" AppDir/usr/plugins/platformthemes/
-            echo "✓ QGnomePlatform copied"
+            echo "QGnomePlatform copied"
           else
             echo "Warning: QGnomePlatform not found"
           fi
