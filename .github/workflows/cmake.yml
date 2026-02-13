@@ -21,7 +21,26 @@ jobs:
         sudo apt install -y build-essential git cmake \
           qt6-base-dev qt6-base-private-dev qt6-tools-dev \
           libqt6serialport6-dev libqt6charts6-dev \
+          adwaita-qt6 libadwaitaqt6-1 \
           libnl-3-dev libnl-route-3-dev libgl1-mesa-dev fuse libfuse2 wget
+
+    - name: Verify Qt6 and Adwaita installation
+      run: |
+        echo "=== Qt6 Version ==="
+        qmake6 --version
+        
+        echo "=== Qt6 Plugin Path ==="
+        QT6_PLUGIN_PATH=$(qmake6 -query QT_INSTALL_PLUGINS)
+        echo "Qt6 Plugins: $QT6_PLUGIN_PATH"
+        
+        echo "=== Available Styles ==="
+        ls -la $QT6_PLUGIN_PATH/styles/ || echo "No styles directory"
+        
+        echo "=== Platform Themes ==="
+        ls -la $QT6_PLUGIN_PATH/platformthemes/ || echo "No platformthemes directory"
+        
+        echo "=== Adwaita Libraries ==="
+        ls -la /usr/lib/x86_64-linux-gnu/libadwaitaqt6*.so* || echo "No Adwaita libraries found"
 
     - name: Run qmake6 and make
       run: |
@@ -33,12 +52,55 @@ jobs:
           mkdir -p AppDir/usr/bin
           mkdir -p AppDir/usr/share/applications
           mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+          mkdir -p AppDir/usr/plugins/styles
+          mkdir -p AppDir/usr/plugins/platformthemes
 
           sed -i 's|Exec=/usr/bin/cangaroo %f|Exec=cangaroo %f|' cangaroo.desktop
 
           cp bin/cangaroo AppDir/usr/bin/
           cp cangaroo.desktop AppDir/usr/share/applications/
           cp src/assets/cangaroo.png AppDir/usr/share/icons/hicolor/256x256/apps/
+
+    - name: Copy Adwaita plugins to AppDir
+      run: |
+          QT6_PLUGIN_PATH=$(qmake6 -query QT_INSTALL_PLUGINS)
+          
+          echo "=== Copying Adwaita style plugin ==="
+          if [ -f "$QT6_PLUGIN_PATH/styles/libadwaita.so" ]; then
+            cp -v "$QT6_PLUGIN_PATH/styles/libadwaita.so" AppDir/usr/plugins/styles/
+            echo "✓ Adwaita style copied"
+          else
+            echo "Warning: Adwaita style not found"
+          fi
+          
+          echo "=== Copying QGnomePlatform plugin ==="
+          if [ -f "$QT6_PLUGIN_PATH/platformthemes/libqgnomeplatform.so" ]; then
+            cp -v "$QT6_PLUGIN_PATH/platformthemes/libqgnomeplatform.so" AppDir/usr/plugins/platformthemes/
+            echo "✓ QGnomePlatform copied"
+          else
+            echo "Warning: QGnomePlatform not found"
+          fi
+          
+          echo "=== Copying Adwaita libraries ==="
+          mkdir -p AppDir/usr/lib
+          for lib in /usr/lib/x86_64-linux-gnu/libadwaitaqt6*.so*; do
+            if [ -f "$lib" ]; then
+              cp -Pv "$lib" AppDir/usr/lib/
+              echo "Copied: $lib"
+            fi
+          done
+
+    - name: Create qt.conf
+      run: |
+          cat > AppDir/usr/bin/qt.conf << 'EOF'
+          [Paths]
+          Plugins = ../plugins
+          Libraries = ../lib
+          Prefix = ../
+          EOF
+          
+          echo "=== qt.conf created ==="
+          cat AppDir/usr/bin/qt.conf
 
     - name: Download linuxdeploy
       run: |
@@ -49,11 +111,32 @@ jobs:
     - name: Build AppImage
       env:
         QMAKE: qmake6
+        QML_SOURCES_PATHS: ./src
       run: |
           ./linuxdeploy-x86_64.AppImage \
             --appdir AppDir \
             --plugin qt \
             --output appimage
+
+    - name: Verify AppImage contents
+      run: |
+          echo "=== Extracting AppImage for verification ==="
+          APPIMAGE=$(ls CAN*.AppImage | head -n 1)
+          ./$APPIMAGE --appimage-extract
+          
+          echo "=== Checking for Adwaita plugins ==="
+          ls -la squashfs-root/usr/plugins/styles/ || echo "No styles in AppImage"
+          ls -la squashfs-root/usr/plugins/platformthemes/ || echo "No platformthemes in AppImage"
+          
+          echo "=== Checking for Adwaita libraries ==="
+          ls -la squashfs-root/usr/lib/ | grep adwaita || echo "No Adwaita libraries in AppImage"
+          
+          echo "=== Checking qt.conf ==="
+          if [ -f "squashfs-root/usr/bin/qt.conf" ]; then
+            cat squashfs-root/usr/bin/qt.conf
+          else
+            echo "Warning: qt.conf not found in AppImage"
+          fi
 
     - name: Upload AppImage
       uses: actions/upload-artifact@v6
